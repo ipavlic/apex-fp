@@ -1,0 +1,29 @@
+/**
+ * Starting class for filtering queries on the list
+ */ 
+public class Filter {
+
+	/**
+	 * Initiates a field filtering query
+	 * @param field Field name to query
+	 */ 
+	public static FieldFilterQueryElement field(String field) {
+		return new FieldFilterQueryElement(new FieldFilterQuery(), field);
+	}
+	
+	/**
+	 * Initiates a matching filtering query
+	 * @param obj Object to compare to in a query
+	 */ 
+	public static MatchingFilterQuery match(sObject obj) {
+		return new MatchingFilterQuery(obj);
+	}
+	
+	/**
+	 * Initiates a field token filtering query
+	 * @param token Field token to query
+	 */
+	 public static FieldTokenFilterQueryElement field(Schema.SObjectField token) {
+	 	return new FieldTokenFilterQueryElement(new FieldTokenFilterQuery(), token);
+	 }
+}
