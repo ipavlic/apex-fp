@@ -37,8 +37,8 @@ This spends 1 additional SOQL query for each new selection.
 
 With filtering, we can write:
 
-   List<Account> lowRevenue = Filter.field('AnnualRevenue').lessThanOrEquals(cutoff).apply(accounts);
-   List<Account> highRevenue = Filter.field('AnnualRevenue').greaterThan(cutoff).apply(accounts);
+    List<Account> lowRevenue = Filter.field('AnnualRevenue').lessThanOrEquals(cutoff).apply(accounts);
+    List<Account> highRevenue = Filter.field('AnnualRevenue').greaterThan(cutoff).apply(accounts);
     
 This uses just the original SOQL query, and replaces the usual looping code.
 
