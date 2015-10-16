@@ -12,12 +12,12 @@ As an example, let's say you have to split the list into two lists, one containi
 
     List<Account> accounts = [Select ..., AnnualRevenue from Account where ...];
     Integer cutoff = ...;
-    
+
 After that we can iterate through the list to get our lists:
 
     List<Account> lowRevenue = new List<Account>();
     List<Account> highRevenue = new List<Account>();
-    
+
     for (Account acc : accounts) {
         if (acc.AnnualRevenue > cutoff) {
             highRevenue.add(acc);
@@ -25,26 +25,26 @@ After that we can iterate through the list to get our lists:
             lowRevenue.add(acc);
         }
     }
-    
+
 If we need additional splits, we have to nest inside the loop (or write a new method).
 
 Another option is to just use SOQL to select our lists:
 
     List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue <= :cutoff]
     List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue > :cutoff]
-    
+
 This spends 1 additional SOQL query for each new selection.
 
 With filtering, we can write:
 
     List<Account> lowRevenue = Filter.field('AnnualRevenue').lessThanOrEquals(cutoff).apply(accounts);
     List<Account> highRevenue = Filter.field('AnnualRevenue').greaterThan(cutoff).apply(accounts);
-    
+
 This uses just the original SOQL query, and replaces the usual looping code.
 
 ## Available filters
 
-There are two available types of filters: object matching and field matching filter. Each has two possible behaviours: 
+There are two available types of filters: object matching and field matching filter. Each has two possible behaviours:
 
 1. `apply` selects matching elements from the list and returns them, with no modification from the original list.
 2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
@@ -59,11 +59,11 @@ The matching check is performed only on those fields that are set on the prototy
 
 A field matching filter matches the objects in a list with using some of the available criteria. Example:
 
-    List<Account> extracted = (List<Account>) Filter.field('Name').equals('Ok').apply(accounts);
+    List<Account> extracted = (List<Account>) Filter.field(Account.Name).equals('Ok').apply(accounts);
 
 Multiple criteria can be stringed together to form the full query:
 
-    List<Account> filtered = (List<Account>) Filter.field('Name').equals('Ok').also('AnnualRevenue').apply(accounts);
+    List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 
 There are also shorter names for filtering criteria. Instead of `equals`, one can also write `eq`.
 
@@ -76,8 +76,4 @@ Currently available criteria are.
 * `greaterThan` (alias `gt`)
 * `greaterThanOrEquals` (alias`geq`)
 
-The queries are dynamic and therefore cannot be type-checked at compile-time. There is an alternative form that uses field tokens instead of strings for fields in a query. That way at least the existence of the field can be checked at compile-time. 
-
-In that form, the query `List<Account> filtered = (List<Account>) Filter.field('Name').equals('Ok').also('AnnualRevenue').apply(accounts);` can also be rewritten as:
-
-    List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).apply(accounts);
+The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time.
