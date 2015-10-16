@@ -76,4 +76,4 @@ Currently available criteria are.
 * `greaterThan` (alias `gt`)
 * `greaterThanOrEquals` (alias`geq`)
 
-The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time.
+The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. The access has been globalized to prepare the code for packaging. You can replace global with public access before the code is deployed unmanaged.
