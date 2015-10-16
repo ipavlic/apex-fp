@@ -14,7 +14,7 @@ private class FilterTest {
 		
 		List<Account> accounts = testData();
 		
-		List<Account> filtered = (List<Account>) Filter.field('Name').equals('Ok').apply(accounts);
+		List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').apply(accounts);
 		
 		system.assertEquals(2, filtered.size());
 		for (Account acc : filtered) {
@@ -23,7 +23,7 @@ private class FilterTest {
 		
 		system.assertEquals(4, accounts.size());
 		
-		List<Account> extracted = (List<Account>) Filter.field('Name').equals('Ok').extract(accounts);
+		List<Account> extracted = (List<Account>) Filter.field(Account.Name).equals('Ok').extract(accounts);
 		
 		system.assertEquals(2, accounts.size());
 		system.assertEquals(2, extracted.size());
@@ -36,7 +36,7 @@ private class FilterTest {
 		
 		List<Account> accounts = testData();
 		
-		List<Account> filtered = (List<Account>) Filter.field('Name').equals('Ok').also('AnnualRevenue').gt(100).apply(accounts);
+		List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100).apply(accounts);
 		
 		system.assertEquals(1, filtered.size());
 		for (Account acc : filtered) {
@@ -44,7 +44,7 @@ private class FilterTest {
 			system.assert(acc.AnnualRevenue > 100);
 		}
 		
-		List<Account> extracted = (List<Account>) Filter.field('Name').equals('Ok').also('AnnualRevenue').gt(100).extract(accounts);
+		List<Account> extracted = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100).extract(accounts);
 		
 		system.assertEquals(3, accounts.size());
 		system.assertEquals(1, extracted.size());
@@ -72,11 +72,11 @@ private class FilterTest {
 		
 		List<Account> accounts = testData();
 		
-		List<Account> filtered = (List<Account>) Filter.field('Name').equals('Ok').also('Name').neq('Ok').apply(accounts);
+		List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok').apply(accounts);
 		
 		system.assertEquals(0, filtered.size());
 		
-		List<Account> extracted = (List<Account>) Filter.field('Name').equals('Ok').also('Name').neq('Ok').extract(accounts);
+		List<Account> extracted = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok').extract(accounts);
 		
 		system.assertEquals(4, accounts.size());
 		system.assertEquals(0, extracted.size());
@@ -101,11 +101,11 @@ private class FilterTest {
 		
 		List<Account> accounts = testData();
 		
-		List<Account> filtered = (List<Account>) Filter.field('AnnualRevenue').lt(150).also('AnnualRevenue').gt(60).apply(accounts);
+		List<Account> filtered = (List<Account>) Filter.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60).apply(accounts);
 		
 		system.assertEquals(1, filtered.size());
 		
-		List<Account> extracted = (List<Account>) Filter.field('AnnualRevenue').lt(150).also('AnnualRevenue').gt(60).extract(accounts);
+		List<Account> extracted = (List<Account>) Filter.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60).extract(accounts);
 		
 		system.assertEquals(3, accounts.size());
 		system.assertEquals(1, extracted.size());

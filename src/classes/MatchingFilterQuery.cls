@@ -1,7 +1,7 @@
-public class MatchingFilterQuery extends FilterQuery {
+global class MatchingFilterQuery extends FilterQuery {
 
-	sObject obj;
-	Map<String, Object> availableFields = new Map<String, Object>();
+	private sObject obj;
+	private Map<String, Object> availableFields = new Map<String, Object>();
 	
 	/**
 	 * Constructor. Takes a comparison sObject to compare list elements with.
@@ -9,7 +9,7 @@ public class MatchingFilterQuery extends FilterQuery {
 	 * non-null fields are considered.
 	 * @param obj Comparison sObject
 	 */ 
-	public MatchingFilterQuery(sObject obj) {
+	global MatchingFilterQuery(sObject obj) {
 		this.obj = obj;
 		for (String field : obj.getSObjectType().getDescribe().fields.getMap().keyset()) {
 			if (obj.get(field) != null) {

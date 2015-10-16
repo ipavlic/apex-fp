@@ -1,12 +1,12 @@
-public abstract class FilterQuery {
+global abstract class FilterQuery {
 	
-	public abstract Boolean isValid(sObject obj);
+	global abstract Boolean isValid(sObject obj);
 	
 	/**
 	 * Applies the filter to the list and returns the elements satisfying the filter. 
 	 * The original list is not changed.
 	 */ 
-	public List<sObject> apply(Iterable<sObject> objects) {
+	global List<sObject> apply(Iterable<sObject> objects) {
 		
 		List<sObject> filtered = new List<sObject>();
 		
@@ -24,7 +24,7 @@ public abstract class FilterQuery {
 	 * Applies the filter to the list and returns the elements satisfying the filter. 
 	 * The filtered elements are removed from the original list.
 	 */ 
-	public List<sObject> extract(List<sObject> objects) {
+	global List<sObject> extract(List<sObject> objects) {
 
 		List<sObject> filtered = new List<sObject>();
 		List<sObject> nonFiltered = new List<sObject>();

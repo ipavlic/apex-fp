@@ -1,3 +1,4 @@
-filtering.sublime-project
-filtering.sublime-workspace
+.project
+.settings/
 config/
+salesforce.schema

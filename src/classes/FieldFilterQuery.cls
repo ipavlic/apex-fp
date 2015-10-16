@@ -1,24 +1,24 @@
-public class FieldFilterQuery extends FilterQuery {
-	
-	List<Criterium> queryCriteria = new List<Criterium>();
-	PrimitiveComparer comparer = new PrimitiveComparer();
+global class FieldFilterQuery extends FilterQuery {
 
-	public FieldFilterQuery addCriterium(String field, Comparison criterium, Object value) {
-		this.queryCriteria.add(new Criterium(field, criterium, value));
+	private List<TokenCriterium> queryCriteria = new List<TokenCriterium>();
+	private PrimitiveComparer comparer = new PrimitiveComparer();
+
+	public FieldFilterQuery addCriterium(Schema.SObjectField field, Comparison criterium, Object value) {
+		this.queryCriteria.add(new TokenCriterium(field, criterium, value));
 		return this;
 	}
 
-	public FieldFilterQueryElement field(String field) {
+	global FieldFilterQueryElement field(Schema.SObjectField field) {
 		return new FieldFilterQueryElement(this, field);
 	}
 
-	public FieldFilterQueryElement also(String field) {
+	global FieldFilterQueryElement also(Schema.SObjectField field) {
 		return this.field(field);
 	}
-	
+
 	public override Boolean isValid (sObject obj) {
 		Boolean isValid = true;
-		for (Criterium c : queryCriteria) {
+		for (TokenCriterium c : queryCriteria) {
 			if (c.criterium == Comparison.EQUALS && comparer.compare(obj.get(c.field), c.value) != Comparison.EQUALS) {
 	 			isValid = false;
 				break;
