@@ -37,23 +37,23 @@ This spends 1 additional SOQL query for each new selection.
 
 With filtering, we can write:
 
-    List<Account> lowRevenue = Filter.field('AnnualRevenue').lessThanOrEquals(cutoff).apply(accounts);
-    List<Account> highRevenue = Filter.field('AnnualRevenue').greaterThan(cutoff).apply(accounts);
+    List<Account> lowRevenue = Filter.field(Account.AnnualRevenue).lessThanOrEquals(cutoff).apply(accounts);
+    List<Account> highRevenue = Filter.field(Account.AnnualRevenue).greaterThan(cutoff).apply(accounts);
 
-This uses just the original SOQL query, and replaces the usual looping code.
+We can also match fields on a "prototype" instance to target required objects.
+
+    List<Account> fiftyMillions = (List<Account>) Filter.match(new Account(AnnualRevenue = 50000000)).apply(accounts);
+    List<Account> testFiftyMillions = (List<Account>) Filter.match(new Account(Name = 'Test', AnnualRevenue = 50000000)).apply(accounts);
+
+
+Available filters work on any provided list. A single list obtained from a SOQL query can be reused many times and looping code is replaced with a more functional construct. 
 
 ## Available filters
 
-There are two available types of filters: object matching and field matching filter. Each has two possible behaviours:
+There are two available types of filters: **field matching** and **object matching** filter. Each has two possible *behaviours*:
 
-1. `apply` selects matching elements from the list and returns them, with no modification from the original list.
+1. `apply` selects matching elements from the list and returns them, with no modification of the original list.
 2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
-
-### Object matching filter
-
-An object matching filter matches the objects in a list with the given *prototype* object. It is a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
-
-The matching check is performed only on those fields that are set on the prototype object. Other fields are ignored.
 
 ### Field matching filter
 
@@ -76,4 +76,15 @@ Currently available criteria are.
 * `greaterThan` (alias `gt`)
 * `greaterThanOrEquals` (alias`geq`)
 
-The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. The access has been globalized to prepare the code for packaging. You can replace global with public access before the code is deployed unmanaged.
+
+The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+
+### Object matching filter
+
+An object matching filter matches the objects in a list with the given *prototype* object instance. It's a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
+
+The matching check is performed only on those fields that are set on the prototype object. Other fields are ignored. Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+
+## Note on code member access
+
+Member access has been globalized to prepare the code for packaging. You can replace global with public access before the code is deployed unmanaged.
