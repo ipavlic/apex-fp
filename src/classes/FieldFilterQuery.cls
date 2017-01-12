@@ -1,5 +1,4 @@
 public class FieldFilterQuery extends FilterQuery {
-
 	private List<TokenCriterium> queryCriteria = new List<TokenCriterium>();
 	private PrimitiveComparer comparer = new PrimitiveComparer();
 
