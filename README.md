@@ -2,7 +2,7 @@
 
 Functional programming on Salesforce!
 
-Lambda consists of several classes which provide a way to perform common tasks on lists of sObjects in a functional style, `Filter`, `Pluck` and `GroupBy`.
+Lambda consists of several classes which enable functional programming style list manipulations: `Filter`, `Pluck` and `GroupBy`.
 
 ## `Filter`
 
