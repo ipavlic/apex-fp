@@ -31,20 +31,4 @@ public class Lists {
 		}
 		return results;
 	}
-
-	/**
-	 * Groups a list of SObjects into a map by the chosen field
-	 */
-	public static Map<Object, List<SObject>>groupBy(List<sObject> objects, Schema.SObjectField sObjectField) {
-		Map<Object, List<SObject>> grouped = new Map<Object, List<SObject>>();
-
-		for (sObject obj : objects) {
-			Object key = obj.get(sObjectField);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, new List<sObject>());
-			}
-			grouped.get(key).add(obj);
-		}
-		return grouped;
-	}
 }

@@ -1,12 +1,14 @@
-# filtering
+# Lambda
+
+Functional programming on Salesforce
 
 ## Introduction
 
-LINQ-like queries for lists of Salesforce objects.
+Lambda consists of two main classes which provide a way to perform common tasks on lists of sObjects in a functional style, `Filter` and `Lists`.
 
-Once the list is already selected, saves you from:
-- standard iteration matching
-- new queries
+### `Filter`
+
+Filter saves you from having to manually implement filtering list of sObject records by some criteria.
 
 As an example, let's say you have to split the list into two lists, one containing those Accounts that have an annual revenue greater than some number, and the other without them. Our first option is to first select our accounts:
 
@@ -48,14 +50,14 @@ We can also match fields on a "prototype" instance to target required objects.
 
 Available filters work on any provided list. A single list obtained from a SOQL query can be reused many times and looping code is replaced with a more functional construct. 
 
-## Available filters
+#### Available filters
 
 There are two available types of filters: **field matching** and **object matching** filter. Each has two possible *behaviours*:
 
 1. `apply` selects matching elements from the list and returns them, with no modification of the original list.
 2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
 
-### Field matching filter
+##### Field matching filter
 
 A field matching filter matches the objects in a list with using some of the available criteria. Example:
 
@@ -79,12 +81,34 @@ Currently available criteria are.
 
 The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
-### Object matching filter
+##### Object matching filter
 
 An object matching filter matches the objects in a list with the given *prototype* object instance. It's a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
 
 The matching check is performed only on those fields that are set on the prototype object. Other fields are ignored. Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
-## Note on code member access
+## `Lists`
 
-Member access has been globalized to prepare the code for packaging. You can replace global with public access before the code is deployed unmanaged.
+Lists provides list transformation utilities: plucking some fields into a new list and grouping by some field.
+
+### Pluck
+
+* `pluckNumerical`
+* `pluckStringy`
+* `pluckTruthy`
+
+Pluck methods enable easy extraction of just one field from the list. This pattern is used commonly when a field is used as a criteria for further programming logic. For example, code snippet
+
+    List<Account> accounts = [Select Name,... from Account where ...];
+    
+    List<String> names = new List<String>();
+    for (Account a : accounts) {
+        names.add(a.Name);
+    }
+
+This `pluck` operation of extracting a field from each object in a list into a new list is a very common one in functional languages. 
+
+Since there is just a limited number of SOQL result field types (all text fields are mapped to `String`, numerical values are mapped to `Decimal`, truthy values are mapped to `Boolean` and so on), so even though Apex doesn't support generic types, the three provided methods cover most use cases and require no casting:
+
+    List<Account> accounts = [Select Name,... from Account where ...];
+    List<String> names = Lists.pluckStringy(accounts, Account.Name); // look, no type casting here!
