@@ -143,7 +143,7 @@ Another common pattern is grouping objects by some field on them values. If fact
 
 This doesn't work for any other field, and that's where `GroupBy` jumps in. Due to the limitations of Apex's type system, it has to be used in a specific way.
 
-First, note that can't cast a `Map<String, List<SObject>>` to something ostensibly more specific, like `Map<String, List<Account>>`.
+First, note that `Map<String, List<SObject>>` can't be cast to something ostensibly more specific, like `Map<String, List<Account>>`.
 
     Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name); // this doesn't compile!!!
 
@@ -161,7 +161,7 @@ You however cannot use the group value directly in an iteration:
         ...
     } // this doesn't compile!!!
 
-to iterate, first get the values into a list (casting them implicitly) and then iterate the list.
+To iterate, first get the values into a list (casting them implicitly) and then iterate the list.
 
     List<Account> fooAccounts = accountsByName.get('Foo');
     for (Account acc : fooAccounts) {
