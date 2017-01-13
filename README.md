@@ -151,7 +151,7 @@ However, due to a bug in Salesforce's type system, you are free to just skip the
     // this compiles
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
-*Be extra careful, the type system will NOT warn you if you use the wrong subtype type!*
+**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!**
 
      // this compiles
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
