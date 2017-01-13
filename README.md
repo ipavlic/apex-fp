@@ -8,17 +8,31 @@ Lambda consists of several classes which enable functional programming style lis
 
 Filter saves you from having to manually implement filtering list of sObject records by some criteria.
 
-As an example, let's say you have to split the list into two lists, one containing those Accounts that have an annual revenue greater than some number, and the other without them. Our first option is to first select our accounts:
+### Introduction
+
+Let's say you have to split the list into two lists, one containing those Accounts that have an annual revenue greater than some number, and the other without them.
+
+We can use SOQL language to **describe** *what* we want:
+
+    List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue <= :cutoff]
+    List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue > :cutoff]
+
+There's a steep cost to filtering through SOQL:
+- 1 additional SOQL query is required for each new selection
+- text area fields cannot be filtered 
+
+To avoid that, we have to select all accounts we're interested in:
 
     List<Account> accounts = [Select ..., AnnualRevenue from Account where ...];
     Integer cutoff = ...;
 
-After that we can iterate through the list to get our lists:
+Then, we iterate through the accounts to filter the accounts according to the appropriate criteria. We do this by providing **instructions** *how* each account in a loop should be filtered.
 
     List<Account> lowRevenue = new List<Account>();
     List<Account> highRevenue = new List<Account>();
 
     for (Account acc : accounts) {
+         // "filtering" the accounts
         if (acc.AnnualRevenue > cutoff) {
             highRevenue.add(acc);
         } else {
@@ -26,16 +40,22 @@ After that we can iterate through the list to get our lists:
         }
     }
 
-If we need additional splits, we have to nest inside the loop (or write a new method).
+If we need additional splits, we have to nest inside the loop (or write new methods).
 
-Another option is to just use SOQL to select our lists:
+### Functional filtering
 
-    List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue <= :cutoff]
-    List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue > :cutoff]
+It would be great if we could **describe** *what* we want, but not spend additional queries on it. `Filter` allows us to do that.
 
-This spends 1 additional SOQL query for each new selection.
+#### Available filters
 
-With filtering, we can write:
+There are two available types of filters: **field matching** and **object matching** filter. Each has two possible *behaviours*:
+
+1. `apply` selects matching elements from the list and returns them, with no modification of the original list.
+2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
+
+##### Field matching filter
+
+A field matching filter matches the objects in a list with using some of the available **criteria**. Example:
 
     List<Account> lowRevenue = (List<Account>) Filter.field(Account.AnnualRevenue).lessThanOrEquals(cutoff).apply(accounts);
 
@@ -43,34 +63,17 @@ With filtering, we can write:
 
     List<Account> highRevenue = Filter.field(Account.AnnualRevenue).greaterThan(cutoff).apply(accounts);
 
-We can also match fields on a "prototype" instance to target required objects.
+There are also shorter names for filtering criteria. Instead of `greaterThanOrEquals`, one can also write `geq`. We can further shorten our filtering to:
 
-    List<Account> fiftyMillions = Filter.match(new Account(AnnualRevenue = 50000000)).apply(accounts);
-    List<Account> testFiftyMillions = Filter.match(new Account(Name = 'Test', AnnualRevenue = 50000000)).apply(accounts);
+    List<Account> highRevenue = Filter.field(Account.AnnualRevenue).geq(cutoff).apply(accounts);
 
-
-Available filters work on any provided list. A single list obtained from a SOQL query can be reused many times and looping code is replaced with a more functional construct. 
-
-### Available filters
-
-There are two available types of filters: **field matching** and **object matching** filter. Each has two possible *behaviours*:
-
-1. `apply` selects matching elements from the list and returns them, with no modification of the original list.
-2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
-
-#### Field matching filter
-
-A field matching filter matches the objects in a list with using some of the available criteria. Example:
-
-    List<Account> extracted = Filter.field(Account.Name).equals('Ok').apply(accounts);
-
-Multiple criteria can be stringed together to form the full query:
+Multiple criteria can be stringed together with `also` to form the full query:
 
     List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 
-There are also shorter names for filtering criteria. Instead of `equals`, one can also write `eq`.
+Any number of criteria can be added with `also`. Only those records that match *all* criteria are then returned.
 
-Currently available criteria are.
+Currently available criteria are:
 
 * `equals` (alias `eq`)
 * `notEquals` (alias `neq`)
@@ -79,12 +82,31 @@ Currently available criteria are.
 * `greaterThan` (alias `gt`)
 * `greaterThanOrEquals` (alias`geq`)
 
-
 The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
-#### Object matching filter
+##### Object matching filter
 
-An object matching filter matches the objects in a list with the given *prototype* object instance. It's a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
+If we don't require inequality comparisons, and we're just looking for equality filtering, there is an additional filter which allows us to define a "prototype" object and find all objects that match it.
+
+For example, to find all accounts which have `AnnualRevenue` of 50,000,000, we can use a single account with `AnnualRevenue` set to 50,000,000 and use it match other accounts. This account serves as a "prototype" object to match against.
+
+    Account fiftyMillionAccount = new Account(AnnualRevenue = 50000000);
+    List<Account> fiftyMillions = Filter.match(fiftyMillionAccount).apply(accounts);
+
+If we're looking for accounts that have `AnnualRevenue` of 50,000,000 **and** are named 'Test', we can use a "prototype" that has such properties:
+
+    Account prototype = new Account(
+        Name = 'Test',
+        AnnualRevenue = 50000000,
+        Description = 'Test description'
+    );
+    List<Account> matchingAccounts = Filter.match(prototype).apply(accounts);
+
+Using the object matching filter can easier to read when there are multiple equality criteria then an equivalent field matching filter:
+
+    List<Account> matchingAccounts = Filter.field(Account.Name).equals('Test').also(Account.AnnualRevenue).equals('50000000').also(Account.Description).equals('Test description').apply(accounts);
+
+An object matching is a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
 
 The matching check is performed only on those fields that are set on the prototype object. Other fields are ignored. Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
