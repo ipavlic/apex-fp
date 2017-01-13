@@ -141,29 +141,20 @@ Another common pattern is grouping objects by some field on them values. If fact
     List<Account> accounts = [Select Name,... from Account where ...];
     Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 
-This doesn't work for any other field, and that's where `GroupBy` jumps in. Due to the limitations of Apex's type system, it has to be used in a specific way.
+This doesn't work for any other field, and that's where `GroupBy` jumps in. Due to the limitations of Apex's type system, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`. 
 
-First, note that `Map<String, List<SObject>>` can't be cast to something ostensibly more specific, like `Map<String, List<Account>>`.
+     // this doesn't compile!!!
+    Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name);
 
-    Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name); // this doesn't compile!!!
+However, due to a bug in Salesforce's type system, you are free to just skip the cast! 
 
-So you're forced to keep the general type:
+    // this compiles
+    Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
-    Map<String, List<sObject>> accountsByName = GroupBy.strings(accounts, Account.Name);
+*Be extra careful, the type system will NOT warn you if you use the wrong subtype type!*
 
-However, again due to the Apex's type system, you can skip the cast when you're retrieving the value of a group:
-
-    List<Account> fooAccounts = accountsByName.get('Foo'); // this compiles
-
-You however cannot use the group value directly in an iteration:
-
-    for (Account acc : accountsByName.get('Foo')) {
-        ...
-    } // this doesn't compile!!!
-
-To iterate, first get the values into a list (casting them implicitly) and then iterate the list.
-
-    List<Account> fooAccounts = accountsByName.get('Foo');
-    for (Account acc : fooAccounts) {
-        ...
-    } // this compiles
+     // this compiles
+    Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+    // this compiles as well!!!???
+    Map<String, List<User>> accountsByName = GroupBy.strings(accounts, Account.Name);
+    Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
