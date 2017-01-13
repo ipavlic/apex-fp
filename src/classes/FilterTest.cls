@@ -139,12 +139,4 @@ private class FilterTest {
 			System.assertEquals(150, acc.AnnualRevenue);
 		}
 	}
-
-	@IsTest
-	static void testGroupBy() {
-		List<Account> account = testData();
-		Map<String, Account> grouped = (Map<String, Account>) Filter.groupBy(Account.Name);
-		System.assertEquals(2, grouped.size());
-		
-	}
 }

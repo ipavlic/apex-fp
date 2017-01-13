@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 public abstract class FilterQuery {
 	
 	public abstract Boolean isValid(sObject obj);
@@ -44,51 +43,4 @@ public abstract class FilterQuery {
 		objects.addAll(nonFiltered);
 		return filtered;
 	}
-=======
-global abstract class FilterQuery {
-	
-	global abstract Boolean isValid(sObject obj);
-	
-	/**
-	 * Applies the filter to the list and returns the elements satisfying the filter. 
-	 * The original list is not changed.
-	 */ 
-	global List<sObject> apply(Iterable<sObject> objects) {
-		
-		List<sObject> filtered = new List<sObject>();
-		
-		Iterator<sObject> iter = objects.iterator();
-		while (iter.hasNext()) {
-			sObject obj = iter.next();
-			if (isValid(obj)) {
-				filtered.add(obj);
-			}
-		}
-		return filtered;
-	}
-	
-	/**
-	 * Applies the filter to the list and returns the elements satisfying the filter. 
-	 * The filtered elements are removed from the original list.
-	 */ 
-	global List<sObject> extract(List<sObject> objects) {
-
-		List<sObject> filtered = new List<sObject>();
-		List<sObject> nonFiltered = new List<sObject>();
-
-		Iterator<sObject> iter = objects.iterator();
-		while (iter.hasNext()) {
-			sObject obj = iter.next();
-			if (isValid(obj)) {
-				filtered.add(obj);
-			} else {
-				nonFiltered.add(obj);
-			}
-		}
-		
-		objects.clear();
-		objects.addAll(nonFiltered);
-		return filtered;
-	}
->>>>>>> 23f14f3211c8b90d2ed874c3b2a8a64d9f83bfd8
 }
