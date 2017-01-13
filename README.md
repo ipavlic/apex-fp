@@ -1,23 +1,21 @@
 # Lambda
 
-Functional programming on Salesforce!
+Functional programming on Salesforce! 
 
 Lambda consists of several classes which enable functional programming style list manipulations: `Filter`, `Pluck` and `GroupBy`.
 
 ## `Filter`
 
-Filter saves you from having to manually implement filtering list of sObject records by some criteria.
+Filter saves you from having to manually implement filtering lists of sObject records by some criteria.
 
 ### Introduction
 
-Let's say you have to split the list into two lists, one containing those Accounts that have an annual revenue greater than some number, and the other without them.
-
-We can use SOQL language to **describe** *what* we want:
+Let's say you have to split records into two lists, one containing those accounts that have an annual revenue greater than some cutoff number, and the other those that do not. Having or not having the revenue greater than the cutoff is a *criterium* for filtering. We can use SOQL queries to **describe** *what* we want:
 
     List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue <= :cutoff]
     List<Account> lowRevenue = [Select ..., AnnualRevenue from Account where ... and AnnualRevenue > :cutoff]
 
-There's a steep cost to filtering through SOQL:
+However, there's a steep cost to filtering through SOQL:
 - 1 additional SOQL query is required for each new selection
 - text area fields cannot be filtered 
 
@@ -40,7 +38,7 @@ Then, we iterate through the accounts to filter the accounts according to the ap
         }
     }
 
-If we need additional splits, we have to nest inside the loop (or write new methods).
+If we need additional splits, we have to nest inside the loop or write new methods. Since filtering through iteration is one of the most common patterns to avoid multiple SOQL queries, it would be great if we could have a generic way of doing it.  
 
 ### Functional filtering
 
@@ -102,7 +100,7 @@ If we're looking for accounts that have `AnnualRevenue` of 50,000,000 **and** ar
     );
     List<Account> matchingAccounts = Filter.match(prototype).apply(accounts);
 
-Using the object matching filter can easier to read when there are multiple equality criteria then an equivalent field matching filter:
+Using the object matching filter can easier to read then an equivalent field matching filter when there are multiple equality criteria:
 
     List<Account> matchingAccounts = Filter.field(Account.Name).equals('Test').also(Account.AnnualRevenue).equals('50000000').also(Account.Description).equals('Test description').apply(accounts);
 
@@ -125,8 +123,9 @@ Pluck allows you to pluck values of a field from a list of sObjects into a new l
     for (Account a : accounts) {
         names.add(a.Name);
     }
+    // do something with names
 
-This pattern can be replaced by a functional call to the appropriate `Pluck` method:
+Plucking code can be replaced with a declarative call to the appropriate `Pluck` method:
 
     List<String> names = Pluck.strings(accounts, Account.Name);
 
