@@ -20,6 +20,13 @@ public class Pluck {
 		}
 		return results;
 	}
+	public Static List<Id> ids(List<SObject> records) {
+		List<Id> results = new List<Id>();
+		for (SObject rec : records) {
+			results.add(rec.Id);
+		}
+		return results;
+	}
 	public static List<String> strings(List<SObject> records, Schema.SObjectField field) {
 		List<String> results = new List<String>();
 		for (SObject rec : records) {

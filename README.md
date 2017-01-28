@@ -110,10 +110,11 @@ The matching check is performed only on those fields that are set on the prototy
 
 ## `Pluck`
 
-* `booleans`
-* `decimals`
-* `ids`
-* `strings`
+* `booleans(List<SObject>, Schema.SObjectField)`
+* `decimals(List<SObject>, Schema.SObjectField)`
+* `ids(List<SObject>)`
+* `ids(List<SObject>, Schema.SObjectField)` 
+* `strings(List<SObject>, Schema.SObjectField)`
 
 Pluck allows you to pluck values of a field from a list of sObjects into a new list. This pattern is used commonly when a field is used as a criteria for further programming logic. For example:
 
@@ -128,6 +129,15 @@ Pluck allows you to pluck values of a field from a list of sObjects into a new l
 Plucking code can be replaced with a declarative call to the appropriate `Pluck` method:
 
     List<String> names = Pluck.strings(accounts, Account.Name);
+
+The `ids` method has two options. First version takes any field to pluck Id values from, for example:
+
+    List<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
+
+Second version is a shorthand which doesnt’t require a `Schema.SObjectField` parameter. Instead, it defaults to system `Id` field:
+
+    List<Id> accountIds = Pluck.ids(accounts);
+    // equivalent to List<Id> accountIds = Pluck.ids(accounts, Account.Id);
 
 ## `GroupBy`
 

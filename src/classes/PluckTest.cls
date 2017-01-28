@@ -5,10 +5,10 @@ public class PluckTest {
 
 	static List<Account> testData() {
 		List<Account> accounts = new List<Account>();
-		accounts.add(new Account(OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100));
-		accounts.add(new Account(OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60));
-		accounts.add(new Account(OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150));
-		accounts.add(new Account(OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150));
+		accounts.add(new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100));
+		accounts.add(new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60));
+		accounts.add(new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150));
+		accounts.add(new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150));
 		return accounts;
 	}
 	@IsTest
@@ -40,6 +40,16 @@ public class PluckTest {
 		System.assertEquals(firstUserId, ownerIds[1]);
 		System.assertEquals(secondUserId, ownerIds[2]);
 		System.assertEquals(secondUserId, ownerIds[3]);
+	}
+	@IsTest
+	public static void testPluckRecordIds() {
+		List<Account> accounts = testData();
+		List<Id> recordIds = Pluck.ids(accounts);
+		System.assertEquals(4, recordIds.size());
+		System.assertEquals(accounts[0].Id, recordIds[0]);
+		System.assertEquals(accounts[1].Id, recordIds[1]);
+		System.assertEquals(accounts[2].Id, recordIds[2]);
+		System.assertEquals(accounts[3].Id, recordIds[3]);
 	}
 	@IsTest
 	public static void testPluckBooleans() {
