@@ -68,7 +68,6 @@ private class FilterTest {
 
 	@IsTest
 	static void testSameFieldExclusionCriteria() {
-
 		List<Account> accounts = testData();
 
 		List<Account> filtered = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok').apply(accounts);
@@ -76,7 +75,7 @@ private class FilterTest {
 		System.assertEquals(0, filtered.size());
 
 		List<Account> extracted = (List<Account>) Filter.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok').extract(accounts);
-	
+
 		System.assertEquals(4, accounts.size());
 		System.assertEquals(0, extracted.size());
 	}
@@ -113,7 +112,7 @@ private class FilterTest {
 	static void testSameTokenSandwichCriteria() {
 		List<Account> accounts = testData();
 
-		List<Account> filtered = (List<Account>) Filter.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60).apply(accounts);	
+		List<Account> filtered = (List<Account>) Filter.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60).apply(accounts);
 		System.assertEquals(1, filtered.size());
 
 		List<Account> extracted = (List<Account>) Filter.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60).extract(accounts);
@@ -138,5 +137,58 @@ private class FilterTest {
 		for (Account acc : extracted) {
 			System.assertEquals(150, acc.AnnualRevenue);
 		}
+	}
+
+	@IsTest
+	static void testLazyFiltering() {
+		List<Account> accounts = testData();
+		Iterable<Account> lazyResults = (Iterable<Account>) Filter.field(Account.Name).eq('Ok').applyLazy(accounts);
+		Iterator<Account> iter = lazyResults.iterator();
+		System.assert(iter.hasNext());
+		Account next = iter.next();
+		System.assertEquals('Ok', next.Name);
+		System.assertEquals(100, next.AnnualRevenue);
+		System.assert(iter.hasNext());
+		next = iter.next();
+		System.assertEquals('Ok', next.Name);
+		System.assertEquals(150, next.AnnualRevenue);
+		System.assert(!iter.hasNext());
+		Boolean isExceptionThrown = false;
+		try {
+			iter.next();
+		} catch (NoSuchElementException e) {
+			isExceptionThrown = true;
+		}
+		System.assert(isExceptionThrown, 'NoSuchElementException should have been thrown.');
+	}
+
+	@IsTest
+	static void testLazyFilteringWithNoResults() {
+		List<Account> accounts = testData();
+		Iterable<Account> lazyResults = (Iterable<Account>) Filter.field(Account.Name).eq('Foo').applyLazy(accounts);
+		Iterator<Account> iter = lazyResults.iterator();
+		System.assert(!iter.hasNext());
+	}
+
+	@IsTest
+	static void testMultipleLazyFiltering() {
+		List<Account> accounts = testData();
+		Iterable<Account> lazyResults = (Iterable<Account>) Filter.field(Account.Name).eq('Ok').applyLazy(accounts);
+		Integer countOk = 0;
+		Iterator<Account> iter = lazyResults.iterator();
+		while (iter.hasNext()) {
+			iter.next();
+			countOk++;
+		}
+		System.assertEquals(2, countOk);
+
+		lazyResults = (Iterable<Account>) Filter.field(Account.Name).eq('Wrong').applyLazy(accounts);
+		Integer countWrong = 0;
+		iter = lazyResults.iterator();
+		while (iter.hasNext()) {
+			iter.next();
+			countWrong++;
+		}
+		System.assertEquals(2, countWrong);
 	}
 }
