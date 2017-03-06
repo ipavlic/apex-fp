@@ -1,6 +1,6 @@
 # Lambda
 
-Functional programming on Salesforce! 
+Functional programming on Salesforce!
 
 Lambda consists of several classes which enable functional programming style list manipulations: `Filter`, `Pluck` and `GroupBy`.
 
@@ -17,7 +17,7 @@ Let's say you have to split records into two lists, one containing those account
 
 However, there's a steep cost to filtering through SOQL:
 - 1 additional SOQL query is required for each new selection
-- text area fields cannot be filtered 
+- text area fields cannot be filtered
 
 To avoid that, we have to select all accounts we're interested in:
 
@@ -46,10 +46,11 @@ It would be great if we could **describe** *what* we want, but not spend additio
 
 #### Available filters
 
-There are two available types of filters: **field matching** and **object matching** filter. Each has two possible *behaviours*:
+There are two available types of filters: **field matching** and **object matching** filter. Each has three possible *behaviours*:
 
 1. `apply` selects matching elements from the list and returns them, with no modification of the original list.
-2. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
+2. `applyLazy` does the same as apply but returns an `Iterable<sObject>` instead.
+3. `extract` selects matching elements from the list, extracts them out of the original list and returns them. The matching elements are removed from the original list.
 
 ##### Field matching filter
 
@@ -113,13 +114,13 @@ The matching check is performed only on those fields that are set on the prototy
 * `booleans(List<SObject>, Schema.SObjectField)`
 * `decimals(List<SObject>, Schema.SObjectField)`
 * `ids(List<SObject>)`
-* `ids(List<SObject>, Schema.SObjectField)` 
+* `ids(List<SObject>, Schema.SObjectField)`
 * `strings(List<SObject>, Schema.SObjectField)`
 
 Pluck allows you to pluck values of a field from a list of sObjects into a new list. This pattern is used commonly when a field is used as a criteria for further programming logic. For example:
 
     List<Account> accounts = [Select Name,... from Account where ...];
-    
+
     List<String> names = new List<String>();
     for (Account a : accounts) {
         names.add(a.Name);
@@ -151,12 +152,12 @@ Another common pattern is grouping objects by some field on them values. If fact
     List<Account> accounts = [Select Name,... from Account where ...];
     Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 
-This doesn't work for any other field, and that's where `GroupBy` jumps in. Due to the limitations of Apex's type system, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`. 
+This doesn't work for any other field, and that's where `GroupBy` jumps in. Due to the limitations of Apex's type system, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`.
 
      // this doesn't compile!!!
     Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name);
 
-However, due to a bug in Salesforce's type system, you are free to just skip the cast! 
+However, due to a bug in Salesforce's type system, you are free to just skip the cast!
 
     // this compiles
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
