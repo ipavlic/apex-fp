@@ -131,14 +131,14 @@ Plucking code can be replaced with a declarative call to the appropriate `Pluck`
 
     List<String> names = Pluck.strings(accounts, Account.Name);
 
-The `ids` method has two options. First version takes any field to pluck Id values from, for example:
+The `ids` method is returns a set instead of a list for convenience, because `Id` values are rarely required in order. If they are, `strings` can be used on `Id` fields as well.
 
-    List<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
+    Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
 
-Second version is a shorthand which doesnt’t require a `Schema.SObjectField` parameter. Instead, it defaults to system `Id` field:
+There is a shorthand version which doesn’t require a `Schema.SObjectField` parameter. Instead, it defaults to the system `Id` field:
 
-    List<Id> accountIds = Pluck.ids(accounts);
-    // equivalent to List<Id> accountIds = Pluck.ids(accounts, Account.Id);
+    Set<Id> accountIds = Pluck.ids(accounts);
+    // equivalent to Set<Id> accountIds = Pluck.ids(accounts, Account.Id);
 
 ## `GroupBy`
 

@@ -32,9 +32,9 @@ public class PluckTest {
 		System.assertEquals('Bar', names[3]);
 	}
 	@IsTest
-	public static void testPluckIds() {
+	public static void testPluckIdsAsStrings() {
 		List<Account> accounts = testData();
-		List<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
+		List<String> ownerIds = Pluck.strings(accounts, Account.OwnerId);
 		System.assertEquals(4, ownerIds.size());
 		System.assertEquals(firstUserId, ownerIds[0]);
 		System.assertEquals(firstUserId, ownerIds[1]);
@@ -42,14 +42,24 @@ public class PluckTest {
 		System.assertEquals(secondUserId, ownerIds[3]);
 	}
 	@IsTest
+	public static void testPluckIds() {
+		List<Account> accounts = testData();
+		Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
+		System.assertEquals(4, ownerIds.size());
+		System.assert(ownerIds.contains(accounts[0].OwnerId));
+		System.assert(ownerIds.contains(accounts[1].OwnerId));
+		System.assert(ownerIds.contains(accounts[2].OwnerId));
+		System.assert(ownerIds.contains(accounts[3].OwnerId));
+	}
+	@IsTest
 	public static void testPluckRecordIds() {
 		List<Account> accounts = testData();
-		List<Id> recordIds = Pluck.ids(accounts);
+		Set<Id> recordIds = Pluck.ids(accounts);
 		System.assertEquals(4, recordIds.size());
-		System.assertEquals(accounts[0].Id, recordIds[0]);
-		System.assertEquals(accounts[1].Id, recordIds[1]);
-		System.assertEquals(accounts[2].Id, recordIds[2]);
-		System.assertEquals(accounts[3].Id, recordIds[3]);
+		System.assert(recordIds.contains(accounts[0].Id));
+		System.assert(recordIds.contains(accounts[1].Id));
+		System.assert(recordIds.contains(accounts[2].Id));
+		System.assert(recordIds.contains(accounts[3].Id));
 	}
 	@IsTest
 	public static void testPluckBooleans() {
