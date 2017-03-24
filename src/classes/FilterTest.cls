@@ -140,6 +140,28 @@ private class FilterTest {
 	}
 
 	@IsTest
+	static void testListTyping() {
+		List<Account> accounts = testData();
+		List<sObject> filtered = Filter.field(Account.AnnualRevenue).lt(150).apply(accounts, List<Account>.class);
+		System.assert(filtered instanceof List<Account>);
+		System.assert(!(filtered instanceof List<Opportunity>));
+
+		List<sObject> filteredWithoutType = Filter.field(Account.AnnualRevenue).lt(150).apply(accounts);
+		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
+		System.assert(filteredWithoutType instanceof List<Account>);
+		System.assert(filteredWithoutType instanceof List<Opportunity>);
+
+		List<sObject> extracted = Filter.field(Account.AnnualRevenue).lt(150).apply(accounts, List<Account>.class);
+		System.assert(extracted instanceof List<Account>);
+		System.assert(!(extracted instanceof List<Opportunity>));
+
+		List<sObject> extractedWithoutType = Filter.field(Account.AnnualRevenue).lt(150).apply(accounts);
+		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
+		System.assert(extractedWithoutType instanceof List<Account>);
+		System.assert(extractedWithoutType instanceof List<Opportunity>);
+	}
+
+	@IsTest
 	static void testLazyFiltering() {
 		List<Account> accounts = testData();
 		Iterable<Account> lazyResults = (Iterable<Account>) Filter.field(Account.Name).eq('Ok').applyLazy(accounts);
