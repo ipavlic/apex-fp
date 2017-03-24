@@ -8,11 +8,11 @@ The library consists of several classes which enable functional programming styl
 
 - [Filter](#filter)
 - [Pluck](#pluck)
-- [GroupBy](#pluck)
-- [Important Apex type system notes](#type-system)
+- [GroupBy](#group-by)
+- [Important notes on the type system in Apex](#type-system)
 
-<a name="filter"/>
 ## `Filter`
+<a name="filter"/>
 
 Filter saves you from having to implement filtering lists of sObject records by some criteria. There are two available *types* of filters: 
 
@@ -110,8 +110,8 @@ Then, we iterate through the accounts to filter the accounts according to the ap
 
 If we need additional splits, we have to nest inside the loop or write new methods. It would be great if we could **describe** *what* we want, but not spend additional queries on it. `Filter` methods allow us to do that.
 
-<a name="pluck"/>
 ## `Pluck`
+<a name="pluck"/>
 
 * `booleans(List<SObject>, Schema.SObjectField)`
 * `decimals(List<SObject>, Schema.SObjectField)`
@@ -142,8 +142,8 @@ There is a shorthand version which doesn’t require a `Schema.SObjectField` par
     Set<Id> accountIds = Pluck.ids(accounts);
     // equivalent to Set<Id> accountIds = Pluck.ids(accounts, Account.Id);
 
-<a name="groupby"/>
 ## `GroupBy`
+<a name="group-by"/>
 
 * `booleans`
 * `decimals`
@@ -167,8 +167,8 @@ This doesn't work for any other field, and that's where `GroupBy` jumps in.
     Map<String, List<User>> accountsByName = GroupBy.strings(accounts, Account.Name);
     Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
+## Important notes on the type system in Apex
 <a name="type-system"/>
-## Notes on the type system in Apex
 
 Type system in Apex does not work as one would would naturally expect with `SObject` types. `SObject` and types which should be considered its subclasses do not behave like other objects in collections, likely because an `SObject` is a leaky facade.
 
