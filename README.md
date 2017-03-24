@@ -159,7 +159,7 @@ This doesn't work for any other field, and that's where `GroupBy` jumps in.
 
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
-**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!**
+**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!**. [Important notes on the type system in Apex](#type-system) section explains why.
 
      // this compiles
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
@@ -198,7 +198,7 @@ As a result, in Apex we are able to sneak an `Opportunity` and a `Contact` into 
         // Dynamic query yields incompatible SObject type Opportunity for loop variable of type Account exception
     }
 
-Now let's say we have an function which returns whether a `List<SObject>` is a list of a specific “subclass” of `SObject`.
+Now let’s say we have an function which returns whether a `List<SObject>` is a list of a specific “subclass” of `SObject`.
 
     Boolean isOpportunityList(List<SObject> objects) {
         return objects instanceof List<Opportunity>;
@@ -214,7 +214,7 @@ Here’s how it will behave with various parameters passed into it:
 | `List<Account>` | `false` |
 | `List<Account>` pointing to a `List<SObject>` | **`true`** (regardless of what’s in a list) |
 
-Lambda classes usually return a collection of `SObject`, which can be assigned a list of specific `SObject` “subclass”, like `Account`. While this works fine most of the time, above table shows that there are edge cases when it doesn’t behave expectedly. 
+Lambda classes usually return a collection of `SObject`, which can be assigned to a list of specific `SObject` “subclass”, like `Account`. While this is fine most of the time, the table above shows that there are edge cases when it doesn’t behave expectedly. 
 
 For example, if the list obtained from filtering is passed to a method that takes a list of `SObject` as a parameter, `instanceof` will provide unexpected answers in that method:
 
@@ -222,7 +222,7 @@ For example, if the list obtained from filtering is passed to a method that take
     // accounts points to a List<SObject> returned from Filter
 
     Boolean isOpportunities = isOpportunityList(accounts);
-    // returns true!!!
+    // returns true!!!???
 
 When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could to explicitly cast to that. Example:
 
