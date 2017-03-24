@@ -12,7 +12,7 @@ The library consists of several classes which enable functional programming styl
 - [Important notes on the type system in Apex](#type-system)
 
 ## `Filter`
-<a name="filter"/>
+<a name="filter"></a>
 
 Filter saves you from having to implement filtering lists of sObject records by some criteria. There are two available *types* of filters: 
 
@@ -111,7 +111,7 @@ Then, we iterate through the accounts to filter the accounts according to the ap
 If we need additional splits, we have to nest inside the loop or write new methods. It would be great if we could **describe** *what* we want, but not spend additional queries on it. `Filter` methods allow us to do that.
 
 ## `Pluck`
-<a name="pluck"/>
+<a name="pluck"></a>
 
 * `booleans(List<SObject>, Schema.SObjectField)`
 * `decimals(List<SObject>, Schema.SObjectField)`
@@ -143,7 +143,7 @@ There is a shorthand version which doesn’t require a `Schema.SObjectField` par
     // equivalent to Set<Id> accountIds = Pluck.ids(accounts, Account.Id);
 
 ## `GroupBy`
-<a name="group-by"/>
+<a name="group-by"></a>
 
 * `booleans`
 * `decimals`
@@ -168,7 +168,7 @@ This doesn't work for any other field, and that's where `GroupBy` jumps in.
     Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
 ## Important notes on the type system in Apex
-<a name="type-system"/>
+<a name="type-system"></a>
 
 Type system in Apex does not work as one would would naturally expect with `SObject` types. `SObject` and types which should be considered its subclasses do not behave like other objects in collections, likely because an `SObject` is a leaky facade.
 
@@ -214,7 +214,7 @@ Here’s how it will behave with various parameters passed into it:
 | `List<Account>` | `false` |
 | `List<Account>` pointing to a `List<SObject>` | **`true`** (regardless of what’s in a list) |
 
-Lambda classes usually return a collection of `SObject`, which can be assigned a list of specific `SObject` “subclass”, like `Account`. While this works fine most of the time, as seen above there are edge cases when it doesn’t behave expectedly. 
+Lambda classes usually return a collection of `SObject`, which can be assigned a list of specific `SObject` “subclass”, like `Account`. While this works fine most of the time, above table shows that there are edge cases when it doesn’t behave expectedly. 
 
 For example, if the list obtained from filtering is passed to a method that takes a list of `SObject` as a parameter, `instanceof` will provide unexpected answers in that method:
 
@@ -222,7 +222,7 @@ For example, if the list obtained from filtering is passed to a method that take
     // accounts points to a List<SObject> returned from Filter
 
     Boolean isOpportunities = isOpportunityList(accounts);
-    // return true!!!
+    // returns true!!!
 
 When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could to explicitly cast to that. Example:
 
