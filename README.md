@@ -159,7 +159,7 @@ This doesn't work for any other field, and that's where `GroupBy` jumps in.
 
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 
-**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!**. [Important notes on the type system in Apex](#type-system) section explains why.
+**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
      // this compiles
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
