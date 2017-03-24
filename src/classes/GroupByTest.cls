@@ -28,6 +28,22 @@ public class GroupByTest {
 		}
 	}
 	@IsTest
+	public static void testGroupByStringTyping() {
+		List<Account> accounts = testData();
+		Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+		List<Account> fooAccounts = accountsByName.get('Foo');
+		List<SObject> objects = fooAccounts;
+		// since fooAccounts points to a returned list of SObjects, it can be anything!
+		System.assert(objects instanceof List<Opportunity>);
+
+		accountsByName = GroupBy.strings(accounts, Account.Name, List<Account>.class);
+		fooAccounts = accountsByName.get('Foo');
+		objects = fooAccounts;
+		// this time around, it works fine!
+		System.assert(!(objects instanceof List<Opportunity>));
+		System.assert(objects instanceof List<Account>);
+	}
+	@IsTest
 	public static void testGroupByDecimals() {
 		List<Account> accounts = testData();
 		Map<Decimal, List<Account>> accountsByRevenue = GroupBy.decimals(accounts, Account.AnnualRevenue);

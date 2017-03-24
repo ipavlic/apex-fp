@@ -14,8 +14,8 @@ public abstract class FilterQuery {
 		return apply(objects, List<sObject>.class);
 	}
 
-	public List<sObject> apply(Iterable<sObject> objects, Type listClass) {
-		List<sObject> filtered = (List<sObject>) listClass.newInstance();
+	public List<sObject> apply(Iterable<sObject> objects, Type listType) {
+		List<sObject> filtered = (List<sObject>) listType.newInstance();
 
 		Iterator<sObject> iter = objects.iterator();
 		while (iter.hasNext()) {
@@ -31,10 +31,10 @@ public abstract class FilterQuery {
 	 * Applies the filter to the list and returns the elements satisfying the filter.
 	 * The filtered elements are removed from the original list.
 	 */
-	public List<sObject> extract(List<sObject> objects, Type listClass) {
+	public List<sObject> extract(List<sObject> objects, Type listType) {
 
-		List<sObject> filtered = (List<sObject>) listClass.newInstance();
-		List<sObject> nonFiltered = (List<sObject>) listClass.newInstance();
+		List<sObject> filtered = (List<sObject>) listType.newInstance();
+		List<sObject> nonFiltered = (List<sObject>) listType.newInstance();
 
 		Iterator<sObject> iter = objects.iterator();
 		while (iter.hasNext()) {
