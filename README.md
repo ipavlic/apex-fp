@@ -60,7 +60,7 @@ The queries are dynamic and therefore cannot be type-checked at compile-time. Fi
 
 Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`
 
-	Set<Boolean>{true}).apply(contacts);
+	List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
 	// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 
 ### Object matching filter
