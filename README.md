@@ -224,7 +224,7 @@ For example, if the list obtained from filtering is passed to a method that take
     Boolean isOpportunities = isOpportunityList(accounts);
     // returns true!!!???
 
-When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could to explicitly cast to that. Example:
+When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could explicitly cast to that. Example:
 
     List<SomeObject> someList = (List<SomeObject>) Filter. ...
 
@@ -233,4 +233,8 @@ However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<
      // this doesn't compile!!!
     Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name);
 
-`Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed. This ensures that the returned `List` or `Map` are of the correct concrete type.
+`Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed in as well. When this is done, the returned `List` or `Map` are of the correct concrete type instead of generic `SObject` collection type:
+
+    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class); // List<Account> returned!
+    
+    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class); // Map<String, List<Account>> returned!
