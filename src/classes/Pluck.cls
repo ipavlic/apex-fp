@@ -6,7 +6,7 @@ public class Pluck {
 		}
 		return results;
 	}
-	public static List<Decimal> dates(List<SObject> records, Schema.SObjectField field) {
+	public static List<Date> dates(List<SObject> records, Schema.SObjectField field) {
 		List<Date> results = new List<Date>();
 		for (SObject rec : records) {
 			results.add((Date)rec.get(field));
