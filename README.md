@@ -252,5 +252,5 @@ However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<
     List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
     // List<Account> returned!
 
-    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class);
+    Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account.Name, List<Account>.class);
     // Map<String, List<Account>> returned!
