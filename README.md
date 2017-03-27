@@ -6,10 +6,11 @@ The library consists of several classes which enable functional programming styl
 
 # Documentation
 
-- [Filter](#filter)
-- [Pluck](#pluck)
-- [GroupBy](#group-by)
-- [Important notes on the type system in Apex](#type-system)
+- [`Filter`](#filter)
+- [`Pluck`](#pluck)
+- [`GroupBy`](#group-by)
+
+Also read [Important notes on the type system in Apex](#type-system).
 
 ## `Filter`
 <a name="filter"></a>
@@ -27,21 +28,7 @@ Each type has three possible *behaviours*:
 
 ### Field matching filter
 
-A field matching filter matches the objects in a list with using some of the available **criteria**. Example:
-
-    List<Account> lowRevenue = Filter.field(Account.AnnualRevenue).lessThanOrEquals(100000).apply(accounts);
-
-There are also shorthand names for filtering criteria. Instead of `greaterThanOrEquals`, one can also write `geq`.
-
-    List<Account> highRevenue = Filter.field(Account.AnnualRevenue).geq(cutoff).apply(accounts);
-
-Multiple criteria can be stringed together with `also` to form the full query:
-
-    List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
-
-Any number of criteria can be added with `also`. Only those records that match *all* criteria are then returned.
-
-Currently available criteria are:
+A field matching filter matches the objects in a list with using some of the available **criteria**. Currently available criteria are:
 
 * `equals(Object value)` (alias `eq`)
 * `notEquals(Object value)` (alias `neq`)
@@ -53,20 +40,36 @@ Currently available criteria are:
 * `isNotIn(Object setValue)` (alias `notIn`)
 * `hasValue` (alias `notNull`)
 
-The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+Any number of criteria can be added with `also`. Only those records that match *all* criteria are then returned.
 
-`isIn` and `isNotIn` expect a `Set` instance of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will return wrong results**.
+The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. 
+
+Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
+
+Example of simple filtering. Accounts with annual revenue under 100,000 are returned when `Filter` is applied to a list.
+
+    List<Account> lowRevenue = Filter.field(Account.AnnualRevenue).lessThanOrEquals(100000).apply(accounts);
+
+Aliases can be used to shorten `Filter` queries. Instead of `greaterThanOrEquals`, one can also write `geq`.
+
+    List<Account> highRevenue = Filter.field(Account.AnnualRevenue).geq(cutoff).apply(accounts);
+
+Multiple criteria can be stringed together with `also` to form the full query:
+
+    List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
+
+Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will return wrong results**.
 
     List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
 
-Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`
+*Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`*
 
 	List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
 	// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 
 ### Object matching filter
 
-If we don't require inequality comparisons, and we're just looking for equality filtering, there is an additional filter which allows us to define a "prototype" object and find all objects that match it.
+If we don't require inequality comparisons at all, and we're just looking for equality filtering, there is an additional filter which allows us to define a "prototype" object and find all objects that match it.
 
 Object matching is a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
 
@@ -75,7 +78,7 @@ For example, to find all accounts which have `AnnualRevenue` of exactly 50,000,0
     Account fiftyMillionAccount = new Account(AnnualRevenue = 50000000);
     List<Account> fiftyMillions = Filter.match(fiftyMillionAccount).apply(accounts);
 
-If we're looking for accounts that have `AnnualRevenue` of 50,000,000 **and** are named 'Test', we can use a "prototype" that has such properties:
+If we're looking for accounts that have `AnnualRevenue` of exactly 50,000,000 **and** are named 'Test', we can use a "prototype" that has such properties:
 
     Account prototype = new Account(
         Name = 'Test',
