@@ -45,11 +45,9 @@ public class PluckTest {
 	public static void testPluckIds() {
 		List<Account> accounts = testData();
 		Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
-		System.assertEquals(4, ownerIds.size());
-		System.assert(ownerIds.contains(accounts[0].OwnerId));
-		System.assert(ownerIds.contains(accounts[1].OwnerId));
-		System.assert(ownerIds.contains(accounts[2].OwnerId));
-		System.assert(ownerIds.contains(accounts[3].OwnerId));
+		System.assertEquals(2, ownerIds.size());
+		System.assert(ownerIds.contains(firstUserId));
+		System.assert(ownerIds.contains(secondUserId));
 	}
 	@IsTest
 	public static void testPluckRecordIds() {
