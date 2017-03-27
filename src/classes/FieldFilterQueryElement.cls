@@ -88,19 +88,23 @@ public class FieldFilterQueryElement {
 		return greaterThanOrEquals(value);
 	}
 
-	public FieldFilterQuery hasValue() {
+	public FieldFilterQuery notNull() {
 		return notEquals(null);
 	}
 
-	public FieldFilterQuery isIn(Object value) {
-		return filterWith(Comparison.IS_IN, value);
+	public FieldFilterQuery hasValue() {
+		return notNull();
 	}
 
-	public FieldFilterQuery notIn(Object value) {
-		return filterWith(Comparison.NOT_IN, value);
+	public FieldFilterQuery isIn(Object setValue) {
+		return filterWith(Comparison.IS_IN, setValue);
 	}
 
-	public FieldFilterQuery isNotIn(Object value) {
-		return notIn(value);
+	public FieldFilterQuery notIn(Object setValue) {
+		return filterWith(Comparison.NOT_IN, setValue);
+	}
+
+	public FieldFilterQuery isNotIn(Object setValue) {
+		return notIn(setValue);
 	}
 }

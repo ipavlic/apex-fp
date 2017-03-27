@@ -9,6 +9,15 @@ private class FilterTest {
 		return accounts;
 	}
 
+	@IsTest
+	static void testHasValue() {
+		List<Account> accounts = testData();
+		List<Account> filtered = (List<Account>) Filter.field(Account.Industry).hasValue().apply(accounts);
+		System.assertEquals(0, filtered.size());
+
+		filtered = (List<Account>) Filter.field(Account.Name).hasValue().apply(accounts);
+		System.assertEquals(4, filtered.size());
+	}
 
 	@IsTest
 	static void testIsIn() {

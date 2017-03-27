@@ -43,14 +43,15 @@ Any number of criteria can be added with `also`. Only those records that match *
 
 Currently available criteria are:
 
-* `equals` (alias `eq`)
-* `notEquals` (alias `neq`)
-* `lessThan` (alias`lt`)
-* `lessThanOrEquals` (alias`leq`)
-* `greaterThan` (alias `gt`)
-* `greaterThanOrEquals` (alias`geq`)
-* `isIn`
-* `isNotIn` (alias `notIn`)
+* `equals(Object value)` (alias `eq`)
+* `notEquals(Object value)` (alias `neq`)
+* `lessThan(Object value)` (alias`lt`)
+* `lessThanOrEquals(Object value)` (alias`leq`)
+* `greaterThan(Object value)` (alias `gt`)
+* `greaterThanOrEquals(Object value)` (alias`geq`)
+* `isIn(Object setValue)`
+* `isNotIn(Object setValue)` (alias `notIn`)
+* `hasValue` (alias `notNull`)
 
 The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
