@@ -14,10 +14,10 @@ The library consists of several classes which enable functional programming styl
 ## `Filter`
 <a name="filter"></a>
 
-Filter saves you from having to implement filtering lists of sObject records by some criteria. There are two available *types* of filters: 
+Filter saves you from having to implement filtering lists of sObject records by some criteria. There are two available *types* of filters:
 
-1. **field matching** and 
-2. **object matching** filter. 
+1. **field matching** and
+2. **object matching** filter.
 
 Each type has three possible *behaviours*:
 
@@ -54,20 +54,18 @@ Currently available criteria are:
 
 The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
-`isIn` and `isNotIn` expect a `Set` instance of the following types: `Boolean`, `Decimal`, `Id`, `String` (note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`). Other types are not supported and will return wrong results:
+`isIn` and `isNotIn` expect a `Set` instance of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will return wrong results**.
 
     List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
-    List<Account> filtered = Filter.field(Account.AnnualRevenue).isIn(new Set<Decimal>{50000, 75000}).apply(accounts);
-    List<Account> filtered = Filter.field(Account.Id).isIn(accountIdSet).apply(accounts);
-    List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
-    // same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 
-    List<Account> filtered = Filter.field(Account.AnnualRevenue).isIn(new Set<Integer>{30000, 40000}).apply(accounts);
-    // undefined behavior; Set<Integer> is not supported
+Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`
+
+	Set<Boolean>{true}).apply(contacts);
+	// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 
 ### Object matching filter
 
-If we don't require inequality comparisons, and we're just looking for equality filtering, there is an additional filter which allows us to define a "prototype" object and find all objects that match it. 
+If we don't require inequality comparisons, and we're just looking for equality filtering, there is an additional filter which allows us to define a "prototype" object and find all objects that match it.
 
 Object matching is a strict equality filter — if all of the fields of the prototype object match the fields on the list object, the list object is matched.
 
@@ -127,6 +125,7 @@ If we need additional splits, we have to nest inside the loop or write new metho
 <a name="pluck"></a>
 
 * `booleans(List<SObject>, Schema.SObjectField)`
+* `dates(List<SObject>, Schema.SObjectField)`
 * `decimals(List<SObject>, Schema.SObjectField)`
 * `ids(List<SObject>)`
 * `ids(List<SObject>, Schema.SObjectField)`
@@ -158,10 +157,11 @@ There is a shorthand version which doesn’t require a `Schema.SObjectField` par
 ## `GroupBy`
 <a name="group-by"></a>
 
-* `booleans`
-* `decimals`
-* `ids`
-* `strings`
+* `booleans(List<SObject>, Schema.SObjectField)`
+* `dates(List<SObject>, Schema.SObjectField)`
+* `decimals(List<SObject>, Schema.SObjectField)`
+* `ids(List<SObject>, Schema.SObjectField)`
+* `strings(List<SObject>, Schema.SObjectField)`
 
 Another common pattern is grouping objects by some field on them values. If fact, it's so common that Apex provides some support for it out of the box, namely for grouping by `Id` fields on sObjects:
 
@@ -191,14 +191,14 @@ Apex allows assignment of `SObject` collection to its “subclass”, and the ot
 	List<Account> accounts = objects; // compiles!
 
     List<Account> accounts = new List<Account>();
-    List<SObject> objects = accounts; // compiles as well! 
+    List<SObject> objects = accounts; // compiles as well!
 
 An `SObject` list is an instance of any `SObject` “subclass” list!
 
     List<SObject> objects = new List<SObject>();
     System.debug(objects instanceof List<Account>); // true
     System.debug(objects instanceof List<Opportunity>); // true
-    System.debug(objects instanceof List<Custom_Object__c>); // true 
+    System.debug(objects instanceof List<Custom_Object__c>); // true
 
 As a result, in Apex we are able to sneak an `Opportunity` and a `Contact` into a list of `Account` objects, which only blows in runtime!
 
@@ -227,7 +227,7 @@ Here’s how it will behave with various parameters passed into it:
 | `List<Account>` | `false` |
 | `List<Account>` pointing to a `List<SObject>` | **`true`** (regardless of what’s in a list) |
 
-Lambda classes usually return a collection of `SObject`, which can be assigned to a list of specific `SObject` “subclass”, like `Account`. While this is fine most of the time, the table above shows that there are edge cases when it doesn’t behave expectedly. 
+Lambda classes usually return a collection of `SObject`, which can be assigned to a list of specific `SObject` “subclass”, like `Account`. While this is fine most of the time, the table above shows that there are edge cases when it doesn’t behave expectedly.
 
 For example, if the list obtained from filtering is passed to a method that takes a list of `SObject` as a parameter, `instanceof` will provide unexpected answers in that method:
 
@@ -248,8 +248,8 @@ However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<
 
 `Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed in as well. When this is done, the returned `List` or `Map` are of the correct concrete type instead of generic `SObject` collection type:
 
-    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class); 
+    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
     // List<Account> returned!
-    
-    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class); 
+
+    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class);
     // Map<String, List<Account>> returned!

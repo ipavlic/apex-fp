@@ -15,6 +15,22 @@ public class GroupBy {
 		return booleans(records, field, List<SObject>.class);
 	}
 
+	public static Map<Date, List<sObject>> dates(List<sObject> records, Schema.SObjectField field, Type listType) {
+		Map<Date, List<SObject>> grouped = new Map<Date, List<SObject>>();
+		for (sObject rec : records) {
+			Date key = (Date)rec.get(field);
+			if (!grouped.containsKey(key)) {
+				grouped.put(key, (List<SObject>)listType.newInstance());
+			}
+			grouped.get(key).add(rec);
+		}
+		return grouped;
+	}
+
+	public static Map<Date, List<sObject>> dates(List<sObject> records, Schema.SObjectField field) {
+		return dates(records, field, List<SObject>.class);
+	}
+
 	public static Map<Decimal, List<sObject>> decimals(List<sObject> records, Schema.SObjectField field, Type listType) {
 		Map<Decimal, List<SObject>> grouped = new Map<Decimal, List<SObject>>();
 		for (sObject rec : records) {
