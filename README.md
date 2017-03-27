@@ -49,8 +49,21 @@ Currently available criteria are:
 * `lessThanOrEquals` (alias`leq`)
 * `greaterThan` (alias `gt`)
 * `greaterThanOrEquals` (alias`geq`)
+* `isIn`
+* `isNotIn` (alias `notIn`)
 
 The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+
+`isIn` and `isNotIn` expect a `Set` instance of the following types: `Boolean`, `Decimal`, `Id`, `String` (note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`). Other types are not supported and will return wrong results:
+
+    List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
+    List<Account> filtered = Filter.field(Account.AnnualRevenue).isIn(new Set<Decimal>{50000, 75000}).apply(accounts);
+    List<Account> filtered = Filter.field(Account.Id).isIn(accountIdSet).apply(accounts);
+    List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
+    // same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
+
+    List<Account> filtered = Filter.field(Account.AnnualRevenue).isIn(new Set<Integer>{30000, 40000}).apply(accounts);
+    // undefined behavior; Set<Integer> is not supported
 
 ### Object matching filter
 
@@ -235,6 +248,8 @@ However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<
 
 `Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed in as well. When this is done, the returned `List` or `Map` are of the correct concrete type instead of generic `SObject` collection type:
 
-    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class); // List<Account> returned!
+    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class); 
+    // List<Account> returned!
     
-    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class); // Map<String, List<Account>> returned!
+    Map<String, List<Account>> accountsByName = GroupBy.strings(account, Account.Name, List<Account>.class); 
+    // Map<String, List<Account>> returned!

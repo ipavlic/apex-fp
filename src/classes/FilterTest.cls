@@ -9,6 +9,27 @@ private class FilterTest {
 		return accounts;
 	}
 
+
+	@IsTest
+	static void testIsIn() {
+		List<Account> accounts = testData();
+		List<Account> filtered = (List<Account>) Filter.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150}).apply(accounts);
+		System.assertEquals(3, filtered.size());
+		for (Account acc : filtered) {
+			System.assert(acc.AnnualRevenue == 60 || acc.AnnualRevenue == 150);
+		}
+	}
+
+	@IsTest
+	static void testIsNotIn() {
+		List<Account> accounts = testData();
+		List<Account> filtered = (List<Account>) Filter.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60}).apply(accounts);
+		System.assertEquals(3, filtered.size());
+		for (Account acc : filtered) {
+			System.assert(acc.AnnualRevenue == 100 || acc.AnnualRevenue == 150);
+		}
+	}
+
 	@IsTest
 	static void testFieldEqualsOkFilter() {
 		List<Account> accounts = testData();

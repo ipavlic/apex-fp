@@ -1,7 +1,7 @@
 /**
- * A field token filtering query element. Represents an intermediate state in query 
+ * A field token filtering query element. Represents an intermediate state in query
  * construction that has to be completed with a field token operation
- */ 
+ */
 public class FieldFilterQueryElement {
 
 	private FieldFilterQuery query;
@@ -11,7 +11,7 @@ public class FieldFilterQueryElement {
 	 * Constructor. Takes a valid query and a field name to append to the query
 	 * @param query Field filtering query
 	 * @param field Field to be appended to the query along with an operation
-	 */ 
+	 */
 	public FieldFilterQueryElement(FieldFilterQuery query, Schema.SObjectField field) {
 		this.query = query;
 		this.field = field;
@@ -23,35 +23,35 @@ public class FieldFilterQueryElement {
 	 * a value to compare with
 	 * @param criterium Comparison criterium
 	 * @param value Value to compare field with
-	 */ 
+	 */
 	private FieldFilterQuery filterWith(Comparison criterium, Object value) {
 		return query.addCriterium(field, criterium, value);
 	}
 
 	/**
 	 * Equality comparison
-	 */ 
+	 */
 	public FieldFilterQuery equals(Object value) {
 		return filterWith(Comparison.EQUALS, value);
 	}
 
 	/**
 	 * equals alias method
-	 */ 
+	 */
 	public FieldFilterQuery eq(Object value) {
 		return equals(value);
 	}
 
 	/**
 	 * Inequality comparison
-	 */ 
+	 */
 	public FieldFilterQuery notEquals(Object value) {
 		return filterWith(Comparison.NOT_EQUALS, value);
 	}
 
 	/**
 	 * notEquals alias method
-	 */ 
+	 */
 	public FieldFilterQuery neq(Object value) {
 		return notEquals(value);
 	}
@@ -82,9 +82,25 @@ public class FieldFilterQueryElement {
 
 	public FieldFilterQuery greaterThanOrEquals(Object value) {
 		return filterWith(Comparison.GREATER_THAN_OR_EQUALS, value);
-	} 
+	}
 
 	public FieldFilterQuery geq(Object value) {
 		return greaterThanOrEquals(value);
+	}
+
+	public FieldFilterQuery hasValue() {
+		return notEquals(null);
+	}
+
+	public FieldFilterQuery isIn(Object value) {
+		return filterWith(Comparison.IS_IN, value);
+	}
+
+	public FieldFilterQuery notIn(Object value) {
+		return filterWith(Comparison.NOT_IN, value);
+	}
+
+	public FieldFilterQuery isNotIn(Object value) {
+		return notIn(value);
 	}
 }
