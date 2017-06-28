@@ -1,8 +1,5 @@
 .project
 .settings/
-<<<<<<< HEAD
-salesforce.schema
-=======
 config/
+*.sublime-project
 salesforce.schema
->>>>>>> 23f14f3211c8b90d2ed874c3b2a8a64d9f83bfd8
