@@ -42,7 +42,7 @@ A field matching filter matches the objects in a list with using some of the ava
 
 Any number of criteria can be added with `also`. Only those records that match *all* criteria are then returned.
 
-The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time. 
+The queries are dynamic and therefore cannot be type-checked at compile-time. Field tokens only verify the existence of appropriate fields (but not their types) at compile-time.
 
 Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
@@ -58,7 +58,7 @@ Multiple criteria can be stringed together with `also` to form the full query:
 
     List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 
-Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will return wrong results**.
+Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
     List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
 
