@@ -53,26 +53,26 @@ List<Account> lowRevenue = Filter.field(Account.AnnualRevenue).lessThanOrEquals(
 Aliases can be used to shorten `Filter` queries. Instead of `greaterThanOrEquals`, one can also write `geq`.
 
 ```java
-    List<Account> highRevenue = Filter.field(Account.AnnualRevenue).geq(cutoff).apply(accounts);
+List<Account> highRevenue = Filter.field(Account.AnnualRevenue).geq(cutoff).apply(accounts);
 ```
 
 Multiple criteria can be stringed together with `also` to form the full query:
 
 ```java
-    List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
+List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 ```
 
 Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
 ```java
-    List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
+List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
 ```
 
 *Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`*
 
 ```java
-	List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
-	// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
+List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
+// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 ```
 
 #### Limitations
@@ -94,9 +94,9 @@ To find all accounts which have `Description` set to “Test”, we can use a si
 This account serves as a “prototype” object to match against.
 
 ```java
-    List<Account> accountsToFilter = ...
-    Account prototype = new Account(Description = 'Test');
-    List<Account> testAccounts = Filter.match(prototype).apply(accountsToFilter);
+List<Account> accountsToFilter = ...
+Account prototype = new Account(Description = 'Test');
+List<Account> testAccounts = Filter.match(prototype).apply(accountsToFilter);
 ```
 
 If we're looking for accounts that have a “Test” description **and** have an `AnnualRevenue` of exactly 50,000,000, we can use a “prototype” that has such properties:
@@ -112,7 +112,7 @@ If we're looking for accounts that have a “Test” description **and** have an
 Object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter:
 
 ```java
-    List<Account> matchingAccounts = Filter.field(Account.Description).equals('Test').also(Account.AnnualRevenue).equals('50000000').apply(accountsToFilter);
+List<Account> matchingAccounts = Filter.field(Account.Description).equals('Test').also(Account.AnnualRevenue).equals('50000000').apply(accountsToFilter);
 ```
 
 #### Limitations
@@ -144,20 +144,20 @@ Pluck allows you to pluck values of a field from a list of sObjects into a new l
 Plucking code can be replaced with a declarative call to the appropriate `Pluck` method:
 
 ```java
-    List<String> names = Pluck.strings(accounts, Account.Name);
+List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
 The `ids` method is returns a set instead of a list for convenience, because `Id` values are rarely required in order. If they are, `strings` can be used on `Id` fields as well.
 
 ```java
-    Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
+Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
 ```
 
 There is a shorthand version which doesn’t require a `Schema.SObjectField` parameter. Instead, it defaults to the system `Id` field:
 
 ```java
-    Set<Id> accountIds = Pluck.ids(accounts);
-    // equivalent to Set<Id> accountIds = Pluck.ids(accounts, Account.Id);
+Set<Id> accountIds = Pluck.ids(accounts);
+// equivalent to Set<Id> accountIds = Pluck.ids(accounts, Account.Id);
 ```
 
 ## `GroupBy`
@@ -179,7 +179,7 @@ Another common pattern is grouping objects by values on some field. It's so comm
 `GroupBy` fills the gap for all other fields:
 
 ```java
-    Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
 ### Warning
@@ -187,11 +187,11 @@ Another common pattern is grouping objects by values on some field. It's so comm
 Be extra careful, the **type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
 ```java
-     // this compiles
-    Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
-    // this compiles as well!!!???
-    Map<String, List<User>> accountsByName = GroupBy.strings(accounts, Account.Name);
-    Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
+// this compiles
+Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+// this compiles as well!!!???
+Map<String, List<User>> accountsByName = GroupBy.strings(accounts, Account.Name);
+Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
 ## Important notes on the type system in Apex
@@ -202,41 +202,41 @@ Type system in Apex does not work as one would would naturally expect with `SObj
 Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
 
 ```java
-    List<SObject> objects = new List<SObject>();
-	List<Account> accounts = objects; // compiles!
+List<SObject> objects = new List<SObject>();
+List<Account> accounts = objects; // compiles!
 
-    List<Account> accounts = new List<Account>();
-    List<SObject> objects = accounts; // compiles as well!
+List<Account> accounts = new List<Account>();
+List<SObject> objects = accounts; // compiles as well!
 ```
 
 An `SObject` list is an instance of any `SObject` “subclass” list!
 
 ```java
-    List<SObject> objects = new List<SObject>();
-    System.debug(objects instanceof List<Account>); // true
-    System.debug(objects instanceof List<Opportunity>); // true
-    System.debug(objects instanceof List<Custom_Object__c>); // true
+List<SObject> objects = new List<SObject>();
+System.debug(objects instanceof List<Account>); // true
+System.debug(objects instanceof List<Opportunity>); // true
+System.debug(objects instanceof List<Custom_Object__c>); // true
 ```
 
 As a result we are able to sneak an `Opportunity` and a `Contact` into a list of `Account` objects, which only blows in runtime!
 
 ```java
-    List<SObject> objects = new List<SObject>();
-    objects.add(new Opportunity());
-    objects.add(new Contact());
-    List<Account> accounts = objects;
+List<SObject> objects = new List<SObject>();
+objects.add(new Opportunity());
+objects.add(new Contact());
+List<Account> accounts = objects;
 
-    for (Account a : accounts) {
-        // Dynamic query yields incompatible SObject type Opportunity for loop variable of type Account exception
-    }
+for (Account a : accounts) {
+    // Dynamic query yields incompatible SObject type Opportunity for loop variable of type Account exception
+}
 ```
 
 Now let’s say we have an function which returns whether a `List<SObject>` is a list of a specific “subclass” of `SObject`.
 
 ```java
-    Boolean isOpportunityList(List<SObject> objects) {
-        return objects instanceof List<Opportunity>;
-    }
+Boolean isOpportunityList(List<SObject> objects) {
+    return objects instanceof List<Opportunity>;
+}
 ```
 
 Here’s how it will behave with various parameters passed into it:
@@ -254,11 +254,11 @@ Lambda classes usually return a collection of `SObject`, which can be assigned t
 For example, if the list obtained from filtering is passed to a method that takes a list of `SObject` as a parameter, `instanceof` will provide unexpected answers in that method:
 
 ```java
-    List<Account> accounts = Filter...
-    // accounts points to a List<SObject> returned from Filter
+List<Account> accounts = Filter...
+// accounts points to a List<SObject> returned from Filter
 
-    Boolean isOpportunities = isOpportunityList(accounts);
-    // returns true!!!???
+Boolean isOpportunities = isOpportunityList(accounts);
+// returns true!!!???
 ```
 
 When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could explicitly cast to that. Example:
@@ -270,16 +270,16 @@ When you want to be sure that your `List<SomeObject>` will behave like `List<Som
 However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`.
 
 ```java
-     // this doesn't compile!!!
-    Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name);
+// this doesn't compile!!!
+Map<String, List<Account>> accountsByName = (Map<String, List<Account>>) GroupBy.strings(accounts, Account.Name);
 ```
 
 `Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed in as well. When this is done, the returned `List` or `Map` are of the correct concrete type instead of generic `SObject` collection type:
 
 ```java
-    List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
-    // List<Account> returned!
+List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
+// List<Account> returned!
 
-    Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account.Name, List<Account>.class);
-    // Map<String, List<Account>> returned!
+Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account.Name, List<Account>.class);
+// Map<String, List<Account>> returned!
 ```
