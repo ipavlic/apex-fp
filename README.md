@@ -75,7 +75,7 @@ List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<B
 // same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 ```
 
-#### Limitations
+#### Limitations :warning:
 
 Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
@@ -115,7 +115,7 @@ Object matching filter can be easier to read when there are multiple equality cr
 List<Account> matchingAccounts = Filter.field(Account.Description).equals('Test').also(Account.AnnualRevenue).equals('50000000').apply(accountsToFilter);
 ```
 
-#### Limitations
+#### Limitations :warning:
 
 Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
@@ -182,7 +182,7 @@ Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-### Warning
+### Limitations :warning:
 
 Be extra careful, the **type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
