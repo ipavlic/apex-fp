@@ -102,11 +102,11 @@ List<Account> testAccounts = Filter.match(prototype).apply(accountsToFilter);
 If we're looking for accounts that have a “Test” description **and** have an `AnnualRevenue` of exactly 50,000,000, we can use a “prototype” that has such properties:
 
 ```java
-    Account prototype = new Account(
-        Description = 'Test description',
-        AnnualRevenue = 50000000
-    );
-    List<Account> matchingAccounts = Filter.match(prototype).apply(accountsToFilter);
+Account prototype = new Account(
+    Description = 'Test description',
+    AnnualRevenue = 50000000
+);
+List<Account> matchingAccounts = Filter.match(prototype).apply(accountsToFilter);
 ```
 
 Object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter:
@@ -132,13 +132,13 @@ Fields that are present on the *prototype* object must also be available on the 
 Pluck allows you to pluck values of a field from a list of sObjects into a new list. This pattern is used commonly when a field is used as a criteria for further programming logic. For example:
 
 ```java
-    List<Account> accounts = [Select Name,... from Account where ...];
+List<Account> accounts = [Select Name,... from Account where ...];
 
-    List<String> names = new List<String>();
-    for (Account a : accounts) {
-        names.add(a.Name);
-    }
-    // do something with names
+List<String> names = new List<String>();
+for (Account a : accounts) {
+    names.add(a.Name);
+}
+// do something with names
 ```
 
 Plucking code can be replaced with a declarative call to the appropriate `Pluck` method:
@@ -172,8 +172,8 @@ Set<Id> accountIds = Pluck.ids(accounts);
 Another common pattern is grouping objects by values on some field. It's so common that Apex provides support for grouping by `Id` fields on sObjects out of the box:
 
 ```java
-    List<Account> accounts = [Select Name,... from Account where ...];
-    Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
+List<Account> accounts = [Select Name,... from Account where ...];
+Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 ```
 
 `GroupBy` fills the gap for all other fields:
