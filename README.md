@@ -62,7 +62,7 @@ Multiple criteria can be stringed together with `also` to form the full query:
     List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 ```
 
-Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will return wrong results**.
+Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
 ```java
     List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
@@ -109,7 +109,7 @@ If we're looking for accounts that have a “Test” description **and** have an
     List<Account> matchingAccounts = Filter.match(prototype).apply(accountsToFilter);
 ```
 
-Using the object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter:
+Object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter:
 
 ```java
     List<Account> matchingAccounts = Filter.field(Account.Description).equals('Test').also(Account.AnnualRevenue).equals('50000000').apply(accountsToFilter);
@@ -169,20 +169,22 @@ There is a shorthand version which doesn’t require a `Schema.SObjectField` par
 * `ids(List<SObject>, Schema.SObjectField)`
 * `strings(List<SObject>, Schema.SObjectField)`
 
-Another common pattern is grouping objects by some field on them values. If fact, it's so common that Apex provides some support for it out of the box, namely for grouping by `Id` fields on sObjects:
+Another common pattern is grouping objects by values on some field. It's so common that Apex provides support for grouping by `Id` fields on sObjects out of the box:
 
 ```java
     List<Account> accounts = [Select Name,... from Account where ...];
     Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 ```
 
-This doesn't work for any other field, and that's where `GroupBy` jumps in.
+`GroupBy` fills the gap for all other fields:
 
 ```java
     Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-**Be extra careful, the type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
+### Warning
+
+Be extra careful, the **type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
 ```java
      // this compiles

@@ -38,7 +38,7 @@ public class FieldFilterQuery extends FilterQuery {
 			Set<String> validValues = (Set<String>) valueSet;
 			return validValues.contains((String) value);
 		}
-		return false;
+		throw new LambdaException('Object type is not supported by the filter');
 	}
 
 
