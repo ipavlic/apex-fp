@@ -75,7 +75,7 @@ List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<B
 // same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 ```
 
-#### Limitations :warning:
+#### :warning: Limitations
 
 Fields chosen for filtering must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
@@ -89,9 +89,7 @@ The matching check is performed only on those fields that are set on the prototy
 
 #### Examples
 
-To find all accounts which have `Description` set to “Test”, we can use a single account with `Description` set to “Test” and use it match other accounts. 
-
-This account serves as a “prototype” object to match against.
+To find all accounts which have `Description` set to “Test”, we can use a single account with `Description` set to “Test” and use it match other accounts. This account serves as a “prototype” object to match against.
 
 ```java
 List<Account> accountsToFilter = ...
@@ -99,7 +97,7 @@ Account prototype = new Account(Description = 'Test');
 List<Account> testAccounts = Filter.match(prototype).apply(accountsToFilter);
 ```
 
-If we're looking for accounts that have a “Test” description **and** have an `AnnualRevenue` of exactly 50,000,000, we can use a “prototype” that has such properties:
+If we're looking for accounts that have both a “Test” description **and** have an annual revenue of exactly 50,000,000, we can again use a “prototype” with such properties:
 
 ```java
 Account prototype = new Account(
@@ -109,13 +107,13 @@ Account prototype = new Account(
 List<Account> matchingAccounts = Filter.match(prototype).apply(accountsToFilter);
 ```
 
-Object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter:
+Object matching filter can be easier to read when there are multiple equality criteria then an equivalent field matching filter. Compare the above with:
 
 ```java
 List<Account> matchingAccounts = Filter.field(Account.Description).equals('Test').also(Account.AnnualRevenue).equals('50000000').apply(accountsToFilter);
 ```
 
-#### Limitations :warning:
+#### :warning: Limitations
 
 Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
@@ -182,7 +180,7 @@ Map<Id, Account> accountsById = new Map<Id, Account>(accounts);
 Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-### Limitations :warning:
+### :warning: Limitations
 
 Be extra careful, the **type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
