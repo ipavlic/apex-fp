@@ -262,7 +262,7 @@ Boolean isOpportunities = isOpportunityList(accounts);
 When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could explicitly cast to that. Example:
 
 ```java
-    List<SomeObject> someList = (List<SomeObject>) Filter. ...
+List<SomeObject> someList = (List<SomeObject>) Filter. ...
 ```
 
 However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`.
