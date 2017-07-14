@@ -62,17 +62,10 @@ Multiple criteria can be stringed together with `also` to form the full query:
 List<Account> filtered = Filter.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).greaterThan(100000).apply(accounts);
 ```
 
-Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following type: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
+Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
 ```java
 List<Account> filtered = Filter.field(Account.Name).isIn(new Set<String>{'Foo', 'Bar'}).apply(accounts);
-```
-
-*Note that `Boolean` can also be filtered with likely more readable and performant `equals(true)` or `equals(false)`*
-
-```java
-List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).isIn(new Set<Boolean>{true}).apply(contacts);
-// same as List<Contact> filtered = Filter.field(Contact.HasOptedOutOfEmail).equals(true).apply(contacts);
 ```
 
 #### :warning: Limitations
