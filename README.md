@@ -15,7 +15,7 @@ Also read [Important notes on the type system in Apex](#type-system).
 ## `Filter`
 <a name="filter"></a>
 
-Filter is used to describe how criteria to filter lists of sObject records. There are two available *types* of filters:
+Filter is used to describe criteria to filter lists of sObject records. There are two available *types* of filters:
 
 1. **field matching** filter
 2. **object matching** filter
@@ -188,9 +188,7 @@ Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Accoun
 ## Important notes on the type system in Apex
 <a name="type-system"></a>
 
-Type system in Apex does not work as one would would naturally expect with `SObject` types. `SObject` and types which should be considered its subclasses do not behave like other objects in collections, likely because an `SObject` is a leaky facade.
-
-Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
+Type system for `SObject` types in Apex does not work as one would would naturally expect. Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
 
 ```java
 List<SObject> objects = new List<SObject>();
@@ -209,47 +207,14 @@ System.debug(objects instanceof List<Opportunity>); // true
 System.debug(objects instanceof List<Custom_Object__c>); // true
 ```
 
-As a result we are able to sneak an `Opportunity` and a `Contact` into a list of `Account` objects, which only blows in runtime!
-
-```java
-List<SObject> objects = new List<SObject>();
-objects.add(new Opportunity());
-objects.add(new Contact());
-List<Account> accounts = objects;
-
-for (Account a : accounts) {
-    // Dynamic query yields incompatible SObject type Opportunity for loop variable of type Account exception
-}
-```
-
-Now let’s say we have an function which returns whether a `List<SObject>` is a list of a specific “subclass” of `SObject`.
-
-```java
-Boolean isOpportunityList(List<SObject> objects) {
-    return objects instanceof List<Opportunity>;
-}
-```
-
-Here’s how it will behave with various parameters passed into it:
-
-| Parameter       | `isOpportunityList` result |
-| --------------- | ------------- |
-| `List<SObject>` pointing to a `List<SObject>` | **`true`** |
-| `List<SObject>` pointing to a `List<Opportunity>` | `true` |
-| `List<SObject>` pointing to other subclasses | `false` |
-| `List<Account>` | `false` |
-| `List<Account>` pointing to a `List<SObject>` | **`true`** (regardless of what’s in a list) |
-
-Lambda classes usually return a collection of `SObject`, which can be assigned to a list of specific `SObject` “subclass”, like `Account`. While this is fine most of the time, the table above shows that there are edge cases when it doesn’t behave expectedly.
-
-For example, if the list obtained from filtering is passed to a method that takes a list of `SObject` as a parameter, `instanceof` will provide unexpected answers in that method:
+Lambda classes usually return an `SObject` list, which can be then assigned to a specific `SObject` “subclass” list, like `Account`. While this works fine most of the time, `instanceof` can provide unexpected results:
 
 ```java
 List<Account> accounts = Filter...
 // accounts points to a List<SObject> returned from Filter
 
-Boolean isOpportunities = isOpportunityList(accounts);
-// returns true!!!???
+Boolean isOpportunities = accounts instanceof List<Opportunity>;
+// isOpportunities is true!!!???
 ```
 
 When you want to be sure that your `List<SomeObject>` will behave like `List<SomeObject>` in all situations, you could explicitly cast to that. Example:
@@ -258,7 +223,7 @@ When you want to be sure that your `List<SomeObject>` will behave like `List<Som
 List<SomeObject> someList = (List<SomeObject>) Filter. ...
 ```
 
-However, you cannot cast from `Map<String, List<SObject>>` to `Map<String, List<Account>>`.
+However, Apex does not allow you to cast from `Map<String, List<SObject>>` to a `Map<String, List<Account>>`.
 
 ```java
 // this doesn't compile!!!
