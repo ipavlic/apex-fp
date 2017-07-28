@@ -90,7 +90,7 @@ List<Account> accounts = [Select Name,... from Account where ...];
 List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
-#### :warning: Warning
+### :warning: Warning
 
 The `ids` method returns a set instead of a list because `Id` values are rarely required in order. If they are, `strings` can be used on `Id` fields instead:
 
