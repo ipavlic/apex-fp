@@ -62,7 +62,7 @@ Account prototype = new Account(
 );
 List<Account> filtered = Filter.match(prototype).apply(accounts);
 ```
-### :warning: Warning
+### Warning :warning:
 
 Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
@@ -90,7 +90,7 @@ List<Account> accounts = [Select Name,... from Account where ...];
 List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
-### :warning: Warning
+### Warning :warning:
 
 The `ids` method returns a set instead of a list because `Id` values are rarely required in order. If they are, `strings` can be used on `Id` fields instead:
 
@@ -115,7 +115,7 @@ Groups objects by values on a specified field.
 Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-### :warning: Warning
+### Warning :warning:
 
 **The type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
