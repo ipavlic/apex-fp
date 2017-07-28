@@ -1,18 +1,12 @@
 # Lambda
 
-Lambda brings functional programming to Salesforce!
-
-The library consists of several classes which enable functional programming style list manipulations: `Filter`, `Pluck` and `GroupBy`.
-
-# Documentation
-
+Lambda brings functional programming to Salesforce! The library consists of several classes which enable declarative list manipulations: 
 - [`Filter`](#filter)
 - [`Pluck`](#pluck)
 - [`GroupBy`](#group-by)
 
-Also read 
-
-- [Important notes on the type system in Apex](#type-system).
+Potential pitfalls are explained in:
+- [Important notes on the type system in Apex](#type-system) 
 
 ## `Filter`
 <a name="filter"></a>
@@ -24,9 +18,9 @@ Also read
 
 Once criteria are defined, there are three possible *behaviours* of the filter against a list:
 
-1. `apply` selects matching elements from the list and returns them. The original list is not modified.
+1. `apply` returns matching elements as a new list, without modifying the original list.
 2. `applyLazy` does the same as `apply` but returns an `Iterable<sObject>` instead.
-3. `extract` selects matching elements from the list and returns them. The matching elements are removed from the original list.
+3. `extract` returns matching elements as a new list, and also removes them from the original list.
 
 ### Field matching filter
 
