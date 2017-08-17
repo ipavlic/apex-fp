@@ -1,19 +1,33 @@
 # Lambda
 
-Lambda brings functional programming to Salesforce! The library consists of several classes which enable declarative list manipulations: 
+Lambda brings functional programming to Salesforce!
+
+- [`Optional`](#optional)
 - [`Filter`](#filter)
 - [`Pluck`](#pluck)
 - [`GroupBy`](#group-by)
 
 Potential pitfalls are explained in:
-- [Important notes on the type system in Apex](#type-system) 
+- [Important notes on the type system in Apex](#type-system)
+
+## `Optional`
+<a name="optional"></a>
+
+`Optional` enables operations with values which can be null. It’s a poor-man’s port from Java.
+
+* **`of(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Throws a `LambdaException` exception otherwise.
+* **`ofNullable(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Returns an empty `Optional` otherwise.
+* **`empty()`** Returns an empty `Optional`
+* `get()` Returns a value if it’s present. Throws a `LambdaException` otherwise.
+* `isPresent()` Returns whether the value is present.
+* `orElse(Object other)` Returns the value if it’s present, and provided `other` otherwise.
 
 ## `Filter`
 <a name="filter"></a>
 
 `Filter` enables filtering lists of sObject records by declaring *criteria* that records have to match. There are two available types of filters:
 
-1. **field matching filter** matches against any number of field criteria 
+1. **field matching filter** matches against any number of field criteria
 2. **object matching filter** matches against a *prototype* record
 
 Once criteria are defined, there are three possible *behaviours* of the filter against a list:
@@ -66,7 +80,7 @@ List<Account> filtered = Filter.match(prototype).apply(accounts);
 
 Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
-Fields used in field criteria must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown. 
+Fields used in field criteria must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
 Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
@@ -79,7 +93,7 @@ Filtering query is dynamic and cannot be type-checked at compile-time.
 * `dates(List<SObject>, Schema.SObjectField)`
 * `decimals(List<SObject>, Schema.SObjectField)`
 * `ids(List<SObject>)` (shorthand version which defaults to the system `Id` field)
-* `ids(List<SObject>, Schema.SObjectField)` 
+* `ids(List<SObject>, Schema.SObjectField)`
 * `strings(List<SObject>, Schema.SObjectField)`
 
 Plucks field values from a list of sObjects into a new list.
