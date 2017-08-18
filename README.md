@@ -4,16 +4,19 @@ Lambda brings functional programming to Salesforce!
 
 ## Functionality
 
-- List manipulation
+- [List manipulation](#list-manipulation)
 	- [`Filter`](#filter)
 	- [`Pluck`](#pluck)
 	- [`GroupBy`](#group-by)
 	- [Important notes on the type system in Apex](#type-system)
 
-- Utilities
+- [Utilities](#utilities)
 	- [`Optional`](#optional)
 
-## `Filter`
+## List manipulation
+<a name="list-manipulation"></a>
+
+### `Filter`
 <a name="filter"></a>
 
 `Filter` enables filtering lists of sObject records by declaring *criteria* that records have to match. There are two available types of filters:
@@ -27,7 +30,7 @@ Once criteria are defined, there are three possible *behaviours* of the filter a
 2. `applyLazy` does the same as `apply` but returns an `Iterable<sObject>` instead.
 3. `extract` returns matching elements as a new list, and also removes them from the original list.
 
-### Field matching filter
+#### Field matching filter
 
 * `equals(Object value)` (alias `eq`)
 * `notEquals(Object value)` (alias `neq`)
@@ -55,7 +58,7 @@ List<Account> filtered = Filter.field(Account.AnnualRevenue).lessThanOrEquals(10
                                .apply(accounts);
 ```
 
-### Object matching filter
+#### Object matching filter
 
 Matches list records against a “prototype” object. A list record is a match if all the fields which are defined on the prototype object are equal to those on the list record.
 
@@ -67,7 +70,7 @@ Account prototype = new Account(
 );
 List<Account> filtered = Filter.match(prototype).apply(accounts);
 ```
-### Warning :warning:
+#### Warning :warning:
 
 Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
 
@@ -77,7 +80,7 @@ Fields that are present on the *prototype* object must also be available on the 
 
 Filtering query is dynamic and cannot be type-checked at compile-time.
 
-## `Pluck`
+### `Pluck`
 <a name="pluck"></a>
 
 * `booleans(List<SObject>, Schema.SObjectField)`
@@ -95,7 +98,7 @@ List<Account> accounts = [Select Name,... from Account where ...];
 List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
-### Warning :warning:
+#### Warning :warning:
 
 The `ids` method returns a set instead of a list because `Id` values are rarely required in order. If they are, `strings` can be used on `Id` fields instead:
 
@@ -105,7 +108,7 @@ Set<Id> ownerIds = Pluck.ids(accounts, Account.OwnerId);
 List<String> ownerIds = Pluck.strings(accounts, Account.OwnerId);
 ```
 
-## `GroupBy`
+### `GroupBy`
 <a name="group-by"></a>
 
 * `booleans(List<SObject>, Schema.SObjectField)`
@@ -120,7 +123,7 @@ Groups objects by values on a specified field.
 Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-### Warning :warning:
+#### Warning :warning:
 
 **The type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
 
@@ -131,7 +134,7 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Na
 Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
 
-## Important notes on the type system in Apex
+### Important notes on the type system in Apex
 <a name="type-system"></a>
 
 Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
@@ -185,7 +188,10 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account
 // Map<String, List<Account>> returned!
 ```
 
-## `Optional`
+## Utilities
+<a name="utilities"></a>
+
+### `Optional`
 <a name="optional"></a>
 
 `Optional` enables operations with values which can be null. It’s a poor man’s port from Java.
