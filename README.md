@@ -2,25 +2,16 @@
 
 Lambda brings functional programming to Salesforce!
 
-- [`Optional`](#optional)
-- [`Filter`](#filter)
-- [`Pluck`](#pluck)
-- [`GroupBy`](#group-by)
+## Functionality
 
-Potential pitfalls are explained in:
-- [Important notes on the type system in Apex](#type-system)
+- List manipulation
+	- [`Filter`](#filter)
+	- [`Pluck`](#pluck)
+	- [`GroupBy`](#group-by)
+	- [Important notes on the type system in Apex](#type-system)
 
-## `Optional`
-<a name="optional"></a>
-
-`Optional` enables operations with values which can be null. It’s a poor-man’s port from Java.
-
-* **`of(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Throws a `LambdaException` exception otherwise.
-* **`ofNullable(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Returns an empty `Optional` otherwise.
-* **`empty()`** Returns an empty `Optional`
-* `get()` Returns a value if it’s present. Throws a `LambdaException` otherwise.
-* `isPresent()` Returns whether the value is present.
-* `orElse(Object other)` Returns the value if it’s present, and provided `other` otherwise.
+- Utilities
+	- [`Optional`](#optional)
 
 ## `Filter`
 <a name="filter"></a>
@@ -193,3 +184,15 @@ List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Accou
 Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account.Name, List<Account>.class);
 // Map<String, List<Account>> returned!
 ```
+
+## `Optional`
+<a name="optional"></a>
+
+`Optional` enables operations with values which can be null. It’s a poor man’s port from Java.
+
+* **`of(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Throws a `LambdaException` exception otherwise.
+* **`ofNullable(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Returns an empty `Optional` otherwise.
+* **`empty()`** Returns an empty `Optional`
+* `get()` Returns a value if it’s present. Throws a `LambdaException` otherwise.
+* `isPresent()` Returns whether the value is present.
+* `orElse(Object other)` Returns the value if it’s present, and provided `other` otherwise.
