@@ -11,6 +11,7 @@ Lambda brings functional programming to Salesforce!
 	- [Important notes on the type system in Apex](#type-system)
 
 - [Utilities](#utilities)
+	- [`ApexString`](#apex-string)
 	- [`Optional`](#optional)
 
 ## List manipulation
@@ -190,6 +191,33 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account
 
 ## Utilities
 <a name="utilities"></a>
+
+### `ApexString`
+<a name="apex-string"></a>
+
+`ApexString` is a case-insensitive `String`, which makes it possible to use collections which behave consistently with `==` operator on `String`.
+
+* **`of(String str)`** Returns an `ApexString` which is case-insensitive.
+* **`listOf(Iterable<String> strings)`** Returns a list of `List<ApexString>` which contains all strings from provided iterable in `ApexString` form
+* **`listOf(Set<String> strings)`** Returns a list of `List<ApexString>` which contains all strings from provided set in `ApexString` form
+* **`setOf(Iterable<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided iterable in `ApexString` form
+* **`setOf(Set<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided set in `ApexString` form
+
+```java
+String a = 'test';
+String b = 'tEsT';
+Boolean isOperatorEqual = a == b; // isOperatorEqual is true
+Boolean isEqualsEqual = a.equals(b); // isEqualsEqual is *false*!
+Set<String> strings = new Set<String>{a, b}; // contains *two* strings!
+
+ApexString a = 'test';
+ApexString b = 'tEsT';
+Boolean isOperatorEqual = a == b; // isOperatorEqual is true
+Boolean isEqualsEqual = a.equals(b); // isEqualsEqual is *true*!
+Set<ApexString> insensitiveStrings = new Set<ApexString>();
+insensitiveStrings.add(a);
+insensitiveStrings.add(b); // insensitiveStrings contains just a *single* case-insensitive string!
+```
 
 ### `Optional`
 <a name="optional"></a>
