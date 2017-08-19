@@ -203,13 +203,17 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account
 * **`setOf(Iterable<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided iterable in `ApexString` form
 * **`setOf(Set<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided set in `ApexString` form
 
+Compare ordinary `String`:
 ```java
 String a = 'test';
 String b = 'tEsT';
 Boolean isOperatorEqual = a == b; // isOperatorEqual is true
 Boolean isEqualsEqual = a.equals(b); // isEqualsEqual is *false*!
 Set<String> strings = new Set<String>{a, b}; // contains *two* strings!
+```
 
+with `ApexString`:
+```java
 ApexString a = 'test';
 ApexString b = 'tEsT';
 Boolean isOperatorEqual = a == b; // isOperatorEqual is true
