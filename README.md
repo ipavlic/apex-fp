@@ -197,11 +197,13 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account
 
 `ApexString` is a case-insensitive `String`, which makes it possible to use collections which behave consistently with `==` operator on `String`.
 
-* **`of(String str)`** Returns an `ApexString` which is case-insensitive.
-* **`listOf(Iterable<String> strings)`** Returns a list of `List<ApexString>` which contains all strings from provided iterable in `ApexString` form
-* **`listOf(Set<String> strings)`** Returns a list of `List<ApexString>` which contains all strings from provided set in `ApexString` form
-* **`setOf(Iterable<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided iterable in `ApexString` form
-* **`setOf(Set<String> strings)`** Returns a set of `List<ApexString>` which contains all strings from provided set in `ApexString` form
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `static ApexString` | `of(String str)` | Returns a case-insensitive `ApexString` |
+| `static List<ApexString`> | `listOf(Iterable<String> strings)` | Returns a `List<ApexString>` which contains all strings from provided iterable |
+| `static List<ApexString>` | `listOf(Set<String> strings)` | Returns a `List<ApexString>` which contains all strings from provided set |
+| `static Set<ApexString>` | `setOf(Iterable<String> strings)` | Returns a `Set<ApexString>` which contains all strings from provided iterable |
+| `static Set<ApexString>` | `setOf(Set<String> strings)` | Returns a `Set<ApexString>` which contains all strings from provided set |
 
 Compare ordinary `String`:
 ```java
@@ -226,11 +228,14 @@ insensitiveStrings.add(b); // insensitiveStrings contains just a *single* case-i
 ### `Optional`
 <a name="optional"></a>
 
-`Optional` enables operations with values which can be null. It’s a poor man’s port from Java.
+`Optional` simplifies operations with values which can be `null`.
 
-* **`of(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Throws a `LambdaException` exception otherwise.
-* **`ofNullable(Object value)`** Returns an `Optional` that wraps the provided value if it’s non-null. Returns an empty `Optional` otherwise.
-* **`empty()`** Returns an empty `Optional`
-* `get()` Returns a value if it’s present. Throws a `LambdaException` otherwise.
-* `isPresent()` Returns whether the value is present.
-* `orElse(Object other)` Returns the value if it’s present, and provided `other` otherwise.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `static Optional` | `of(Object value)` | Returns an `Optional` that wraps the provided value if it’s non-null. Throws a `LambdaException` exception otherwise |
+| `static Optional` | `ofNullable(Object value)` | Returns an `Optional` that wraps the provided value if it’s non-null. Returns an empty `Optional` otherwise |
+| `static Optional` | `empty()` | Returns an empty `Optional` |
+| `Object` | `get()` | Returns a value if it’s present. Throws a `LambdaException` otherwise |
+| `Boolean` | `isPresent()` | Returns whether the value is present.
+| `Object` | `orElse(Object other)` | Returns the value if it’s present, and provided `other` otherwise |
