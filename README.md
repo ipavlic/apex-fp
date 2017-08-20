@@ -41,7 +41,7 @@ List<Account> filtered = Filter.match(prototype).apply(accounts);
 
 Matches list records against a “prototype” object. A list record is a match if all the fields which are defined on the prototype object are equal to those on the list record.
 
-`MatchingFilterQuery` provides methods to match the filter against a list.
+`Filter.match(SObject prototype)` returns a `MatchingFilterQuery` which provides methods to match the filter against a list.
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
@@ -69,7 +69,7 @@ List<Account> filtered = Filter.field(Account.Name).lessThanOrEquals('Test')
                                .apply(accounts);
 ```
 
-`FieldFilterQueryElement` is used to define criteria:
+`Filter.field(Schema.SObjectField field)` returns a `FieldFilterQueryElement` which is then used to define criteria:
 
 | Modifier and type | Method | Alias | Description |
 |-------------------|--------|-------|-------------|
