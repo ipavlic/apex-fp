@@ -227,7 +227,7 @@ System.assert(stringSet.contains(b)); // true
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `static ApexString` | `of(String str)` | Returns a case-insensitive `ApexString` |
-| `static List<ApexString`> | `listOf(Iterable<String> strings)` | Returns a `List<ApexString>` which contains all strings from provided iterable |
+| `static List<ApexString>` | `listOf(Iterable<String> strings)` | Returns a `List<ApexString>` which contains all strings from provided iterable |
 | `static List<ApexString>` | `listOf(Set<String> strings)` | Returns a `List<ApexString>` which contains all strings from provided set |
 | `static Set<ApexString>` | `setOf(Iterable<String> strings)` | Returns a `Set<ApexString>` which contains all strings from provided iterable |
 | `static Set<ApexString>` | `setOf(Set<String> strings)` | Returns a `Set<ApexString>` which contains all strings from provided set |
