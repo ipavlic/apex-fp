@@ -24,8 +24,8 @@ Lambda brings functional programming to Salesforce!
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `static MatchingFilterQuery` | `match(SObject prototype)` | Constructs and returns an object matching query against the `prototype` |
-| `static FieldFilterQueryElement` | `field(Schema.SObjectField field)` | Constructs and returns a field matching filter starting with `field` |
+| `static MatchingFilterQuery` 		| `match(SObject prototype)` 			| Constructs and returns an object matching query against the `prototype` |
+| `static FieldFilterQueryElement` 	| `field(Schema.SObjectField field)` 	| Constructs and returns a field matching filter starting with `field` |
 
 
 #### Object matching filter
@@ -45,11 +45,11 @@ Matches list records against a “prototype” object. A list record is a match 
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `List<SObject>` | `apply(Iterable<sObject> records)` | Matches elements in `records` and returns them as a new list |
-| `List<SObject>` | `apply(Iterable<sObject> records, Type listType)` | Matches elements in `records` and returns them as a new list of `listType` type |
-| `FilterResult` | `applyLazy(Iterable<sObject> records)` | Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
-| `List<SObject>` | `extract(Iterable<sObject> records)` | Matches elements in `records`, removes them from the original list and returns them in a new list |
-| `List<SObject>` | `extract(Iterable<sObject> records)` | Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
+| `List<SObject>`	| `apply(Iterable<sObject> records)` 				| Matches elements in `records` and returns them as a new list |
+| `List<SObject>`	| `apply(Iterable<sObject> records, Type listType)`	| Matches elements in `records` and returns them as a new list of `listType` type |
+| `FilterResult`	| `applyLazy(Iterable<sObject> records)`			| Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
+| `List<SObject>`	| `extract(Iterable<sObject> records)`				| Matches elements in `records`, removes them from the original list and returns them in a new list |
+| `List<SObject>`	| `extract(Iterable<sObject> records)`				| Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
 
 #### Field matching filter
 
@@ -69,21 +69,21 @@ List<Account> filtered = Filter.field(Account.Name).lessThanOrEquals('Test')
                                .apply(accounts);
 ```
 
-`Filter.field(Schema.SObjectField field)` returns a `FieldFilterQueryElement` which is then used to define criteria:
+`Filter.field(Schema.SObjectField field)` returns a `FieldFilterQueryElement` which is used to define criteria:
 
 | Modifier and type | Method | Alias | Description |
 |-------------------|--------|-------|-------------|
-| `FieldFilterQuery` | `equals(Object value)` | `eq` | Defines an equality comparison criterium for the current field |
-| `FieldFilterQuery` | `notEquals(Object value)` | `neq` | Defines an inequality comparison criterium for the current field |
-| `FieldFilterQuery` | `lessThan(Object value)` | `lt` | Defines a less than comparison criterium for the current field |
-| `FieldFilterQuery` | `lessThanOrEquals(Object value)` | `leq` | Defines a less than or equals criterium for the current field |
-| `FieldFilterQuery` | `greaterThan(Object value)` | `gt` | Defines a greater than criterium for the current field |
-| `FieldFilterQuery` | `greaterThanOrEquals(Object value)` | `geq` | Defines a greaterThanOrEquals criterium for the current field |
-| `FieldFilterQuery` | `isIn(Object value)` | | Defines a set membership criterium for the current field |
-| `FieldFilterQuery` | `isNotIn(Object value)` | `notIn` | Defines a set non-membership criterium for the current field |
-| `FieldFilterQuery` | `hasValue()` | `notNull` | Defines a non-null criterium for the current field |
+| `FieldFilterQuery` | `equals(Object value)`				| `eq` | Defines an equality comparison criterium for the current field |
+| `FieldFilterQuery` | `notEquals(Object value)`			| `neq` | Defines an inequality comparison criterium for the current field |
+| `FieldFilterQuery` | `lessThan(Object value)`				| `lt` | Defines a less than comparison criterium for the current field |
+| `FieldFilterQuery` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals criterium for the current field |
+| `FieldFilterQuery` | `greaterThan(Object value)`			| `gt` | Defines a greater than criterium for the current field |
+| `FieldFilterQuery` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals criterium for the current field |
+| `FieldFilterQuery` | `isIn(Object value)` 				| 		| Defines a set membership criterium for the current field |
+| `FieldFilterQuery` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership criterium for the current field |
+| `FieldFilterQuery` | `hasValue()` 						| `notNull` | Defines a non-null criterium for the current field |
 
-`FieldFilterQuery` can then be *applied* to a list, or further criteria can be chained with `also` (alias `field`).
+`FieldFilterQuery` can then be *applied* to a list, or further criteria can be chained with `also` (alias `field`):
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
@@ -209,7 +209,6 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account
 
 `ApexString` is a case-insensitive `String`, which makes it possible to use collections which behave consistently with `==` operator on `String`.
 
-with `ApexString`:
 ```java
 ApexString a = 'test';
 ApexString b = 'tEsT';
