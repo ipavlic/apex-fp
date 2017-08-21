@@ -6,8 +6,8 @@ Lambda brings functional programming to Salesforce!
 
 - [List manipulation](#list-manipulation)
 	- [`Filter`](#filter)
-	- [`Pluck`](#pluck)
 	- [`GroupBy`](#group-by)
+	- [`Pluck`](#pluck)
 	- [Important notes on the type system in Apex](#type-system)
 
 - [Utilities](#utilities)
@@ -104,29 +104,6 @@ Fields that are present on the *prototype* object must also be available on the 
 
 Filtering query is dynamic and cannot be type-checked at compile-time.
 
-### `Pluck`
-<a name="pluck"></a>
-
-Plucks field values from a list of sObjects into a new list.
-
-```java
-List<Account> accounts = new List<Account>{
-	new Account(Name = 'Foo'),
-	new Account(Name = 'Bar')
-}
-// Names are plucked into a new list ['Foo', 'Bar']
-List<String> names = Pluck.strings(accounts, Account.Name);
-```
-
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| List<Boolean> | booleans(List<SObject> records, Schema.SObjectField field) | Plucks booleans on `field` into a new list |
-| List<Date> | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
-| List<Decimal> | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
-| Set<Id> | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
-| Set<Id> | `ids(List<SObject> records)` | Plucks ids on `Id` field into a new set |
-| List<String> | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids on `field` into a new list |
-
 ### `GroupBy`
 <a name="group-by"></a>
 
@@ -159,6 +136,29 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Na
 // this compiles as well!!!???
 Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
+
+### `Pluck`
+<a name="pluck"></a>
+
+Plucks field values from a list of sObjects into a new list.
+
+```java
+List<Account> accounts = new List<Account>{
+	new Account(Name = 'Foo'),
+	new Account(Name = 'Bar')
+}
+// Names are plucked into a new list ['Foo', 'Bar']
+List<String> names = Pluck.strings(accounts, Account.Name);
+```
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| List<Boolean> | booleans(List<SObject> records, Schema.SObjectField field) | Plucks booleans on `field` into a new list |
+| List<Date> | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
+| List<Decimal> | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
+| Set<Id> | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
+| Set<Id> | `ids(List<SObject> records)` | Plucks ids on `Id` field into a new set |
+| List<String> | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids on `field` into a new list |
 
 ### Important notes on the type system in Apex
 <a name="type-system"></a>
