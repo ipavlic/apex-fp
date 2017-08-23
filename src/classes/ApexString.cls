@@ -1,4 +1,4 @@
-public with sharing class ApexString {
+public class ApexString {
 
 	String value;
 
@@ -46,6 +46,23 @@ public with sharing class ApexString {
 			s.add(of(str));
 		}
 		return s;
+	}
+
+	public static String join(Iterable<ApexString> strings, String separator) {
+		List<String> l = new List<String>();
+		Iterator<ApexString> iter = strings.iterator();
+		while (iter.hasNext()) {
+			l.add(iter.next().toString());
+		}
+		return String.join(l, separator);
+	}
+
+	public static String join(Set<ApexString> strings, String separator) {
+		List<String> l = new List<String>();
+		for (ApexString str : strings) {
+			l.add(str.toString());
+		}
+		return String.join(l, separator);
 	}
 
 	public override String toString() {

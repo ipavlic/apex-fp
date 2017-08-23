@@ -61,6 +61,25 @@ public class ApexStringTest {
 	}
 
 	@IsTest
+	public static void testJoin() {
+		List<ApexString> strings = ApexString.listOf(new List<String>{'foo', 'bar', 'baz'});
+		List<String> l = new List<String>();
+		for (ApexString str : strings) {
+			l.add(str.toString());
+		}
+		System.assertEquals(String.join(l, ','), ApexString.join(strings, ','));
+
+		ApexString foo = ApexString.of('foo');
+		ApexString bar = ApexString.of('bar');
+		Set<String> expectedJoins = new Set<String>{
+			foo.toString() + ',' + bar.toString(),
+			bar.toString() + ',' + foo.toString()
+		};
+		Set<ApexString> stringSet = ApexString.setOf(new Set<String>{'foo', 'bar'});
+		System.assert(expectedJoins.contains(ApexString.join(stringSet, ',')));
+	}
+
+	@IsTest
 	public static void testSetBehaviour() {
 		Set<ApexString> s = new Set<ApexString>();
 		s.add(ApexString.of('test'));
