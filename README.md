@@ -234,6 +234,10 @@ System.assert(stringSet.contains(b)); // true
 | `static String` | `join(Iterable<ApexString> strings, String separator)` | Joins the `strings` with `separator` and returns the resulting `String` |
 | `static String` | `join(Set<ApexString> strings, String separator)` | Joins the `strings` with `separator` and returns the resulting `String` |
 
+#### Warning :warning:
+
+`System.String.join` does not use the `toString` method on objects it is joining. All `ApexString` instances are therefore stringified to `'ApexString'` before they are joined into the final string (for example `'ApexString,ApexString,ApexString'`). To join collections of `ApexString`, use `ApexString.join` instead.
+
 ### `Optional`
 <a name="optional"></a>
 
