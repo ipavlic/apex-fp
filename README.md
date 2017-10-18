@@ -7,6 +7,7 @@ Lambda brings functional programming to Salesforce!
 - [List manipulation](#list-manipulation)
 	- [`Filter`](#filter)
 	- [`GroupBy`](#group-by)
+	- [`Pick`](#pick)
 	- [`Pluck`](#pluck)
 	- [Important notes on the type system in Apex](#type-system)
 
@@ -136,6 +137,26 @@ Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Na
 // this compiles as well!!!???
 Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
 ```
+
+### `Pick`
+<a name="pick"></a>
+
+Picks fields from a list of sObjects to build a new list with just those fields. Helps reduce overwriting potential for concurrent updates where locking is not an option.
+
+```java
+List<Opportunity> opportunities = new List<Opportunity>{
+	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
+}
+// picked contains just Name and Amount fields, Description is not present
+List<Opportunity> picked = Pick.fields(opportunities, new Set<String>{'Name', 'Amount'});
+```
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| List<SObject> | `fields(Iterable<SObject> records, List<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
+| List<SObject> | `fields(Iterable<SObject> records, Set<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
+| List<SObject> | `fields(Iterable<SObject> records, List<String> apiFieldNames)` | Picks fields into a new `SObject` list |
+| List<SObject> | `fields(Iterable<SObject> records, Set<String> apiFieldNames)` | Picks fields into a new `SObject` list |
 
 ### `Pluck`
 <a name="pluck"></a>
