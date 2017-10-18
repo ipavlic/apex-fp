@@ -120,12 +120,12 @@ Map<String, List<Opportunity>> opportunitiesByCloseDate = GroupBy.strings(opport
 | `Map<Boolean, List<SObject>>` | `booleans(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on boolean `field` as `listType` |
 | `Map<Date, List<SObject>>` | `dates(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on date `field` |
 | `Map<Date, List<SObject>>` | `dates(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on date `field` as `listType` |
-| `Map<Decimal, List<SObject>>` | `decimals(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on number `field` |
-| `Map<Decimal, List<SObject>>` | `decimals(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on number `field` as `listType` |
-| `Map<Id, List<SObject>>` | `ids(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on id `field` |
-| `Map<Id, List<SObject>>` | `ids(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on id `field` as `listType` |
-| `Map<String, List<SObject>>` | `strings(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on string `field` |
-| `Map<String, List<SObject>>` | `strings(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on string `field` as `listType` |
+| `Map<Decimal, List<SObject>>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on number `field` |
+| `Map<Decimal, List<SObject>>` | `decimals(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on number `field` as `listType` |
+| `Map<Id, List<SObject>>` | `ids(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on id `field` |
+| `Map<Id, List<SObject>>` | `ids(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on id `field` as `listType` |
+| `Map<String, List<SObject>>` | `strings(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on string `field` |
+| `Map<String, List<SObject>>` | `strings(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on string `field` as `listType` |
 
 #### Warning :warning:
 
