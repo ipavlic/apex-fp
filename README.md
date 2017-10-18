@@ -141,7 +141,7 @@ Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Accoun
 ### `Pick`
 <a name="pick"></a>
 
-Picks fields from a list of sObjects to build a new list with just those fields. Helps reduce overwriting potential for concurrent updates where locking is not an option.
+Picks fields from a list of sObjects to build a new list with just those fields. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
 ```java
 List<Opportunity> opportunities = new List<Opportunity>{
@@ -153,10 +153,10 @@ List<Opportunity> picked = Pick.fields(opportunities, new Set<String>{'Name', 'A
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| List<SObject> | `fields(Iterable<SObject> records, List<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
-| List<SObject> | `fields(Iterable<SObject> records, Set<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
-| List<SObject> | `fields(Iterable<SObject> records, List<String> apiFieldNames)` | Picks fields into a new `SObject` list |
-| List<SObject> | `fields(Iterable<SObject> records, Set<String> apiFieldNames)` | Picks fields into a new `SObject` list |
+| `List<SObject>` | `fields(Iterable<SObject> records, List<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
+| `List<SObject>` | `fields(Iterable<SObject> records, Set<Schema.SObjectField> fields)` | Picks fields into a new `SObject` list |
+| `List<SObject>` | `fields(Iterable<SObject> records, List<String> apiFieldNames)` | Picks fields into a new `SObject` list |
+| `List<SObject>` | `fields(Iterable<SObject> records, Set<String> apiFieldNames)` | Picks fields into a new `SObject` list |
 
 ### `Pluck`
 <a name="pluck"></a>
