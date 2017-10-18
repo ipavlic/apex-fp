@@ -116,16 +116,16 @@ Map<String, List<Opportunity>> opportunitiesByCloseDate = GroupBy.strings(opport
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| Map<Boolean, List<SObject>> | `booleans(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on boolean `field` |
-| Map<Boolean, List<SObject>> | `booleans(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on boolean `field` as `listType` |
-| Map<Date, List<SObject>> | `dates(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on date `field` |
-| Map<Date, List<SObject>> | `dates(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on date `field` as `listType` |
-| Map<Decimal, List<SObject>> | `decimals(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on number `field` |
-| Map<Decimal, List<SObject>> | `decimals(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on number `field` as `listType` |
-| Map<Id, List<SObject>> | `ids(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on id `field` |
-| Map<Id, List<SObject>> | `ids(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on id `field` as `listType` |
-| Map<String, List<SObject>> | `strings(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on string `field` |
-| Map<String, List<SObject>> | `strings(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on string `field` as `listType` |
+| `Map<Boolean, List<SObject>>` | `booleans(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on boolean `field` |
+| `Map<Boolean, List<SObject>>` | `booleans(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on boolean `field` as `listType` |
+| `Map<Date, List<SObject>>` | `dates(List<SObject> records, Schema.SObjectField field)` | Groups `records` by value on date `field` |
+| `Map<Date, List<SObject>>` | `dates(List<SObject> records, Schema.SObjectField field, Type listType)` | Groups `records` by value on date `field` as `listType` |
+| `Map<Decimal, List<SObject>>` | `decimals(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on number `field` |
+| `Map<Decimal, List<SObject>>` | `decimals(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on number `field` as `listType` |
+| `Map<Id, List<SObject>>` | `ids(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on id `field` |
+| `Map<Id, List<SObject>>` | `ids(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on id `field` as `listType` |
+| `Map<String, List<SObject>>` | `strings(List<SObject>, Schema.SObjectField field)` | Groups `records` by value on string `field` |
+| `Map<String, List<SObject>>` | `strings(List<SObject>, Schema.SObjectField field, Type listType)` | Groups `records` by value on string `field` as `listType` |
 
 #### Warning :warning:
 
@@ -174,12 +174,12 @@ List<String> names = Pluck.strings(accounts, Account.Name);
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| List<Boolean> | booleans(List<SObject> records, Schema.SObjectField field) | Plucks booleans on `field` into a new list |
-| List<Date> | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
-| List<Decimal> | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
-| Set<Id> | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
-| Set<Id> | `ids(List<SObject> records)` | Plucks ids on `Id` field into a new set |
-| List<String> | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids on `field` into a new list |
+| `List<Boolean>` | booleans(List<SObject> records, Schema.SObjectField field) | Plucks booleans on `field` into a new list |
+| `List<Date>` | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
+| `List<Decimal>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
+| `Set<Id>` | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
+| `Set<Id>` | `ids(List<SObject> records)` | Plucks ids on `Id` field into a new set |
+| `List<String>` | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids on `field` into a new list |
 
 ### Important notes on the type system in Apex
 <a name="type-system"></a>
