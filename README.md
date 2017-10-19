@@ -1,7 +1,5 @@
 # Lambda
 
-Lambda brings functional programming to Salesforce!
-
 ## Functionality
 
 - [List manipulation](#list-manipulation)
