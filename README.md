@@ -174,7 +174,7 @@ List<String> names = Pluck.strings(accounts, Account.Name);
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `List<Boolean>` | booleans(List<SObject> records, Schema.SObjectField field) | Plucks booleans on `field` into a new list |
+| `List<Boolean>` | `booleans(List<SObject> records, Schema.SObjectField field)` | Plucks booleans on `field` into a new list |
 | `List<Date>` | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
 | `List<Decimal>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
 | `Set<Id>` | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
