@@ -41,4 +41,44 @@ public class Pluck {
 		}
 		return results;
 	}
+	public static List<Boolean> booleans(List<SObject> records, String relation) {
+		List<Boolean> results = new List<Boolean>();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (SObject rec : records) {
+			results.add((Boolean)reader.read(rec, relation));
+		}
+		return results;
+	}
+	public static List<Date> dates(List<SObject> records, String relation) {
+		List<Date> results = new List<Date>();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (SObject rec : records) {
+			results.add((Date)reader.read(rec, relation));
+		}
+		return results;
+	}
+	public static List<Decimal> decimals(List<SObject> records, String relation) {
+		List<Decimal> results = new List<Decimal>();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (SObject rec : records) {
+			results.add((Decimal)reader.read(rec, relation));
+		}
+		return results;
+	}
+	public static List<Id> ids(List<SObject> records, String relation) {
+		List<Id> results = new List<Id>();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (SObject rec : records) {
+			results.add((Id)reader.read(rec, relation));
+		}
+		return results;
+	}
+	public static List<String> strings(List<SObject> records, String relation) {
+		List<String> results = new List<String>();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (SObject rec : records) {
+			results.add((String)reader.read(rec, relation));
+		}
+		return results;
+	}
 }
