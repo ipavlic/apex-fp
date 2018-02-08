@@ -1,5 +1,5 @@
 @IsTest
-public class ApexStringTest {
+private class ApexStringTest {
 	@IsTest
 	public static void testEquality() {
 		ApexString str = ApexString.of('test');

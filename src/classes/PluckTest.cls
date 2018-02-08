@@ -1,5 +1,5 @@
 @IsTest
-public class PluckTest {
+private class PluckTest {
 	static Id firstUserId = TestUtility.getTestId(User.SObjectType);
 	static Id secondUserId = TestUtility.getTestId(User.SObjectType);
 

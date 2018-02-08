@@ -1,5 +1,5 @@
 @IsTest
-public class PickTest {
+private class PickTest {
 	@IsTest
 	public static void pickShouldPickFields() {
 		List<Account> accounts = new List<Account>{
