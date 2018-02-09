@@ -170,7 +170,7 @@ List<Account> accounts = new List<Account>{
 List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
-Pluck can also be used for relations through the `String` parameter.
+Pluck can also be used for relations with `String` parameters.
 
 ```java
 List<Opportunity> opportunities = new List<Opportunity>{
