@@ -170,14 +170,31 @@ List<Account> accounts = new List<Account>{
 List<String> names = Pluck.strings(accounts, Account.Name);
 ```
 
+Pluck can also be used for relations through the `String` parameter.
+
+```java
+List<Opportunity> opportunities = new List<Opportunity>{
+	new Opportunity(Account = new Account(Name = 'Foo')),
+	new Opportunity(Account = new Account(Name = 'Bar'))
+};
+
+// Names are plucked into a new list ['Foo', 'Bar']
+List<String> accountNames = Pluck.strings(opportunities, 'Account.Name');
+```
+
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `List<Boolean>` | `booleans(List<SObject> records, Schema.SObjectField field)` | Plucks booleans on `field` into a new list |
-| `List<Date>` | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates on `field` into a new list |
-| `List<Decimal>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers on `field` into a new list |
-| `Set<Id>` | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids on `field` into a new set |
-| `Set<Id>` | `ids(List<SObject> records)` | Plucks ids on `Id` field into a new set |
-| `List<String>` | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids on `field` into a new list |
+| `List<Boolean>` | `booleans(List<SObject> records, Schema.SObjectField field)` | Plucks booleans of `field` into a new list |
+| `List<Boolean>` | `booleans(List<SObject> records, String relation)` | Plucks booleans of `relation` into a new list |
+| `List<Date>` | `dates(List<SObject> records, Schema.SObjectField field)` | Plucks dates of `field` into a new list |
+| `List<Date>` | `dates(List<SObject> records, String relation)` | Plucks dates of `relation` into a new list |
+| `List<Decimal>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers of `field` into a new list |
+| `List<Decimal>` | `decimals(List<SObject> records, Schema.SObjectField field)` | Plucks numbers of `relation` into a new list |
+| `Set<Id>` | `ids(List<SObject> records, Schema.SObjectField field)` | Plucks ids of `field` into a new set |
+| `Set<Id>` | `ids(List<SObject> records, String relation)` | Plucks ids of `relation` into a new set |
+| `Set<Id>` | `ids(List<SObject> records)` | Plucks `Id` field values into a new set |
+| `List<String>` | `strings(List<SObject> records, Schema.SObjectField field)` | Plucks strings or ids of `field` into a new list |
+| `List<String>` | `strings(List<SObject> records, Schema.SObjectField relation)` | Plucks strings or ids of `relation` into a new list |
 
 ### Important notes on the type system in Apex
 <a name="type-system"></a>

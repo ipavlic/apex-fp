@@ -4,3 +4,5 @@ config/
 debug/
 *.sublime-project
 salesforce.schema
+.idea/*
+IlluminatedCloud/*
