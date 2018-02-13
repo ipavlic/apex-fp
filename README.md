@@ -27,7 +27,7 @@
 | `static PartialFieldFilterQuery` 	| `field(Schema.SObjectField field)` 	| Constructs and returns a field matching filter starting with `field` |
 | `static PartialFieldFilterQuery` 	| `field(String fieldRelation)` 	| Constructs and returns a field matching filter starting with `fieldRelation` |
 
-#### Object matching filter
+#### Record matching filter
 
 ```java
 Account prototype = new Account(
@@ -38,7 +38,7 @@ Account prototype = new Account(
 List<Account> filtered = Filter.match(prototype).apply(accounts);
 ```
 
-Matches list records against a “prototype” object. A list record is a match if all the fields which are defined on the prototype object are equal to those on the list record.
+Matches list records against a “prototype” record. A list record is a match if all the fields which are defined on the prototype record are equal to those on the list record.
 
 `Filter.match(SObject prototype)` returns a `RecordMatchingFilterQuery` which provides methods to match the filter against a list.
 
