@@ -23,9 +23,9 @@
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `static MatchingFilterQuery` 		| `match(SObject prototype)` 			| Constructs and returns an object matching query against the `prototype` |
-| `static FieldFilterQueryElement` 	| `field(Schema.SObjectField field)` 	| Constructs and returns a field matching filter starting with `field` |
-
+| `static RecordMatchingFilterQuery` 		| `match(SObject prototype)` 			| Constructs and returns an object matching query against the `prototype` |
+| `static PartialFieldFilterQuery` 	| `field(Schema.SObjectField field)` 	| Constructs and returns a field matching filter starting with `field` |
+| `static PartialFieldFilterQuery` 	| `field(String fieldRelation)` 	| Constructs and returns a field matching filter starting with `fieldRelation` |
 
 #### Object matching filter
 
@@ -40,7 +40,7 @@ List<Account> filtered = Filter.match(prototype).apply(accounts);
 
 Matches list records against a “prototype” object. A list record is a match if all the fields which are defined on the prototype object are equal to those on the list record.
 
-`Filter.match(SObject prototype)` returns a `MatchingFilterQuery` which provides methods to match the filter against a list.
+`Filter.match(SObject prototype)` returns a `RecordMatchingFilterQuery` which provides methods to match the filter against a list.
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
@@ -59,7 +59,7 @@ Matches against field criteria.
 List<Account> testAccounts = Filter.field(Account.Name).equals('Test').apply(accounts);
 ```
 
-Multiple criteria can be stringed together with `also` to form the full matching query. Records have to match *all*	 criteria.
+Multiple criteria can be stringed together with `also` (alias `field`) to form the full matching query. Records have to match *all*	 criteria.
 
 ```java
 // Accounts named 'Test' with annual revenue under 100,000 are matched
@@ -68,7 +68,7 @@ List<Account> filtered = Filter.field(Account.Name).lessThanOrEquals('Test')
                                .apply(accounts);
 ```
 
-`Filter.field(Schema.SObjectField field)` returns a `FieldFilterQueryElement` which is used to define criteria:
+`Filter.field(Schema.SObjectField field)` returns a `PartialFieldFilterQuery` which is used to define criteria:
 
 | Modifier and type | Method | Alias | Description |
 |-------------------|--------|-------|-------------|
@@ -84,14 +84,15 @@ List<Account> filtered = Filter.field(Account.Name).lessThanOrEquals('Test')
 
 `FieldFilterQuery` can then be *applied* to a list, or further criteria can be chained with `also` (alias `field`):
 
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `FieldFilterQueryElement` | `also(Schema.SObjectField field)` | Chains another criterium to the filtering query |
-| `List<SObject>` | `apply(Iterable<sObject> records)` | Matches elements in `records` and returns them as a new list |
-| `List<SObject>` | `apply(Iterable<sObject> records, Type listType)` | Matches elements in `records` and returns them as a new list of `listType` type |
-| `FilterResult` | `applyLazy(Iterable<sObject> records)` | Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
-| `List<SObject>` | `extract(Iterable<sObject> records)` | Matches elements in `records`, removes them from the original list and returns them in a new list |
-| `List<SObject>` | `extract(Iterable<sObject> records)` | Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
+| Modifier and type | Method | Alias | Description |
+|-------------------|--------|-------|-------------|
+| `PartialFieldFilterQuery` | `also(Schema.SObjectField field)` | `field` | Chains another criterium to the filtering query |
+| `PartialFieldFilterQuery` | `also(String fieldRelationfield)` | `field` | Chains another criterium to the filtering query |
+| `List<SObject>` | `apply(Iterable<sObject> records)` |    | Matches elements in `records` and returns them as a new list |
+| `List<SObject>` | `apply(Iterable<sObject> records, Type listType)` |    | Matches elements in `records` and returns them as a new list of `listType` type |
+| `FilterResult` | `applyLazy(Iterable<sObject> records)` |    | Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
+| `List<SObject>` | `extract(Iterable<sObject> records)` |    | Matches elements in `records`, removes them from the original list and returns them in a new list |
+| `List<SObject>` | `extract(Iterable<sObject> records)` |    | Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
 
 #### Warning :warning:
 

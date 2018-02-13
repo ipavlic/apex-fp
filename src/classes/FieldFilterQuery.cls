@@ -11,8 +11,16 @@ public class FieldFilterQuery extends FilterQuery {
 		return new PartialFieldFilterQuery(this, field);
 	}
 
+	public PartialFieldFilterQuery field(String fieldRelation) {
+		return new PartialFieldFilterQuery(this, fieldRelation);
+	}
+
 	public PartialFieldFilterQuery also(Schema.SObjectField field) {
 		return this.field(field);
+	}
+
+	public PartialFieldFilterQuery also(String fieldRelation) {
+		return this.field(fieldRelation);
 	}
 
 	private Boolean contains(Object valueSet, Object value) {
