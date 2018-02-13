@@ -1,17 +1,17 @@
 public class FieldFilterQuery extends FilterQuery {
-	private List<TokenCriterium> queryCriteria = new List<TokenCriterium>();
+	private List<FieldFilterQueryCriterium> queryCriteria = new List<FieldFilterQueryCriterium>();
 	private PrimitiveComparer comparer = new PrimitiveComparer();
 
-	public FieldFilterQuery addCriterium(Schema.SObjectField field, Comparison criterium, Object value) {
-		this.queryCriteria.add(new TokenCriterium(field, criterium, value));
+	public FieldFilterQuery addCriterium(String fieldRelation, Comparison criterium, Object value) {
+		this.queryCriteria.add(new FieldFilterQueryCriterium(fieldRelation, criterium, value));
 		return this;
 	}
 
-	public FieldFilterQueryElement field(Schema.SObjectField field) {
-		return new FieldFilterQueryElement(this, field);
+	public PartialFieldFilterQuery field(Schema.SObjectField field) {
+		return new PartialFieldFilterQuery(this, field);
 	}
 
-	public FieldFilterQueryElement also(Schema.SObjectField field) {
+	public PartialFieldFilterQuery also(Schema.SObjectField field) {
 		return this.field(field);
 	}
 
@@ -38,42 +38,44 @@ public class FieldFilterQuery extends FilterQuery {
 			Set<String> validValues = (Set<String>) valueSet;
 			return validValues.contains((String) value);
 		}
-		throw new LambdaException('Object type is not supported by the filter');
+		throw new LambdaException('Provided set type is not supported by the filter');
 	}
 
-
-	public override Boolean isValid(sObject obj) {
+	public override Boolean isValid(sObject record) {
 		Boolean isValid = true;
-		for (TokenCriterium c : queryCriteria) {
-			if (c.criterium == Comparison.EQUALS && comparer.compare(obj.get(c.field), c.value) != Comparison.EQUALS) {
+		PrimitiveComparer comparer = new PrimitiveComparer();
+		RelationFieldReader reader = new RelationFieldReader();
+		for (FieldFilterQueryCriterium c : queryCriteria) {
+			Object fieldValue = reader.read(record, c.fieldRelation);
+			if (c.criterium == Comparison.EQUALS && comparer.compare(fieldValue, c.value) != Comparison.EQUALS) {
 	 			isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.NOT_EQUALS && comparer.compare(obj.get(c.field), c.value) == Comparison.EQUALS) {
+			if (c.criterium == Comparison.NOT_EQUALS && comparer.compare(fieldValue, c.value) == Comparison.EQUALS) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.LESS_THAN && comparer.compare(obj.get(c.field), c.value) != Comparison.LESS_THAN) {
+			if (c.criterium == Comparison.LESS_THAN && comparer.compare(fieldValue, c.value) != Comparison.LESS_THAN) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.LESS_THAN_OR_EQUALS && (comparer.compare(obj.get(c.field), c.value) == Comparison.GREATER_THAN || comparer.compare(obj.get(c.field), c.value) == Comparison.NOT_EQUALS)) {
+			if (c.criterium == Comparison.LESS_THAN_OR_EQUALS && (comparer.compare(fieldValue, c.value) == Comparison.GREATER_THAN || comparer.compare(fieldValue, c.value) == Comparison.NOT_EQUALS)) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.GREATER_THAN && comparer.compare(obj.get(c.field), c.value) != Comparison.GREATER_THAN) {
+			if (c.criterium == Comparison.GREATER_THAN && comparer.compare(fieldValue, c.value) != Comparison.GREATER_THAN) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.GREATER_THAN_OR_EQUALS && (comparer.compare(obj.get(c.field), c.value) == Comparison.LESS_THAN || comparer.compare(obj.get(c.field), c.value) == Comparison.NOT_EQUALS)) {
+			if (c.criterium == Comparison.GREATER_THAN_OR_EQUALS && (comparer.compare(fieldValue, c.value) == Comparison.LESS_THAN || comparer.compare(fieldValue, c.value) == Comparison.NOT_EQUALS)) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.IS_IN && (contains(c.value, obj.get(c.field)) == false)) {
+			if (c.criterium == Comparison.IS_IN && (contains(c.value, fieldValue) == false)) {
 				isValid = false;
 				break;
 			}
-			if (c.criterium == Comparison.NOT_IN && (contains(c.value, obj.get(c.field)) == true)) {
+			if (c.criterium == Comparison.NOT_IN && (contains(c.value, fieldValue) == true)) {
 				isValid = false;
 				break;
 			}
