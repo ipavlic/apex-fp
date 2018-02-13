@@ -1,7 +1,7 @@
 public class RelationFieldReader {
 	public Object read(SObject record, String relation) {
 		if (String.isBlank(relation)) {
-			throw new LambdaException('Provided relation is blank.');
+			throw new LambdaException('Provided relation is blank');
 		}
 		String[] relationParts = relation.split('\\.');
 		SObject currentRecord = record;
