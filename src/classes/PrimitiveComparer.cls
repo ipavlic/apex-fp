@@ -1,15 +1,14 @@
 public class PrimitiveComparer {
-	
 	public Comparison compareBooleans(Boolean a, Boolean b) {
-		if (a == b) { 
+		if (a == b) {
 			return Comparison.EQUALS;
 		} else {
 			return Comparison.NOT_EQUALS;
 		}
 	}
-	
+
 	public Comparison compareDates(Date a, Date b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -17,9 +16,9 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}
-		
+
 	public Comparison compareTimes(Time a, Time b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -27,9 +26,9 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}
-		
+
 	public Comparison compareDatetimes(Datetime a, Datetime b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -37,9 +36,9 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}
-	
+
 	public Comparison compareDecimals(Decimal a, Decimal b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -47,9 +46,9 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}
-	
+
 	public Comparison compareDoubles(Double a, Double b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -57,7 +56,7 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}	
-	
+
 	public Comparison compareIds(Id a, Id b) {
 		if (a == b) {
 			return Comparison.EQUALS;
@@ -67,17 +66,7 @@ public class PrimitiveComparer {
 	}
 
 	public Comparison compareIntegers(Integer a, Integer b) {
-		if (a < b) { 
-			return Comparison.LESS_THAN;
-		} else if (a == b) {
-			return Comparison.EQUALS;
-		} else {
-			return Comparison.GREATER_THAN;
-		}
-	}	
-	
-	public Comparison compareLongs(Long a, Long b) {
-		if (a < b) { 
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
@@ -85,22 +74,31 @@ public class PrimitiveComparer {
 			return Comparison.GREATER_THAN;
 		}
 	}
-	
-	public Comparison compareStrings(String a, String b) {
-		if (a < b) { 
+
+	public Comparison compareLongs(Long a, Long b) {
+		if (a < b) {
 			return Comparison.LESS_THAN;
 		} else if (a == b) {
 			return Comparison.EQUALS;
 		} else {
 			return Comparison.GREATER_THAN;
-		} 
+		}
+	}
+
+	public Comparison compareStrings(String a, String b) {
+		if (a < b) {
+			return Comparison.LESS_THAN;
+		} else if (a == b) {
+			return Comparison.EQUALS;
+		} else {
+			return Comparison.GREATER_THAN;
+		}
 	}
 
 	/**
 	 * A comparison for primitive data types
 	 */ 
 	public Comparison compare(Object first, Object second) {
-		
 		if (first instanceof Boolean && second instanceof Boolean) {
 			return this.compareBooleans((Boolean)first, (Boolean)second);
 		}
