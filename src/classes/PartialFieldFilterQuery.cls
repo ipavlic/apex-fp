@@ -1,21 +1,27 @@
-/**
- * A field token filtering query element. Represents an intermediate state in query
- * construction that has to be completed with a field token operation
- */
-public class FieldFilterQueryElement {
-
+public class PartialFieldFilterQuery {
 	private FieldFilterQuery query;
-	private Schema.SObjectField field;
+	private String fieldRelation;
 
 	/**
 	 * Constructor. Takes a valid query and a field name to append to the query
 	 * @param query Field filtering query
 	 * @param field Field to be appended to the query along with an operation
 	 */
-	public FieldFilterQueryElement(FieldFilterQuery query, Schema.SObjectField field) {
+	public PartialFieldFilterQuery(FieldFilterQuery query, Schema.SObjectField field) {
 		this.query = query;
-		this.field = field;
+		this.fieldRelation = field.getDescribe().getName();
 	}
+
+	/**
+	 * Constructor. Takes a valid query and a field name to append to the query
+	 * @param query Field filtering query
+	 * @param field Field to be appended to the query along with an operation
+	 */
+	public PartialFieldFilterQuery(FieldFilterQuery query, String fieldRelation) {
+		this.query = query;
+		this.fieldRelation = fieldRelation;
+	}
+
 
 	/**
 	 * Helper method. Adds a filtering criterium to the query that consists of
@@ -25,7 +31,7 @@ public class FieldFilterQueryElement {
 	 * @param value Value to compare field with
 	 */
 	private FieldFilterQuery filterWith(Comparison criterium, Object value) {
-		return query.addCriterium(field, criterium, value);
+		return query.addCriterium(fieldRelation, criterium, value);
 	}
 
 	/**
@@ -88,23 +94,19 @@ public class FieldFilterQueryElement {
 		return greaterThanOrEquals(value);
 	}
 
-	public FieldFilterQuery notNull() {
+	public FieldFilterQuery hasValue() {
 		return notEquals(null);
 	}
 
-	public FieldFilterQuery hasValue() {
-		return notNull();
+	public FieldFilterQuery isIn(Object value) {
+		return filterWith(Comparison.IS_IN, value);
 	}
 
-	public FieldFilterQuery isIn(Object setValue) {
-		return filterWith(Comparison.IS_IN, setValue);
+	public FieldFilterQuery notIn(Object value) {
+		return filterWith(Comparison.NOT_IN, value);
 	}
 
-	public FieldFilterQuery notIn(Object setValue) {
-		return filterWith(Comparison.NOT_IN, setValue);
-	}
-
-	public FieldFilterQuery isNotIn(Object setValue) {
-		return notIn(setValue);
+	public FieldFilterQuery isNotIn(Object value) {
+		return notIn(value);
 	}
 }
