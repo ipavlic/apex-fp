@@ -1,12 +1,41 @@
 @IsTest
 private class FilterTest {
 	static List<Account> testData() {
-		List<Account> accounts = new List<Account>();
-		accounts.add(new Account(Name = 'Ok', AnnualRevenue = 100));
-		accounts.add(new Account(Name = 'Wrong', AnnualRevenue = 60));
-		accounts.add(new Account(Name = 'Ok', AnnualRevenue = 150));
-		accounts.add(new Account(Name = 'Wrong', AnnualRevenue = 150));
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'Ok', AnnualRevenue = 100),
+			new Account(Name = 'Wrong', AnnualRevenue = 60),
+			new Account(Name = 'Ok', AnnualRevenue = 150),
+			new Account(Name = 'Wrong', AnnualRevenue = 150)
+		};
 		return accounts;
+	}
+
+	static List<Opportunity> relationalTestData() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'Ok', AnnualRevenue = 100),
+			new Account(Name = 'Wrong', AnnualRevenue = 60)
+		};
+		List<Opportunity> opps = new List<Opportunity>{
+			new Opportunity(
+				Name = 'First',
+				CloseDate = Date.today().addDays(3),
+				Account = accounts[0]
+			),
+			new Opportunity(
+				Name = 'Second',
+				CloseDate = Date.today().addDays(6),
+				Account = accounts[1]
+			)
+		};
+		return opps;
+	}
+
+	@IsTest
+	static void testRelationalFiltering() {
+		List<Opportunity> opps = relationalTestData();
+		List<Opportunity> filtered = (List<Opportunity>) Filter.field('Account.AnnualRevenue').greaterThan(70).apply(opps);
+		System.assertEquals(1, filtered.size());
+		System.assertEquals('First', filtered[0].Name);
 	}
 
 	@IsTest
