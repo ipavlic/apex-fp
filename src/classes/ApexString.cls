@@ -71,7 +71,7 @@ public class ApexString {
 
 	public Boolean equals(Object obj) {
 		if (obj instanceof ApexString) {
-			return value == ((ApexString)obj).toString();
+			return value == ((ApexString) obj).value;
 		} else if (obj instanceof String) {
 			return value == (String) obj;
 		} else {
