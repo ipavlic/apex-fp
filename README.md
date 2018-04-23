@@ -1,3 +1,5 @@
+:information_source: _Utility classes from this repository have been moved to [apex-utils](https://github.com/ipavlic/apex-utils)  repository._
+
 # Lambda
 
 ## Functionality
