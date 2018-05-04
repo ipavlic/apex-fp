@@ -104,7 +104,7 @@ Filtering query is dynamic and cannot be type-checked at compile-time.
 Groups objects by values on a specified field.
 
 ```java
-Map<String, List<Opportunity>> opportunitiesByCloseDate = GroupBy.strings(opportunities, Opportunity.CloseDate);
+Map<Date, List<Opportunity>> opportunitiesByCloseDate = GroupBy.dates(opportunities, Opportunity.CloseDate);
 ```
 
 | Modifier and type | Method | Description |
