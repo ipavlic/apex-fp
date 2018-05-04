@@ -57,8 +57,8 @@ Multiple criteria can be stringed together with `also` (alias `field`) to form t
 
 ```java
 // Accounts named 'Test' with annual revenue under 100,000 are matched
-List<Account> filtered = Filter.field(Account.Name).lessThanOrEquals('Test')
-                               .also(Account.AnnualRevenue).equals(100000)
+List<Account> filtered = Filter.field(Account.Name).equals('Test')
+                               .also(Account.AnnualRevenue).lessThanOrEquals(100000)
                                .apply(accounts);
 ```
 
