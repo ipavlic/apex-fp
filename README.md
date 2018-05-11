@@ -104,7 +104,7 @@ Filtering query is dynamic and cannot be type-checked at compile-time.
 Groups objects by values on a specified field.
 
 ```java
-Map<Date, List<Opportunity>> opportunitiesByCloseDate = GroupBy.dates(opportunities, Opportunity.CloseDate);
+Map<Date, List<Opportunity>> opportunitiesByCloseDate = GroupBy.dates(Opportunity.CloseDate, opportunities);
 ```
 
 | Modifier and type | Method | Description |
@@ -126,9 +126,9 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = GroupBy.dates(opportunit
 
 ```java
 // this compiles
-Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, accounts);
 // this compiles as well!!!???
-Map<String, List<Opportunity>> accountsByName = GroupBy.strings(accounts, Account.Name);
+Map<String, List<Opportunity>> accountsByName = GroupBy.strings(Account.Name, accounts);
 ```
 
 ### `Pick`
@@ -141,7 +141,7 @@ List<Opportunity> opportunities = new List<Opportunity>{
 	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
 }
 // picked contains just Name and Amount fields, Description is not present
-List<Opportunity> picked = Pick.fields(opportunities, new Set<String>{'Name', 'Amount'});
+List<Opportunity> picked = Pick.fields(new Set<String>{'Name', 'Amount'}, opportunities);
 ```
 
 | Modifier and type | Method | Description |
@@ -228,6 +228,6 @@ Boolean isOpportunities = accounts instanceof List<Opportunity>;
 List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
 // List<Account> returned!
 
-Map<String, List<Account>> accountsByName = GroupBy.strings(allAccounts, Account.Name, List<Account>.class);
+Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, allAccounts, List<Account>.class);
 // Map<String, List<Account>> returned!
 ```
