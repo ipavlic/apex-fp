@@ -1,23 +1,23 @@
 public class Pick {
 
-	public static List<SObject> fields(Iterable<SObject> records, List<Schema.SObjectField> fields) {
-		return Pick.fields(records, new Set<Schema.SObjectField>(fields));
+	public static List<SObject> fields(List<Schema.SObjectField> fields, Iterable<SObject> records) {
+		return Pick.fields(new Set<Schema.SObjectField>(fields), records);
 	}
 
-	public static List<SObject> fields(Iterable<SObject> records, Set<Schema.SObjectField> fields) {
+	public static List<SObject> fields(Set<Schema.SObjectField> fields, Iterable<SObject> records) {
 		Set<String> fieldNames = new Set<String>();
 		for (Schema.SObjectField field : fields) {
 			Schema.DescribeFieldResult describe = field.getDescribe();
 			fieldNames.add(describe.getName());
 		}
-		return Pick.fields(records, fieldNames);
+		return Pick.fields(fieldNames, records);
 	}
 
-	public static List<SObject> fields(Iterable<SObject> records, List<String> apiFieldNames) {
-		return Pick.fields(records, new Set<String>(apiFieldNames));
+	public static List<SObject> fields(List<String> apiFieldNames, Iterable<SObject> records) {
+		return Pick.fields(new Set<String>(apiFieldNames), records);
 	}
 
-	public static List<SObject> fields(Iterable<SObject> records, Set<String> apiFieldNames) {
+	public static List<SObject> fields(Set<String> apiFieldNames, Iterable<SObject> records) {
 		List<SObject> results = new List<SObject>();
 		Iterator<SObject> iter = records.iterator();
 		while (iter.hasNext()) {

@@ -11,10 +11,11 @@ private class GroupByTest {
 		accounts.add(new Account(OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150));
 		return accounts;
 	}
+
 	@IsTest
 	public static void testGroupByStrings() {
 		List<Account> accounts = testData();
-		Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+		Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, accounts);
 		System.assertEquals(2, accountsByName.size());
 		System.assert(accountsByName.keySet().contains('Foo'));
 		System.assert(accountsByName.keySet().contains('Bar'));
@@ -27,26 +28,28 @@ private class GroupByTest {
 			System.assertEquals('Bar', a.Name);
 		}
 	}
+
 	@IsTest
 	public static void testGroupByStringTyping() {
 		List<Account> accounts = testData();
-		Map<String, List<Account>> accountsByName = GroupBy.strings(accounts, Account.Name);
+		Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, accounts);
 		List<Account> fooAccounts = accountsByName.get('Foo');
 		List<SObject> objects = fooAccounts;
 		// since fooAccounts points to a returned list of SObjects, it can be anything!
 		System.assert(objects instanceof List<Opportunity>);
 
-		accountsByName = GroupBy.strings(accounts, Account.Name, List<Account>.class);
+		accountsByName = GroupBy.strings(Account.Name, accounts, List<Account>.class);
 		fooAccounts = accountsByName.get('Foo');
 		objects = fooAccounts;
 		// this time around, it works fine!
 		System.assert(!(objects instanceof List<Opportunity>));
 		System.assert(objects instanceof List<Account>);
 	}
+
 	@IsTest
 	public static void testGroupByDecimals() {
 		List<Account> accounts = testData();
-		Map<Decimal, List<Account>> accountsByRevenue = GroupBy.decimals(accounts, Account.AnnualRevenue);
+		Map<Decimal, List<Account>> accountsByRevenue = GroupBy.decimals(Account.AnnualRevenue, accounts);
 		System.assertEquals(3, accountsByRevenue.size());
 		System.assert(accountsByRevenue.keySet().contains(60));
 		System.assert(accountsByRevenue.keySet().contains(100));
@@ -58,10 +61,11 @@ private class GroupByTest {
 			System.assertEquals(150.0, a.AnnualRevenue);
 		}
 	}
+
 	@IsTest
 	public static void testGroupByIds() {
 		List<Account> accounts = testData();
-		Map<Id, List<Account>> accountsByOwners = GroupBy.ids(accounts, Account.OwnerId);
+		Map<Id, List<Account>> accountsByOwners = GroupBy.ids(Account.OwnerId, accounts);
 		System.assertEquals(2, accountsByOwners.size());
 		System.assert(accountsByOwners.keySet().contains(firstUserId));
 		System.assert(accountsByOwners.keySet().contains(secondUserId));
@@ -71,6 +75,7 @@ private class GroupByTest {
 			System.assertEquals(firstUserId, a.OwnerId);
 		}
 	}
+
 	@IsTest
 	public static void testGroupByBooleans() {
 		List<User> users = new List<User>{
@@ -78,7 +83,7 @@ private class GroupByTest {
 			new User(Title = 'Bar', IsActive = true),
 			new User(Title = 'Baz', IsActive = false)
 		};
-		Map<Boolean, List<User>> usersByActive = GroupBy.booleans(users, User.IsActive);
+		Map<Boolean, List<User>> usersByActive = GroupBy.booleans(User.IsActive, users);
 		System.assertEquals(2, usersByActive.size());
 		System.assert(usersByActive.keySet().contains(true));
 		System.assert(usersByActive.keySet().contains(false));

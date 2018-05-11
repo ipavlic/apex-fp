@@ -6,10 +6,10 @@ private class PickTest {
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Account(Name = 'Test2', AnnualRevenue = 200)
 		};
-		verifyNamePick(Pick.fields(accounts, new List<Schema.SObjectField>{Account.Name}));
-		verifyNamePick(Pick.fields(accounts, new Set<Schema.SObjectField>{Account.Name}));
-		verifyNamePick(Pick.fields(accounts, new List<String>{'Name'}));
-		verifyNamePick(Pick.fields(accounts, new Set<String>{'Name'}));
+		verifyNamePick(Pick.fields(new List<Schema.SObjectField>{Account.Name}, accounts));
+		verifyNamePick(Pick.fields(new Set<Schema.SObjectField>{Account.Name}, accounts));
+		verifyNamePick(Pick.fields(new List<String>{'Name'}, accounts));
+		verifyNamePick(Pick.fields(new Set<String>{'Name'}, accounts));
 	}
 
 	@IsTest
@@ -17,7 +17,7 @@ private class PickTest {
 		List<Opportunity> opportunities = new List<Opportunity>{
 			new Opportunity(Name = 'Test', Amount = 100, Description = 'Test description')
 		};
-		List<Opportunity> picked = Pick.fields(opportunities, new List<String>{'Name', 'Amount'});
+		List<Opportunity> picked = Pick.fields(new List<String>{'Name', 'Amount'}, opportunities);
 		System.assertEquals(1, picked.size());
 		for (Opportunity opp : picked) {
 			System.assertEquals('Test', opp.Name);
@@ -31,8 +31,8 @@ private class PickTest {
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
 		};
-		verifyNamePick(Pick.fields(records, new List<String>{'Name'}));
-		verifyNamePick(Pick.fields(records, new Set<String>{'Name'}));
+		verifyNamePick(Pick.fields(new List<String>{'Name'}, records));
+		verifyNamePick(Pick.fields(new Set<String>{'Name'}, records));
 	}
 
 	@IsTest
@@ -41,7 +41,7 @@ private class PickTest {
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
 		};
-		List<SObject> picked = Pick.fields(records, new List<String>{'Name'});
+		List<SObject> picked = Pick.fields(new List<String>{'Name'}, records);
 		System.assertEquals(Account.sObjectType, picked[0].getSObjectType(), 'First picked element should be an Account.');
 		System.assertEquals(Opportunity.sObjectType, picked[1].getSObjectType(), 'Second picked element should be an Opportunity.');
 	}
