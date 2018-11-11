@@ -18,7 +18,7 @@ Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue
 Collection remaining = accountCollection.remove(Match.field(Account.Name).equals('Foo'));
 ```
 
-Methods which deal with collections return `Collection` views again. Standard Apex collection instances obtained from views 
+Methods which deal with collections return `Collection` views again. Standard Apex collection instances can be obtained from views 
 through `asList()` and `asSet()` methods.
 
 ```java
