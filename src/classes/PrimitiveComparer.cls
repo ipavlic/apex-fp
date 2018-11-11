@@ -1,104 +1,106 @@
 public class PrimitiveComparer {
-	public Comparison compareBooleans(Boolean a, Boolean b) {
+	public ComparisonResult compareBooleans(Boolean a, Boolean b) {
 		if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.NOT_EQUALS;
+			return ComparisonResult.NOT_EQUALS;
 		}
 	}
 
-	public Comparison compareDates(Date a, Date b) {
+	public ComparisonResult compareDates(Date a, Date b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareTimes(Time a, Time b) {
+	public ComparisonResult compareTimes(Time a, Time b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareDatetimes(Datetime a, Datetime b) {
+	public ComparisonResult compareDatetimes(Datetime a, Datetime b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareDecimals(Decimal a, Decimal b) {
+	public ComparisonResult compareDecimals(Decimal a, Decimal b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareDoubles(Double a, Double b) {
+	public ComparisonResult compareDoubles(Double a, Double b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
-	}	
+	}
 
-	public Comparison compareIds(Id a, Id b) {
+	public ComparisonResult compareIds(Id a, Id b) {
 		if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.NOT_EQUALS;
+			return ComparisonResult.NOT_EQUALS;
 		}
 	}
 
-	public Comparison compareIntegers(Integer a, Integer b) {
+	public ComparisonResult compareIntegers(Integer a, Integer b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareLongs(Long a, Long b) {
+	public ComparisonResult compareLongs(Long a, Long b) {
 		if (a < b) {
-			return Comparison.LESS_THAN;
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
-	public Comparison compareStrings(String a, String b) {
-		if (a < b) {
-			return Comparison.LESS_THAN;
+	public ComparisonResult compareStrings(String a, String b) {
+		if (a != b && (a == null || b == null)) {
+			return ComparisonResult.NOT_EQUALS;
+		} else if (a < b) {
+			return ComparisonResult.LESS_THAN;
 		} else if (a == b) {
-			return Comparison.EQUALS;
+			return ComparisonResult.EQUALS;
 		} else {
-			return Comparison.GREATER_THAN;
+			return ComparisonResult.GREATER_THAN;
 		}
 	}
 
 	/**
 	 * A comparison for primitive data types
-	 */ 
-	public Comparison compare(Object first, Object second) {
+	 */
+	public ComparisonResult compare(Object first, Object second) {
 		if (first instanceof Boolean && second instanceof Boolean) {
 			return this.compareBooleans((Boolean)first, (Boolean)second);
 		}
@@ -129,7 +131,7 @@ public class PrimitiveComparer {
 		else if (first instanceof Time && second instanceof Time) {
 			return this.compareTimes((Time)first, (Time)second);
 		} else {
-			return Comparison.NOT_EQUALS;
+			return ComparisonResult.NOT_EQUALS;
 		}
 	}
 }

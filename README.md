@@ -1,27 +1,123 @@
-:information_source: _Utility classes from this repository have been moved to [apex-utils](https://github.com/ipavlic/apex-utils)  repository._
-
 # Lambda
 
-## Functionality
+Lambda allows functional constructs to be used with `SObject` collections through providing a class named `Collection`.
+A `Collection` is a view of the backing `SObject` collection, and is built from standard Apex collection classes:
 
-- [`Filter`](#filter)
-- [`GroupBy`](#group-by)
-- [`Pick`](#pick)
-- [`Pluck`](#pluck)
-- [Important notes on the type system in Apex](#type-system)
+```java
+List<Account> accounts = new List<Account>{
+    new Account(Name = 'Foo', AnnualRevenue = 1000),
+    new Account(Name = 'Bar', AnnualRevenue = 5000)
+}
+Collection accountCollection = Collection.of(accounts);
+```
 
-### `Filter`
+`Collection` instance then offers functional methods like `filter` or `remove`:
+
+```java
+Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(1000));
+Collection remaining = accountCollection.remove(Match.field(Account.Name).equals('Foo'));
+```
+
+Methods which deal with collections return `Collection` views again. Standard Apex collection instances obtained from views 
+through `asList()` and `asSet()` methods.
+
+```java
+List<Account> rawList = accountCollection.asList();
+Set<Account> rawSet = accountCollection.asSet();
+```
+
+## `Collection` functions
+
+- [`filter`](#filter)
+- [`remove`](#remove)
+- [`groupBy`](#group-by)
+- [`pick`](#pick)
+- [`pluck`](#pluck)
+- [`mapAll`](#map-all)
+- [`mapSome`](#map-some)
+
+### `filter`
 <a name="filter"></a>
-
-`Filter` enables filtering lists of sObject records by declaring *criteria* that records have to match through a fluent interface.
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `static RecordMatchingFilterQuery` 		| `match(SObject prototype)` 			| Constructs and returns an object matching query against the `prototype` |
-| `static PartialFieldFilterQuery` 	| `field(Schema.SObjectField field)` 	| Constructs and returns a field matching filter starting with `field` |
-| `static PartialFieldFilterQuery` 	| `field(String fieldRelation)` 	| Constructs and returns a field matching filter starting with `fieldRelation` |
+| `Collection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `Collection` view of records that satisfied predicate |
 
-#### Record matching filter
+Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`:
+
+```java
+Collection accountCollection = Collection.of(accounts);
+
+Account prototype = new Account(Name = 'Foo');
+Collection recordMatched = accountCollection.filter(Match.record(prototype));
+
+Collection fieldMatched = accountCollection.filter(Match.field(Account.Name).equals('Foo'));
+```
+
+#### `FieldsMatch`
+
+`FieldsMatch` returns `true` if a record satisfies all field matching conditions.
+
+`FieldsMatch` is constructed with a fluent interface. `Match` factory method `field` returns an `IncompleteFieldsMatch`. 
+`FieldsMatch` is obtained from the `IncompleteFieldsMatch` by providing a matching condition on the field. `FieldsMatch`
+can be expanded with a new matching condition to get another `IncompleteFieldsMatch`. The process is continued until all 
+desired matching conditions are defined.
+
+```java
+FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
+```
+
+`FieldsMatch` can be provided directly to `filter` method:
+
+```java
+Collection filtered = Collection.of(accounts).filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
+```
+
+##### `IncompleteFieldsMatch`
+
+| Modifier and type | Method | Alias | Description |
+|-------------------|--------|-------|-------------|
+| `FieldsMatch` | `equals(Object value)`				| `eq` | Defines an equality comparison condition for the current field |
+| `FieldsMatch` | `notEquals(Object value)`			| `neq` | Defines an inequality comparison condition for the current field |
+| `FieldsMatch` | `lessThan(Object value)`				| `lt` | Defines a less than comparison condition for the current field |
+| `FieldsMatch` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals condition for the current field |
+| `FieldsMatch` | `greaterThan(Object value)`			| `gt` | Defines a greater than condition for the current field |
+| `FieldsMatch` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals condition for the current field |
+| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field |
+| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field |
+| `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
+
+##### `FieldsMatch`
+
+Additional conditions can be defined with `also`, or its alias, `field`:
+
+| Modifier and type | Method | Alias | Description |
+|-------------------|--------|-------|-------------|
+| `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
+| `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
+
+##### Warning :warning:
+
+`isIn` and `isNotIn` support a `Set` of one of the following types:
+
+- `Boolean`
+- `Date`
+- `Datetime`
+- `Decimal`
+- `Double`
+- `Id`
+- `Integer`
+- `Long`
+- `String`
+
+**Other types are not supported and will throw an exception**.
+
+Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
+
+#### `RecordMatch`
+
+`RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
+defined on a prototype record do not have to match.
 
 ```java
 Account prototype = new Account(
@@ -29,143 +125,33 @@ Account prototype = new Account(
     AnnualRevenue = 50000000
 );
 // Accounts named 'Test' with an AnnualRevenue of **exactly** 50,000,000 are matched
-List<Account> filtered = Filter.match(prototype).apply(accounts);
+Collection filtered = accountCollection.filter(Match.record(prototype));
 ```
 
-Matches list records against a “prototype” record. A list record is a match if all the fields which are defined on the prototype record are equal to those on the list record.
+##### Warning :warning:
 
-`Filter.match(SObject prototype)` returns a `RecordMatchingFilterQuery` which provides methods to match the filter against a list.
+Fields that are present on the *prototype* object must also be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `List<SObject>`	| `apply(Iterable<sObject> records)` 				| Matches elements in `records` and returns them as a new list |
-| `List<SObject>`	| `apply(Iterable<sObject> records, Type listType)`	| Matches elements in `records` and returns them as a new list of `listType` type |
-| `FilterResult`	| `applyLazy(Iterable<sObject> records)`			| Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
-| `List<SObject>`	| `extract(Iterable<sObject> records)`				| Matches elements in `records`, removes them from the original list and returns them in a new list |
-| `List<SObject>`	| `extract(Iterable<sObject> records)`				| Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
+### `remove`
+<a name="remove"></a>
 
-#### Field matching filter
+`remove` works just like `filter`, but records which match a predicate are removed from the `Collection` view instead of kept.
 
-Matches against field criteria.
-
-```java
-// Accounts named 'Test' are matched
-List<Account> testAccounts = Filter.field(Account.Name).equals('Test').apply(accounts);
-```
-
-Multiple criteria can be stringed together with `also` (alias `field`) to form the full matching query. Records have to match *all*	 criteria.
-
-```java
-// Accounts named 'Test' with annual revenue under 100,000 are matched
-List<Account> filtered = Filter.field(Account.Name).equals('Test')
-                               .also(Account.AnnualRevenue).lessThanOrEquals(100000)
-                               .apply(accounts);
-```
-
-`Filter.field(Schema.SObjectField field)` returns a `PartialFieldFilterQuery` which is used to define criteria:
-
-| Modifier and type | Method | Alias | Description |
-|-------------------|--------|-------|-------------|
-| `FieldFilterQuery` | `equals(Object value)`				| `eq` | Defines an equality comparison criterium for the current field |
-| `FieldFilterQuery` | `notEquals(Object value)`			| `neq` | Defines an inequality comparison criterium for the current field |
-| `FieldFilterQuery` | `lessThan(Object value)`				| `lt` | Defines a less than comparison criterium for the current field |
-| `FieldFilterQuery` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals criterium for the current field |
-| `FieldFilterQuery` | `greaterThan(Object value)`			| `gt` | Defines a greater than criterium for the current field |
-| `FieldFilterQuery` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals criterium for the current field |
-| `FieldFilterQuery` | `isIn(Object value)` 				| 		| Defines a set membership criterium for the current field |
-| `FieldFilterQuery` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership criterium for the current field |
-| `FieldFilterQuery` | `hasValue()` 						| `notNull` | Defines a non-null criterium for the current field |
-
-`FieldFilterQuery` can then be *applied* to a list, or further criteria can be chained with `also` (alias `field`):
-
-| Modifier and type | Method | Alias | Description |
-|-------------------|--------|-------|-------------|
-| `PartialFieldFilterQuery` | `also(Schema.SObjectField field)` | `field` | Chains another criterium to the filtering query |
-| `PartialFieldFilterQuery` | `also(String fieldRelationfield)` | `field` | Chains another criterium to the filtering query |
-| `List<SObject>` | `apply(Iterable<sObject> records)` |    | Matches elements in `records` and returns them as a new list |
-| `List<SObject>` | `apply(Iterable<sObject> records, Type listType)` |    | Matches elements in `records` and returns them as a new list of `listType` type |
-| `FilterResult` | `applyLazy(Iterable<sObject> records)` |    | Returns `FilterResult` iterable which can be used for lazy matching to allow extraction of partial results from large sources |
-| `List<SObject>` | `extract(Iterable<sObject> records)` |    | Matches elements in `records`, removes them from the original list and returns them in a new list |
-| `List<SObject>` | `extract(Iterable<sObject> records)` |    | Matches elements in `records`, removes them from the original list and returns them in a new list of `listType` type |
-
-#### Warning :warning:
-
-Most criteria expect a primitive value to compare against. `isIn` and `isNotIn` instead expect a `Set` of one of the following types: `Boolean`, `Date`, `Decimal`, `Double`, `Id`, `Integer` or `String`. **Other types are not supported and will throw an exception**.
-
-Fields used in field criteria must be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
-
-Fields that are present on the *prototype* object must also be available on the list which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
-
-Filtering query is dynamic and cannot be type-checked at compile-time.
-
-### `GroupBy`
-<a name="group-by"></a>
-
-Groups objects by values on a specified field.
-
-```java
-Map<Date, List<Opportunity>> opportunitiesByCloseDate = GroupBy.dates(Opportunity.CloseDate, opportunities);
-```
-
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `Map<Boolean, List<SObject>>` | `booleans(Schema.SObjectField field, List<SObject> records)` | Groups `records` by value on boolean `field` |
-| `Map<Boolean, List<SObject>>` | `booleans(Schema.SObjectField field, List<SObject> records, Type listType)` | Groups `records` by value on boolean `field` as `listType` |
-| `Map<Date, List<SObject>>` | `dates(Schema.SObjectField field, List<SObject> records)` | Groups `records` by value on date `field` |
-| `Map<Date, List<SObject>>` | `dates(Schema.SObjectField field, List<SObject> records, Type listType)` | Groups `records` by value on date `field` as `listType` |
-| `Map<Decimal, List<SObject>>` | `decimals(Schema.SObjectField field, List<SObject> records)` | Groups `records` by value on number `field` |
-| `Map<Decimal, List<SObject>>` | `decimals(Schema.SObjectField field, List<SObject> records, Type listType)` | Groups `records` by value on number `field` as `listType` |
-| `Map<Id, List<SObject>>` | `ids(Schema.SObjectField field, List<SObject> records)` | Groups `records` by value on id `field` |
-| `Map<Id, List<SObject>>` | `ids(Schema.SObjectField field, List<SObject> records, Type listType)` | Groups `records` by value on id `field` as `listType` |
-| `Map<String, List<SObject>>` | `strings(Schema.SObjectField field, List<SObject> records)` | Groups `records` by value on string `field` |
-| `Map<String, List<SObject>>` | `strings(Schema.SObjectField field, List<SObject> records, Type listType)` | Groups `records` by value on string `field` as `listType` |
-
-#### Warning :warning:
-
-**The type system will NOT warn you if you use the wrong subtype of `sObject`!** [Important notes on the type system in Apex](#type-system) section explains why.
-
-```java
-// this compiles
-Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, accounts);
-// this compiles as well!!!???
-Map<String, List<Opportunity>> accountsByName = GroupBy.strings(Account.Name, accounts);
-```
-
-### `Pick`
-<a name="pick"></a>
-
-Picks fields from a list of sObjects to build a new list with just those fields. Helps reduce overwriting potential for concurrent updates when locking is not an option.
-
-```java
-List<Opportunity> opportunities = new List<Opportunity>{
-	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
-}
-// picked contains just Name and Amount fields, Description is not present
-List<Opportunity> picked = Pick.fields(new Set<String>{'Name', 'Amount'}, opportunities);
-```
-
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `List<SObject>` | `fields(List<Schema.SObjectField> fields, Iterable<SObject> records)` | Picks fields into a new `SObject` list |
-| `List<SObject>` | `fields(Set<Schema.SObjectField> fields, Iterable<SObject> records)` | Picks fields into a new `SObject` list |
-| `List<SObject>` | `fields(List<String> apiFieldNames, Iterable<SObject> records)` | Picks fields into a new `SObject` list |
-| `List<SObject>` | `fields(Set<String> apiFieldNames, Iterable<SObject> records)` | Picks fields into a new `SObject` list |
-
-### `Pluck`
+### `pluck`
 <a name="pluck"></a>
 
-Plucks field values from a list of sObjects into a new list.
+Plucks field values from a `Collection` view of records into a `List` of appropriate type.
 
 ```java
 List<Account> accounts = new List<Account>{
 	new Account(Name = 'Foo'),
 	new Account(Name = 'Bar')
 }
-// Names are plucked into a new list ['Foo', 'Bar']
-List<String> names = Pluck.strings(accounts, Account.Name);
+// Names are plucked into a new list, ['Foo', 'Bar']
+List<String> names = Collection.of(accounts).pluckStrings(Account.Name);
 ```
 
-Pluck can also be used for relations with `String` parameters.
+Pluck can also be used for deeper relations by using `String` field paths instead of `Schema.SObjectField` parameters.
 
 ```java
 List<Opportunity> opportunities = new List<Opportunity>{
@@ -174,24 +160,88 @@ List<Opportunity> opportunities = new List<Opportunity>{
 };
 
 // Names are plucked into a new list ['Foo', 'Bar']
-List<String> accountNames = Pluck.strings(opportunities, 'Account.Name');
+List<String> accountNames = Collection.of(opportunities).pluckStrings('Account.Name');
 ```
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `List<Boolean>` | `booleans(Schema.SObjectField field, List<SObject> records)` | Plucks booleans of `field` into a new list |
-| `List<Boolean>` | `booleans(String relation)` | , List<SObject> recordsPlucks booleans of `relation` into a new list |
-| `List<Date>` | `dates(Schema.SObjectField field, List<SObject> records)` | Plucks dates of `field` into a new list |
-| `List<Date>` | `dates(String relation)` | , List<SObject> recordsPlucks dates of `relation` into a new list |
-| `List<Decimal>` | `decimals(Schema.SObjectField field, List<SObject> records)` | Plucks numbers of `field` into a new list |
-| `List<Decimal>` | `decimals(Schema.SObjectField field, List<SObject> records)` | Plucks numbers of `relation` into a new list |
-| `Set<Id>` | `ids(Schema.SObjectField field, List<SObject> records)` | Plucks ids of `field` into a new set |
-| `Set<Id>` | `ids(String relation)` | , List<SObject> recordsPlucks ids of `relation` into a new set |
-| `Set<Id>` | `ids( | Plucks `, List<SObject> recordsId` field values into a new set |
-| `List<String>` | `strings(Schema.SObjectField field, List<SObject> records)` | Plucks strings or ids of `field` into a new list |
-| `List<String>` | `strings(Schema.SObjectField relation, List<SObject> records)` | Plucks strings or ids of `relation` into a new list |
+| `List<Boolean>` | `pluckBooleans(Schema.SObjectField)` | Plucks Boolean `field` values |
+| `List<Boolean>` | `pluckBooleans(String relation)` | Plucks Boolean `relation` values |
+| `List<Date>` | `pluckDates(Schema.SObjectField field)` | Plucks Date `field` values |
+| `List<Date>` | `pluckDates(String relation)` | Plucks Date `relation` values |
+| `List<Date>` | `pluckDatetimes(Schema.SObjectField field)` | Plucks Datetime `field` values |
+| `List<Date>` | `pluckDatetimes(String relation)` | Plucks Datetime `relation` values |
+| `List<Decimal>` | `pluckDecimals(Schema.SObjectField field)` | Plucks numerical `field` values |
+| `List<Decimal>` | `pluckDecimals(Schema.SObjectField field)` | Plucks numerical `relation` values |
+| `List<Id>` | `pluckIds(Schema.SObjectField field)` | Plucks Id `field` values |
+| `List<Id>` | `pluckIds(String relation)` | Plucks Id `relation` values |
+| `List<Id>` | `pluckIds()` | Plucks values of `Id` field |
+| `List<String>` | `strings(Schema.SObjectField field)` | Plucks String or Id `field` values |
+| `List<String>` | `strings(Schema.SObjectField relation)` | Plucks String or Ids `relation` values |
 
-### Important notes on the type system in Apex
+### `groupBy`
+<a name="group-by"></a>
+
+Groups records by values of a specified field.
+
+```java
+Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunities).groupByDates(Opportunity.CloseDate, opportunities);
+```
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Map<Boolean, List<SObject>>` | `groupByBooleans(Schema.SObjectField field)` | Groups records by Boolean `field` values |
+| `Map<Boolean, List<SObject>>` | `groupByBooleans(Schema.SObjectField field, Type listType)` | Groups records by Boolean `field` values, with specified list type |
+| `Map<Date, List<SObject>>` | `groupByDates(Schema.SObjectField field)` | Groups records by Date `field` values |
+| `Map<Date, List<SObject>>` | `groupByDates(Schema.SObjectField field, Type listType)` | Groups records by Date `field` values, with specified list type |
+| `Map<Date, List<SObject>>` | `groupByDatetimes(Schema.SObjectField field)` | Groups records by Datetime `field` values |
+| `Map<Date, List<SObject>>` | `groupByDatetimes(Schema.SObjectField field, Type listType)` | Groups records by Datetime `field` values, with specified list type |
+| `Map<Decimal, List<SObject>>` | `groupByDecimals(Schema.SObjectField field)` | Groups records by numeric `field` values |
+| `Map<Decimal, List<SObject>>` | `groupByDecimals(Schema.SObjectField field, Type listType)` | Groups records by numeric `field` values, with specified list type |
+| `Map<Id, List<SObject>>` | `groupByIds(Schema.SObjectField field)` | Groups records by Id `field` values |
+| `Map<Id, List<SObject>>` | `groupByIds(Schema.SObjectField field, Type listType)` | Groups records by Id `field` values, with specified list type |
+| `Map<String, List<SObject>>` | `groupByStrings(Schema.SObjectField field)` | Groups records by String `field` values |
+| `Map<String, List<SObject>>` | `groupByStrings(Schema.SObjectField field, Type listType)` | Groups records by String `field` values, with specified list type |
+
+### `pick`
+<a name="pick"></a>
+
+Returns a new `Collection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
+
+```java
+List<Opportunity> opportunities = new List<Opportunity>{
+	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
+}
+// Picked contains just Name and Amount fields. Description is not present.
+Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'Amount'});
+```
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Collection` | `pick(List<Schema.SObjectField> fields)` | Picks fields into a new `Collection` view |
+| `Collection` | `pick(Set<Schema.SObjectField> fields)` | Picks fields into a new `Collection` view |
+| `Collection` | `pick(List<String> apiFieldNames)` | Picks fields into a new `Collection` view |
+| `Collection` | `pick(Set<String> apiFieldNames)` | Picks fields into a new `Collection` view |
+
+### `mapAll`
+<a name="map-all"></a>
+
+Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping all current view elements with `fn` |
+
+### `mapSome`
+<a name="map-some"></a>
+
+Returns a new `Collection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping current view elements that satisfy `predicate` with `fn`, and keeping those that do not satisfy `predicate` unchanged. |
+
+## Important notes on the type system in Apex
 <a name="type-system"></a>
 
 Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
@@ -212,22 +262,13 @@ System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
 ```
 
-Lambda classes usually return an `SObject` list, which can be then assigned to a specific `SObject` “subclass” list, like `Account`. This is more convenient, but `instanceof` can provide unexpected results:
+Collection’s `asList()` and `asSet()` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient, but `instanceof` can provide unexpected results.
+A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
 
 ```java
-List<Account> accounts = Filter...
-// accounts points to a List<SObject> returned from Filter
+List<Account> filteredAccounts = accountCollection.asList();
+// List<SObject> returned!
 
-Boolean isOpportunities = accounts instanceof List<Opportunity>;
-// isOpportunities is true!!!???
-```
-
-`Filter` and `GroupBy` therefore provide overloaded methods in which the concrete type of the list can be passed in as well. When this is done, the returned `List` or `Map` are of the correct concrete type instead of generic `SObject` collection type:
-
-```java
-List<Account> filteredAccounts = Filter.field(...).apply(allAccounts, List<Account>.class);
+List<Account> filteredAccounts = accountCollection.asList(List<Account>.class);
 // List<Account> returned!
-
-Map<String, List<Account>> accountsByName = GroupBy.strings(Account.Name, allAccounts, List<Account>.class);
-// Map<String, List<Account>> returned!
 ```

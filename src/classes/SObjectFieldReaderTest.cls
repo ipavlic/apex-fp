@@ -1,12 +1,12 @@
 @IsTest
-private class RelationFieldReaderTest {
+private class SObjectFieldReaderTest {
 	@IsTest
 	static void testResolving() {
 		Account acc = new Account(Name = 'Test');
 		Opportunity opp = new Opportunity(AccountId = acc.Id, Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
 		opp.Account = acc;
 
-		Object value = new RelationFieldReader().read(opp, 'Account.Name');
+		Object value = new SObjectFieldReader().read(opp, 'Account.Name');
 		System.assertEquals('Test', value);
 	}
 
@@ -17,7 +17,7 @@ private class RelationFieldReaderTest {
 		Exception ex;
 
 		try {
-			new RelationFieldReader().read(opp, 'ObjectThatShouldNotExist.Name');
+			new SObjectFieldReader().read(opp, 'ObjectThatShouldNotExist.Name');
 		} catch (LambdaException e) {
 			ex = e;
 		}
@@ -34,7 +34,7 @@ private class RelationFieldReaderTest {
 		Exception ex;
 
 		try {
-		new RelationFieldReader().read(opp, 'Account.FieldThatShouldNotExist');
+		new SObjectFieldReader().read(opp, 'Account.FieldThatShouldNotExist');
 		} catch (LambdaException e) {
 			ex = e;
 		}
@@ -49,7 +49,7 @@ private class RelationFieldReaderTest {
 		Exception ex;
 
 		try {
-			new RelationFieldReader().read(opp, '');
+			new SObjectFieldReader().read(opp, '');
 		} catch (LambdaException e) {
 			ex = e;
 		}
