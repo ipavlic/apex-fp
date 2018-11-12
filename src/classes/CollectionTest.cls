@@ -82,14 +82,14 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testFieldsMatchFilter() {
-		Collection l = Collection.of(new List<Account>{
+		Collection c = Collection.of(new List<Account>{
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150),
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150)
 		});
 
-		List<Account> filtered = l.filter(Match.field(Account.AnnualRevenue).eq(150)).asList();
+		List<Account> filtered = c.filter(Match.field(Account.AnnualRevenue).eq(150)).asList();
 		System.assertEquals(2, filtered.size());
 
 		for (Account a : filtered) {
@@ -99,8 +99,8 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testGroupByStrings() {
-		Collection l = Collection.of(testAccounts());
-		Map<String, List<Account>> accountsByName = l.groupByStrings(Account.Name);
+		Collection c = Collection.of(testAccounts());
+		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
 		System.assertEquals(2, accountsByName.size());
 		System.assert(accountsByName.keySet().contains('Foo'));
 		System.assert(accountsByName.keySet().contains('Bar'));
@@ -116,14 +116,14 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testGroupByStringTyping() {
-		Collection l = Collection.of(testAccounts());
-		Map<String, List<Account>> accountsByName = l.groupByStrings(Account.Name);
+		Collection c = Collection.of(testAccounts());
+		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
 		List<Account> fooAccounts = accountsByName.get('Foo');
 		List<SObject> objects = fooAccounts;
 		// since fooAccounts points to a returned list of SObjects, it can be anything!
 		System.assert(objects instanceof List<Opportunity>);
 
-		accountsByName = l.groupBystrings(Account.Name, List<Account>.class);
+		accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
 		fooAccounts = accountsByName.get('Foo');
 		objects = fooAccounts;
 		// this time around, it works fine!
@@ -133,8 +133,8 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testGroupByDecimals() {
-		Collection l = Collection.of(testAccounts());
-		Map<Decimal, List<Account>> accountsByRevenue = l.groupByDecimals(Account.AnnualRevenue);
+		Collection c = Collection.of(testAccounts());
+		Map<Decimal, List<Account>> accountsByRevenue = c.groupByDecimals(Account.AnnualRevenue);
 		System.assertEquals(3, accountsByRevenue.size());
 		System.assert(accountsByRevenue.keySet().contains(60));
 		System.assert(accountsByRevenue.keySet().contains(100));
@@ -149,8 +149,8 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testGroupByIds() {
-		Collection l = Collection.of(testAccounts());
-		Map<Id, List<Account>> accountsByOwners = l.groupByIds(Account.OwnerId);
+		Collection c = Collection.of(testAccounts());
+		Map<Id, List<Account>> accountsByOwners = c.groupByIds(Account.OwnerId);
 		System.assertEquals(2, accountsByOwners.size());
 		System.assert(accountsByOwners.keySet().contains(firstUserId));
 		System.assert(accountsByOwners.keySet().contains(secondUserId));
@@ -163,12 +163,12 @@ public class CollectionTest {
 
 	@IsTest
 	public static void testGroupByBooleans() {
-		Collection l = Collection.of(new List<User>{
+		Collection c = Collection.of(new List<User>{
 			new User(Title = 'Foo', IsActive = true),
 			new User(Title = 'Bar', IsActive = true),
 			new User(Title = 'Baz', IsActive = false)
 		});
-		Map<Boolean, List<User>> usersByActive = l.groupByBooleans(User.IsActive);
+		Map<Boolean, List<User>> usersByActive = c.groupByBooleans(User.IsActive);
 		System.assertEquals(2, usersByActive.size());
 		System.assert(usersByActive.keySet().contains(true));
 		System.assert(usersByActive.keySet().contains(false));
@@ -181,22 +181,22 @@ public class CollectionTest {
 
 	@IsTest
 	public static void pickShouldPickFields() {
-		Collection l = Collection.of(new List<Account>{
+		Collection c = Collection.of(new List<Account>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Account(Name = 'Test2', AnnualRevenue = 200)
 		});
-		verifyNamePick(l.pick(new List<Schema.SObjectField>{Account.Name}));
-		verifyNamePick(l.pick(new Set<Schema.SObjectField>{Account.Name}));
-		verifyNamePick(l.pick(new List<String>{'Name'}));
-		verifyNamePick(l.pick(new Set<String>{'Name'}));
+		verifyNamePick(c.pick(new List<Schema.SObjectField>{Account.Name}));
+		verifyNamePick(c.pick(new Set<Schema.SObjectField>{Account.Name}));
+		verifyNamePick(c.pick(new List<String>{'Name'}));
+		verifyNamePick(c.pick(new Set<String>{'Name'}));
 	}
 
 	@IsTest
 	public static void pickedFieldsShouldHaveValues() {
-		Collection l = Collection.of(new List<Opportunity>{
+		Collection c = Collection.of(new List<Opportunity>{
 			new Opportunity(Name = 'Test', Amount = 100, Description = 'Test description')
 		});
-		List<Opportunity> picked = l.pick(new List<String>{'Name', 'Amount'}).asList();
+		List<Opportunity> picked = c.pick(new List<String>{'Name', 'Amount'}).asList();
 		System.assertEquals(1, picked.size());
 		for (Opportunity opp : picked) {
 			System.assertEquals('Test', opp.Name);
@@ -206,21 +206,21 @@ public class CollectionTest {
 
 	@IsTest
 	public static void pickShouldPickHeterogenousRecords() {
-		Collection l = Collection.of(new List<SObject>{
+		Collection c = Collection.of(new List<SObject>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
 		});
-		verifyNamePick(l.pick(new List<String>{'Name'}));
-		verifyNamePick(l.pick(new Set<String>{'Name'}));
+		verifyNamePick(c.pick(new List<String>{'Name'}));
+		verifyNamePick(c.pick(new Set<String>{'Name'}));
 	}
 
 	@IsTest
 	public static void pickShouldHaveMatchingObjectTypes() {
-		Collection l = Collection.of(new List<SObject>{
+		Collection c = Collection.of(new List<SObject>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
 		});
-		List<SObject> picked = l.pick(new List<String>{'Name'}).asList();
+		List<SObject> picked = c.pick(new List<String>{'Name'}).asList();
 		System.assertEquals(Account.sObjectType, picked[0].getSObjectType(), 'First picked element should be an Account.');
 		System.assertEquals(Opportunity.sObjectType, picked[1].getSObjectType(), 'Second picked element should be an Opportunity.');
 	}
@@ -261,27 +261,27 @@ public class CollectionTest {
 				Account = accounts[1]
 			)
 		};
-		Collection l = Collection.of(opps);
-		List<Opportunity> filtered = (List<Opportunity>) l.filter(Match.field('Account.AnnualRevenue').greaterThan(70)).asList();
+		Collection c = Collection.of(opps);
+		List<Opportunity> filtered = (List<Opportunity>) c.filter(Match.field('Account.AnnualRevenue').greaterThan(70)).asList();
 		System.assertEquals(1, filtered.size());
 		System.assertEquals('First', filtered[0].Name);
 	}
 
 	@IsTest
 	static void testHasValue() {
-		Collection l = Collection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Industry).hasValue()).asList();
+		Collection c = Collection.of(testFilterAccounts());
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Industry).hasValue()).asList();
 		System.assertEquals(0, filtered.size());
 
-		filtered = (List<Account>) l.filter(Match.field(Account.Name).hasValue()).asList();
+		filtered = (List<Account>) c.filter(Match.field(Account.Name).hasValue()).asList();
 		System.assertEquals(4, filtered.size());
 
 	}
 
 	@IsTest
 	static void testIsIn() {
-		Collection l = Collection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150})).asList();
+		Collection c = Collection.of(testFilterAccounts());
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150})).asList();
 		System.assertEquals(3, filtered.size());
 		for (Account acc : filtered) {
 			System.assert(acc.AnnualRevenue == 60 || acc.AnnualRevenue == 150);
@@ -290,8 +290,8 @@ public class CollectionTest {
 
 	@IsTest
 	static void testIsNotIn() {
-		Collection l = Collection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60})).asList();
+		Collection c = Collection.of(testFilterAccounts());
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60})).asList();
 		System.assertEquals(3, filtered.size());
 		for (Account acc : filtered) {
 			System.assert(acc.AnnualRevenue == 100 || acc.AnnualRevenue == 150);
@@ -300,16 +300,16 @@ public class CollectionTest {
 
 	@IsTest
 	static void testFieldEqualsOkFilter() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Name).equals('Ok')).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok')).asList();
 
 		System.assertEquals(2, filtered.size());
 		for (Account acc : filtered) {
 			System.assertEquals('Ok', acc.Name);
 		}
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.Name).equals('Ok')).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.Name).equals('Ok')).asList();
 
 		System.assertEquals(2, remaining.size());
 		for (Account acc : remaining) {
@@ -319,8 +319,8 @@ public class CollectionTest {
 
 	@IsTest
 	static void testMultipleFieldFilter() {
-		Collection l = Collection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
+		Collection c = Collection.of(testFilterAccounts());
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
 
 		System.assertEquals(1, filtered.size());
 		for (Account acc : filtered) {
@@ -328,7 +328,7 @@ public class CollectionTest {
 			System.assert(acc.AnnualRevenue > 100);
 		}
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
 
 		System.assertEquals(3, remaining.size());
 		for (Account acc : remaining) {
@@ -338,70 +338,70 @@ public class CollectionTest {
 
 	@IsTest
 	static void testSameFieldTokenExclusionCriteria() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.assertEquals(0, filtered.size());
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.assertEquals(4, remaining.size());
 	}
 
 	@IsTest
 	static void testSameFieldExclusionCriteria() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.assertEquals(0, filtered.size());
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.assertEquals(4, remaining.size());
 	}
 
 	@IsTest
 	static void testLongChaining() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
 		System.assertEquals(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
 		System.assertEquals(3, remaining.size());
 	}
 
 	@IsTest
 	static void testSameFieldSandwichCriteria() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.assertEquals(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.assertEquals(3, remaining.size());
 	}
 
 	@IsTest
 	static void testSameTokenSandwichCriteria() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.assertEquals(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) l.remove(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.assertEquals(3, remaining.size());
 	}
 
 	@IsTest
 	static void testComparisonFilter() {
-		Collection l = Collection.of(testFilterAccounts());
+		Collection c = Collection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) l.filter(Match.record(new Account(AnnualRevenue = 150))).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.record(new Account(AnnualRevenue = 150))).asList();
 		System.assertEquals(2, filtered.size());
 		for (Account acc : filtered) {
 			System.assertEquals(150, acc.AnnualRevenue);
 		}
 
-		List<Account> remaining = (List<Account>) l.remove(Match.record(new Account(AnnualRevenue = 150))).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.record(new Account(AnnualRevenue = 150))).asList();
 		System.assertEquals(2, remaining.size());
 		for (Account acc : remaining) {
 			System.assertNotEquals(150, acc.AnnualRevenue);
@@ -410,23 +410,52 @@ public class CollectionTest {
 
 	@IsTest
 	static void testListTyping() {
-		Collection l = Collection.of(testFilterAccounts());
-		List<sObject> filtered = l.filter(Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
+		Collection c = Collection.of(testFilterAccounts());
+		List<sObject> filtered = c.filter(Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
 		System.assert(filtered instanceof List<Account>);
 		System.assert(!(filtered instanceof List<Opportunity>));
 
-		List<sObject> filteredWithoutType = l.filter(Match.field(Account.AnnualRevenue).lt(150)).asList();
+		List<sObject> filteredWithoutType = c.filter(Match.field(Account.AnnualRevenue).lt(150)).asList();
 		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
 		System.assert(filteredWithoutType instanceof List<Account>);
 		System.assert(filteredWithoutType instanceof List<Opportunity>);
 
-		List<sObject> remaining = l.remove(Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
+		List<sObject> remaining = c.remove(Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
 		System.assert(remaining instanceof List<Account>);
 		System.assert(!(remaining instanceof List<Opportunity>));
 
-		List<sObject> remainingWithoutType = l.remove(Match.field(Account.AnnualRevenue).lt(150)).asList();
+		List<sObject> remainingWithoutType = c.remove(Match.field(Account.AnnualRevenue).lt(150)).asList();
 		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
 		System.assert(remainingWithoutType instanceof List<Account>);
 		System.assert(remainingWithoutType instanceof List<Opportunity>);
+	}
+
+	private class DoubleAmount implements SObjectToSObjectFunction {
+		public SObject apply(SObject record) {
+			record.put('Amount', 2 * (Decimal) record.get('Amount'));
+			return record;
+		}
+	}
+
+	@IsTest
+	static void testMapAll() {
+		List<Opportunity> opportunities = Collection.of(new List<Opportunity>{
+			new Opportunity(Amount = 100),
+			new Opportunity(Amount = 150)
+		}).mapAll(new DoubleAmount()).asList();
+		System.assertEquals(2, opportunities.size());
+		System.assertEquals(200, opportunities[0].Amount);
+		System.assertEquals(300, opportunities[1].Amount);
+	}
+
+	@IsTest
+	static void testMapSome() {
+		List<Opportunity> opportunities = Collection.of(new List<Opportunity>{
+			new Opportunity(Amount = 100),
+			new Opportunity(Amount = 150)
+		}).mapSome(Match.field('Amount').eq(100), new DoubleAmount()).asList();
+		System.assertEquals(2, opportunities.size());
+		System.assertEquals(200, opportunities[0].Amount);
+		System.assertEquals(150, opportunities[1].Amount);
 	}
 }

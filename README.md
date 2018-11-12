@@ -228,6 +228,22 @@ Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'A
 
 Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
 
+```java
+private class DoubleAmount implements SObjectToSObjectFunction {
+    public SObject apply(SObject record) {
+        record.put('Amount', 2 * (Decimal) record.get('Amount'));
+        return record;
+    }
+}
+
+List<Opportunity> opps = new List<Opportunity>{
+    new Opportunity(Amount = 100),
+    new Opportunity(Amount = 150)
+};
+
+Collection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
+```
+
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping all current view elements with `fn` |
@@ -236,6 +252,22 @@ Maps all elements of `Collection` view into another `Collection` view with the p
 <a name="map-some"></a>
 
 Returns a new `Collection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
+
+```java
+private class DoubleAmount implements SObjectToSObjectFunction {
+    public SObject apply(SObject record) {
+        record.put('Amount', 2 * (Decimal) record.get('Amount'));
+        return record;
+    }
+}
+
+List<Opportunity> opps = new List<Opportunity>{
+    new Opportunity(Amount = 100),
+    new Opportunity(Amount = 150)
+};
+
+Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); // 100 remains, but 150 has been doubled to 300
+```
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
