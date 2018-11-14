@@ -3,7 +3,7 @@
 Lambda allows functional constructs to be used with `SObject` collections through providing a class named `Collection`.
 A `Collection` is a view of the backing `SObject` collection, and is built from standard Apex collection classes:
 
-```java
+```apex
 List<Account> accounts = new List<Account>{
     new Account(Name = 'Foo', AnnualRevenue = 1000),
     new Account(Name = 'Bar', AnnualRevenue = 5000)
@@ -13,7 +13,7 @@ Collection accountCollection = Collection.of(accounts);
 
 `Collection` instance then offers functional methods like `filter` or `remove`:
 
-```java
+```apex
 Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(1000));
 Collection remaining = accountCollection.remove(Match.field(Account.Name).equals('Foo'));
 ```
@@ -21,7 +21,7 @@ Collection remaining = accountCollection.remove(Match.field(Account.Name).equals
 Methods which deal with collections return `Collection` views again. Standard Apex collection instances can be obtained from views 
 through `asList()` and `asSet()` methods.
 
-```java
+```apex
 List<Account> rawList = accountCollection.asList();
 Set<Account> rawSet = accountCollection.asSet();
 ```
@@ -45,7 +45,7 @@ Set<Account> rawSet = accountCollection.asSet();
 
 Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`:
 
-```java
+```apex
 Collection accountCollection = Collection.of(accounts);
 
 Account prototype = new Account(Name = 'Foo');
@@ -63,13 +63,13 @@ Collection fieldMatched = accountCollection.filter(Match.field(Account.Name).equ
 can be expanded with a new matching condition to get another `IncompleteFieldsMatch`. The process is continued until all 
 desired matching conditions are defined.
 
-```java
+```apex
 FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
 ```
 
 `FieldsMatch` can be provided directly to `filter` method:
 
-```java
+```apex
 Collection filtered = Collection.of(accounts).filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
 
@@ -119,7 +119,7 @@ Fields used in field conditions must be available on the collection which is fil
 `RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
 defined on a prototype record do not have to match.
 
-```java
+```apex
 Account prototype = new Account(
     Name = 'Test',
     AnnualRevenue = 50000000
@@ -142,7 +142,7 @@ Fields that are present on the *prototype* object must also be available on the 
 
 Plucks field values from a `Collection` view of records into a `List` of appropriate type.
 
-```java
+```apex
 List<Account> accounts = new List<Account>{
 	new Account(Name = 'Foo'),
 	new Account(Name = 'Bar')
@@ -153,7 +153,7 @@ List<String> names = Collection.of(accounts).pluckStrings(Account.Name);
 
 Pluck can also be used for deeper relations by using `String` field paths instead of `Schema.SObjectField` parameters.
 
-```java
+```apex
 List<Opportunity> opportunities = new List<Opportunity>{
 	new Opportunity(Account = new Account(Name = 'Foo')),
 	new Opportunity(Account = new Account(Name = 'Bar'))
@@ -184,7 +184,7 @@ List<String> accountNames = Collection.of(opportunities).pluckStrings('Account.N
 
 Groups records by values of a specified field.
 
-```java
+```apex
 Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunities).groupByDates(Opportunity.CloseDate, opportunities);
 ```
 
@@ -208,7 +208,7 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunit
 
 Returns a new `Collection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
-```java
+```apex
 List<Opportunity> opportunities = new List<Opportunity>{
 	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
 }
@@ -228,7 +228,7 @@ Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'A
 
 Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
 
-```java
+```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
     public SObject apply(SObject record) {
         record.put('Amount', 2 * (Decimal) record.get('Amount'));
@@ -253,7 +253,7 @@ Collection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 
 Returns a new `Collection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
 
-```java
+```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
     public SObject apply(SObject record) {
         record.put('Amount', 2 * (Decimal) record.get('Amount'));
@@ -278,7 +278,7 @@ Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); 
 
 Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
 
-```java
+```apex
 List<SObject> objects = new List<SObject>();
 List<Account> accounts = objects; // compiles!
 
@@ -288,7 +288,7 @@ List<SObject> objects = accounts; // compiles as well!
 
 An `SObject` list is an instance of any `SObject` “subclass” list!
 
-```java
+```apex
 List<SObject> objects = new List<SObject>();
 System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
@@ -297,7 +297,7 @@ System.debug(objects instanceof List<Opportunity>); // true
 Collection’s `asList()` and `asSet()` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient, but `instanceof` can provide unexpected results.
 A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
 
-```java
+```apex
 List<Account> filteredAccounts = accountCollection.asList();
 // List<SObject> returned!
 
