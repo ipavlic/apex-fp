@@ -26,6 +26,10 @@ List<Account> rawList = accountCollection.asList();
 Set<Account> rawSet = accountCollection.asSet();
 ```
 
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
+  <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 ## `Collection` functions
 
 - [`filter`](#filter)
