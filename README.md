@@ -1,29 +1,17 @@
-# Lambda
+<p align="center">
+  <h1 align="center"><img src="images/lambda.png" height="32"></h1>
+</p>
 
-Lambda allows functional constructs to be used with `SObject` collections through providing a class named `Collection`.
-A `Collection` is a view of the backing `SObject` collection, and is built from standard Apex collection classes:
+Using Lambda, you can get functional constructs for `SObject` collections!
 
 ```apex
 List<Account> accounts = new List<Account>{
-    new Account(Name = 'Foo', AnnualRevenue = 1000),
-    new Account(Name = 'Bar', AnnualRevenue = 5000)
+    new Account(Name = 'Foo', AnnualRevenue = 50000),
+    new Account(Name = 'Bar', AnnualRevenue = 30000)
 }
+
 Collection accountCollection = Collection.of(accounts);
-```
-
-`Collection` instance then offers functional methods like `filter` or `remove`:
-
-```apex
-Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(1000));
-Collection remaining = accountCollection.remove(Match.field(Account.Name).equals('Foo'));
-```
-
-Methods which deal with collections return `Collection` views again. Standard Apex collection instances can be obtained from views 
-through `asList()` and `asSet()` methods.
-
-```apex
-List<Account> rawList = accountCollection.asList();
-Set<Account> rawSet = accountCollection.asSet();
+Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
 ```
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
