@@ -220,6 +220,11 @@ Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'A
 
 Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
 
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping all current view elements with `fn` |
+
+
 ```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
     public SObject apply(SObject record) {
@@ -236,9 +241,16 @@ List<Opportunity> opps = new List<Opportunity>{
 Collection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 ```
 
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping all current view elements with `fn` |
+One `SObjectToSObjectFunction` is provided out of the box, `RecordTransform`. It is instantiated through a factory method on `Transform`:
+
+#### `RecordTransform`
+
+`RecordTransform` copies all defined fields from `prototype` record to the record it is applied to. Values of fields defined for `prototype` are overwritten on
+target records. Other fields on target record are not modified.
+
+```apex
+Collection.of(opps).mapAll(Transform.record(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
+```
 
 ### `mapSome`
 <a name="map-some"></a>

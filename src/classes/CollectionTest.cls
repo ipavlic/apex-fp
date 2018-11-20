@@ -458,4 +458,14 @@ public class CollectionTest {
 		System.assertEquals(200, opportunities[0].Amount);
 		System.assertEquals(150, opportunities[1].Amount);
 	}
+
+	@IsTest
+	static void testMapWithTransform() {
+		List<Opportunity> opportunities = Collection.of(new List<Opportunity>{
+			new Opportunity(Amount = 100),
+			new Opportunity(Amount = 150)
+		}).mapAll(Transform.record(new Opportunity(Amount = 123))).asList();
+		System.assertEquals(123, opportunities[0].Amount);
+		System.assertEquals(123, opportunities[1].Amount);
+	}
 }
