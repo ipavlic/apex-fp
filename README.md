@@ -2,7 +2,7 @@
   <h1 align="center"><img src="images/lambda.png" height="32"></h1>
 </p>
 
-Using Lambda, you can get functional constructs for `SObject` collections!
+Lambda provides functional constructs for `SObject` collections!
 
 ```apex
 List<Account> accounts = new List<Account>{
@@ -11,7 +11,10 @@ List<Account> accounts = new List<Account>{
 }
 
 Collection accountCollection = Collection.of(accounts);
+
 Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
+Collection mapped = filtered.mapAll(Transform.record(new Account(High_Value__c = true)));
+Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 ```
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
