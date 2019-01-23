@@ -2,317 +2,494 @@ public with sharing class Collection {
 
 	private List<SObject> records;
 
+
+	// CONSTRUCT
+
 	public static Collection of(Iterable<SObject> records) {
 		return new Collection(records);
 	}
+
 
 	public static Collection of(Set<SObject> records) {
 		return new Collection(new List<SObject>(records));
 	}
 
+
 	private Collection(Iterable<SObject> records) {
 		this.records = new List<SObject>();
+
 		Iterator<SObject> iter = records.iterator();
-		while (iter.hasNext()) {
+
+		while(iter.hasNext()) {
 			this.records.add(iter.next());
 		}
 	}
+
+
+	// CONVERT
 
 	public List<SObject> asList() {
 		return new List<SObject>(records);
 	}
 
+
 	public List<SObject> asList(Type listType) {
-		List<SObject> typedList = (List<SObject>) listType.newInstance();
+		List<SObject> typedList =(List<SObject>) listType.newInstance();
 		typedList.addAll(records);
 		return typedList;
 	}
+
 
 	public Set<SObject> asSet() {
 		return new Set<SObject>(records);
 	}
 
+
 	public Set<SObject> asSet(Type setType) {
-		Set<SObject> typedSet = (Set<SObject>) setType.newInstance();
+		Set<SObject> typedSet =(Set<SObject>) setType.newInstance();
 		typedSet.addAll(records);
 		return typedSet;
 	}
 
+
+	public Map<Id, SObject> asMap() {
+		return new Map<Id, SObject>(records);
+	}
+
+
+	public Map<Id, SObject> asMap(Type mapType) {
+		Map<Id, SObject> typedMap =(Map<Id, SObject>) mapType.newInstance();
+		typedMap.putAll(records);
+		return typedMap;
+	}
+
+
+	// FILTER
+
 	public Collection filter(SObjectPredicate predicate) {
-		List<SObject> filtered = new List<SObject>();
-		for (SObject record : records) {
-			if (predicate.apply(record)) {
-				filtered.add(record);
+		List<SObject> result = new List<SObject>();
+
+		for(SObject record : records) {
+			if(predicate.apply(record)) {
+				result.add(record);
 			}
 		}
-		return Collection.of(filtered);
+
+		return Collection.of(result);
 	}
+
 
 	public Collection remove(SObjectPredicate predicate) {
-		List<SObject> remaining = new List<SObject>();
-		for (SObject record : records) {
-			if (!predicate.apply(record)) {
-				remaining.add(record);
+		List<SObject> result = new List<SObject>();
+
+		for(SObject record : records) {
+			if(!predicate.apply(record)) {
+				result.add(record);
 			}
 		}
-		return Collection.of(remaining);
+
+		return Collection.of(result);
 	}
 
-	public List<Boolean> pluckBooleans(Schema.SObjectField field) {
-		List<Boolean> results = new List<Boolean>();
-		for (SObject rec : records) {
-			results.add((Boolean)rec.get(field));
-		}
-		return results;
-	}
 
-	public List<Boolean> pluckBooleans(String relation) {
-		List<Boolean> results = new List<Boolean>();
+	// EXTRACT
+
+	public List<Boolean> booleans(String fieldPath) {
+		List<Boolean> result = new List<Boolean>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((Boolean)reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((Boolean)reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public List<Date> pluckDates(Schema.SObjectField field) {
-		List<Date> results = new List<Date>();
-		for (SObject rec : records) {
-			results.add((Date)rec.get(field));
-		}
-		return results;
+
+	public List<Boolean> booleans(SObjectField field) {
+		return booleans(''+field);
 	}
 
-	public List<Date> pluckDates(String relation) {
-		List<Date> results = new List<Date>();
+
+	public Set<Boolean> booleanSet(SObjectField field) {
+		return new Set<Boolean>( booleans(field) );
+	}
+
+
+	public Set<Boolean> booleanSet(String fieldPath) {
+		return booleanSet('' + fieldPath);
+	}
+
+
+	public List<Date> dates(String fieldPath) {
+		List<Date> result = new List<Date>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((Date)reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((Date)reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public List<Datetime> pluckDatetimes(Schema.SObjectField field) {
-		List<Datetime> results = new List<Datetime>();
-		for (SObject rec : records) {
-			results.add((Datetime)rec.get(field));
-		}
-		return results;
+
+	public List<Date> dates(SObjectField field) {
+		return dates(''+field);
 	}
 
-	public List<Datetime> pluckDatetimes(String relation) {
-		List<Datetime> results = new List<Datetime>();
+
+	public Set<Date> dateSet(String field) {
+		return new Set<Date>(dates(field));
+	}
+
+
+	public Set<Date> dateSet(SObjectField field) {
+		return dateSet('' + field);
+	}
+
+
+	public List<Datetime> datetimes(String fieldPath) {
+		List<Datetime> result = new List<Datetime>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((Datetime)reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((Datetime)reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public List<Decimal> pluckDecimals(Schema.SObjectField field) {
-		List<Decimal> results = new List<Decimal>();
-		for (SObject rec : records) {
-			results.add((Decimal)rec.get(field));
-		}
-		return results;
+
+	public List<Datetime> datetimes(SObjectField field) {
+		return datetimes('' + field);
 	}
 
-	public List<Decimal> pluckDecimals(String relation) {
-		List<Decimal> results = new List<Decimal>();
+
+	public Set<Datetime> datetimeSet(String field) {
+		return new Set<Datetime>(datetimes(field));
+	}
+
+
+	public Set<Datetime> datetimeSet(SObjectField field) {
+		return datetimeSet('' + field);
+	}
+
+
+	public List<Decimal> decimals(String fieldPath) {
+		List<Decimal> result = new List<Decimal>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((Decimal)reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((Decimal)reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public List<Id> pluckIds() {
-		List<Id> results = new List<Id>();
-		for (SObject rec : records) {
-			results.add(rec.Id);
-		}
-		return results;
+
+	public List<Decimal> decimals(SObjectField field) {
+		return decimals(''+field);
 	}
 
-	public List<Id> pluckIds(Schema.SObjectField field) {
-		List<Id> results = new List<Id>();
-		for (SObject rec : records) {
-			results.add((Id)rec.get(field));
-		}
-		return results;
+
+	public Set<Decimal> decimalSet(String field) {
+		return new Set<Decimal>(decimals(field));
 	}
 
-	public List<Id> pluckIds(String relation) {
-		List<Id> results = new List<Id>();
+
+	public Set<Decimal> decimalSet(SObjectField field) {
+		return decimalSet(''+field);
+	}
+
+
+	public List<Id> ids(String fieldPath) {
+		List<Id> result = new List<Id>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((Id)reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((Id) reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public List<String> pluckStrings(Schema.SObjectField field) {
-		List<String> results = new List<String>();
-		for (SObject rec : records) {
-			results.add((String)rec.get(field));
-		}
-		return results;
+	public List<Id> ids() {
+		return ids('Id');
 	}
 
-	public List<String> pluckStrings(String relation) {
-		List<String> results = new List<String>();
+
+	public List<Id> ids(SObjectField field) {
+		return ids(''+field);
+	}
+
+
+	public Set<Id> idSet() {
+		return idSet('Id');
+	}
+
+
+	public Set<Id> idSet(String field) {
+		return new Set<Id>(ids(field));
+	}
+
+
+	public Set<Id> idSet(SObjectField field) {
+		return idSet(''+field);
+	}
+
+
+	public List<String> strings(SObjectField field) {
+		return strings(''+field);
+	}
+
+
+	public List<String> strings(String fieldPath) {
+		List<String> result = new List<String>();
+
 		SObjectFieldReader reader = new SObjectFieldReader();
-		for (SObject rec : records) {
-			results.add((String) reader.read(rec, relation));
+
+		for(SObject record : records) {
+			result.add((String) reader.read(record, fieldPath));
 		}
-		return results;
+
+		return result;
 	}
 
-	public Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field, Type listType) {
-		Map<Boolean, List<SObject>> grouped = new Map<Boolean, List<SObject>>();
-		for (SObject rec : records) {
-			Boolean key = (Boolean) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Set<String> stringSet(String field) {
+		return new Set<String>(strings(field));
 	}
 
-	public Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field) {
+
+	public Set<String> stringSet(SObjectField field) {
+		return stringSet(''+field);
+	}
+
+
+	// GROUP
+
+	public Map<Boolean, List<SObject>> groupByBooleans(SObjectField field) {
+		return groupByBooleans(''+field);
+	}
+
+
+	public Map<Boolean, List<SObject>> groupByBooleans(String field) {
 		return groupByBooleans(field, List<SObject>.class);
 	}
 
-	public Map<Date, List<SObject>> groupByDates(Schema.SObjectField field, Type listType) {
-		Map<Date, List<SObject>> grouped = new Map<Date, List<SObject>>();
-		for (SObject rec : records) {
-			Date key = (Date) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Map<Boolean, List<SObject>> groupByBooleans(SObjectField field, Type listType) {
+		return groupByBooleans(''+field, listType);
 	}
 
-	public Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field) {
+
+	public Map<Boolean, List<SObject>> groupByBooleans(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, Boolean.class, listType);
+		return (Map<Boolean, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Boolean, List<SObject>>.class);
+	}
+
+
+	public Map<Datetime, List<SObject>> groupByDatetimes(SObjectField field) {
+		return groupByDatetimes(''+field);
+	}
+
+
+	public Map<Datetime, List<SObject>> groupByDatetimes(String field) {
 		return groupByDatetimes(field, List<SObject>.class);
 	}
 
-	public Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field, Type listType) {
-		Map<Datetime, List<SObject>> grouped = new Map<Datetime, List<SObject>>();
-		for (SObject rec : records) {
-			Datetime key = (Datetime) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Map<Datetime, List<SObject>> groupByDatetimes(SObjectField field, Type listType) {
+		return groupByDatetimes(''+field, listType);
 	}
 
-	public Map<Date, List<SObject>> groupByDates(Schema.SObjectField field) {
+
+	public Map<Datetime, List<SObject>> groupByDatetimes(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, Datetime.class, listType);
+		return (Map<Datetime, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Datetime, List<SObject>>.class);
+	}
+
+
+	public Map<Date, List<SObject>> groupByDates(SObject field) {
+		return groupByDates(''+field);
+	}
+
+
+	public Map<Date, List<SObject>> groupByDates(String field) {
 		return groupByDates(field, List<SObject>.class);
 	}
 
-	public Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field, Type listType) {
-		Map<Decimal, List<SObject>> grouped = new Map<Decimal, List<SObject>>();
-		for (SObject rec : records) {
-			Decimal key = (Decimal) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Map<Date, List<SObject>> groupByDates(SObjectField field, Type listType) {
+		return groupByDates(''+field, listType);
 	}
 
-	public Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field) {
+
+	public Map<Date, List<SObject>> groupByDates(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, Date.class, listType);
+		return (Map<Date, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Date, List<SObject>>.class);
+	}
+
+
+	public Map<Decimal, List<SObject>> groupByDecimals(SObjectField field) {
+		return groupByDecimals(''+field);
+	}
+
+
+	public Map<Decimal, List<SObject>> groupByDecimals(String field) {
 		return groupByDecimals(field, List<SObject>.class);
 	}
 
-	public Map<Id, List<SObject>> groupByIds(Schema.SObjectField field, Type listType) {
-		Map<Id, List<SObject>> grouped = new Map<Id, List<SObject>>();
-		for (SObject rec : records) {
-			Id key = (Id) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Map<Decimal, List<SObject>> groupByDecimals(SObjectField field, Type listType) {
+		return groupByDecimals(''+field, listType);
 	}
 
-	public Map<Id, List<SObject>> groupByIds(Schema.SObjectField field) {
+
+	public Map<Decimal, List<SObject>> groupByDecimals(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, Decimal.class, listType);
+		return (Map<Decimal, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Decimal, List<SObject>>.class);
+	}
+
+
+	public Map<Id, List<SObject>> groupByIds(SObjectField field) {
+		return groupByIds(''+field);
+	}
+
+
+	public Map<Id, List<SObject>> groupByIds(String field) {
 		return groupByIds(field, List<SObject>.class);
 	}
 
-	public Map<String, List<SObject>> groupByStrings(Schema.SObjectField field, Type listType) {
-		Map<String, List<SObject>> grouped = new Map<String, List<SObject>>();
-		for (SObject rec : records) {
-			String key = (String) rec.get(field);
-			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
-			}
-			grouped.get(key).add(rec);
-		}
-		return grouped;
+
+	public Map<Id, List<SObject>> groupByIds(SObjectField field, Type listType) {
+		return groupByIds(''+field, listType);
 	}
 
-	public Map<String, List<SObject>> groupByStrings(Schema.SObjectField field) {
+
+	public Map<Id, List<SObject>> groupByIds(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, Id.class, listType);
+		return (Map<Id, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Id, List<SObject>>.class);
+	}
+
+
+	public Map<String, List<SObject>> groupByStrings(SObjectField field) {
+		return groupByStrings(''+field);
+	}
+
+
+	public Map<String, List<SObject>> groupByStrings(String field) {
 		return groupByStrings(field, List<SObject>.class);
 	}
 
-	public Collection pick(List<Schema.SObjectField> fields) {
-		return pick(new Set<Schema.SObjectField>(fields));
+
+	public Map<String, List<SObject>> groupByStrings(SObjectField field, Type listType) {
+		return groupByStrings(''+field, listType);
 	}
 
-	public Collection pick(Set<Schema.SObjectField> fields) {
-		Set<String> fieldNames = new Set<String>();
-		for (Schema.SObjectField field : fields) {
-			Schema.DescribeFieldResult describe = field.getDescribe();
-			fieldNames.add(describe.getName());
+
+	public Map<String, List<SObject>> groupByStrings(String field, Type listType) {
+		Map<Object, List<SObject>> result = groupByObjects(field, String.class, listType);
+		return (Map<String, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<String, List<SObject>>.class);
+	}
+
+
+	public Map<Object, List<SObject>> groupByObjects(String field, Type objectType, Type listType) {
+		Map<Object, List<SObject>> result = new Map<Object, List<SObject>>();
+
+		for(SObject record : records) {
+			Object key = JSON.deserialize(JSON.serialize(record.get(field)), objectType);
+
+			if(!result.containsKey(key)) {
+				result.put(key,(List<SObject>) listType.newInstance());
+			}
+
+			result.get(key).add(record);
 		}
-		return pick(fieldNames);
+
+		return result;
 	}
 
-	public Collection pick(Set<String> apiFieldNames) {
+
+	// PICK
+
+	public Collection pick(List<SObjectField> fields) {
+		return pick(stringList(fields));
+	}
+
+
+	public Collection pick(Set<SObjectField> fields) {
+		return pick(new List<SObjectField>(fields));
+	}
+
+	public Collection pick(Set<String> fields) {
 		List<SObject> picked = new List<SObject>();
-		for (SObject record : records) {
+
+		for(SObject record : records) {
 			SObject result = record.getSObjectType().newSObject();
 			Map<String, Object> fieldMap = record.getPopulatedFieldsAsMap();
-			for (String fieldName : apiFieldNames) {
-				if (fieldMap.containsKey(fieldName)) {
+
+			for(String fieldName : fields) {
+				if(fieldMap.containsKey(fieldName)) {
 					result.put(fieldName, record.get(fieldName));
 				}
 			}
+
 			picked.add(result);
 		}
+
 		return Collection.of(picked);
 	}
 
-	public Collection pick(List<String> apiFieldNames) {
-		return pick(new Set<String>(apiFieldNames));
+
+	public Collection pick(List<String> fields) {
+		return pick(new Set<String>(fields));
 	}
+
+
+	// MAP
 
 	public Collection mapAll(SObjectToSObjectFunction fn) {
-		List<SObject> mapped = new List<SObject>();
-		for (SObject record : records) {
-			mapped.add(fn.apply(record));
+		List<SObject> result = new List<SObject>();
+
+		for(SObject record : records) {
+			result.add(fn.apply(record));
 		}
-		return Collection.of(mapped);
+
+		return Collection.of(result);
 	}
 
+
 	public Collection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
-		List<SObject> transformed = new List<SObject>();
-		for (SObject record : records) {
-			if (predicate.apply(record)) {
-				transformed.add(fn.apply(record));
-			} else {
-				transformed.add(record);
+		List<SObject> result = new List<SObject>();
+
+		for(SObject record : records) {
+			if(predicate.apply(record)) {
+				result.add(fn.apply(record));
+			}
+			else {
+				result.add(record);
 			}
 		}
-		return Collection.of(transformed);
+
+		return Collection.of(result);
+	}
+
+
+	// PRIVATE
+
+	private List<String> stringList(List<SObjectField> fields) {
+		List<String> result = new List<String>();
+
+		for(SObjectField f : fields) {
+			result.add(''+f);
+		}
+
+		return result;
 	}
 }
