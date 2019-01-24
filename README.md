@@ -38,7 +38,7 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 |-------------------|--------|-------------|
 | `Collection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `Collection` view of records that satisfied predicate |
 
-Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`:
+Three predicates are provided out of the box, `FieldsMatch`, `RecordMatch` and `ChangeMatch`. They are instantiated through factory methods on `Match`:
 
 ```apex
 Collection accountCollection = Collection.of(accounts);

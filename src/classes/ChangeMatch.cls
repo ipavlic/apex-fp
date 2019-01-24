@@ -3,6 +3,7 @@ public class ChangeMatch implements SObjectPredicate {
 	private Map<Id, SObject> other;
 	private Set<String> fields = new Set<String>();
 
+
 	// CONSTRUCTOR
 
 	public ChangeMatch(Map<Id, SObject> other) {

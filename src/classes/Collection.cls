@@ -100,7 +100,7 @@ public with sharing class Collection {
 		SObjectFieldReader reader = new SObjectFieldReader();
 
 		for(SObject record : records) {
-			result.add((Boolean)reader.read(record, fieldPath));
+			result.add((Boolean) reader.read(record, fieldPath));
 		}
 
 		return result;
@@ -128,7 +128,7 @@ public with sharing class Collection {
 		SObjectFieldReader reader = new SObjectFieldReader();
 
 		for(SObject record : records) {
-			result.add((Date)reader.read(record, fieldPath));
+			result.add((Date) reader.read(record, fieldPath));
 		}
 
 		return result;
@@ -156,7 +156,7 @@ public with sharing class Collection {
 		SObjectFieldReader reader = new SObjectFieldReader();
 
 		for(SObject record : records) {
-			result.add((Datetime)reader.read(record, fieldPath));
+			result.add((Datetime) reader.read(record, fieldPath));
 		}
 
 		return result;
@@ -184,7 +184,7 @@ public with sharing class Collection {
 		SObjectFieldReader reader = new SObjectFieldReader();
 
 		for(SObject record : records) {
-			result.add((Decimal)reader.read(record, fieldPath));
+			result.add((Decimal) reader.read(record, fieldPath));
 		}
 
 		return result;
@@ -289,8 +289,14 @@ public with sharing class Collection {
 
 
 	public Map<Boolean, List<SObject>> groupByBooleans(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, Boolean.class, listType);
-		return (Map<Boolean, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Boolean, List<SObject>>.class);
+		Map<Boolean, List<SObject>> result = new Map<Boolean, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((Boolean) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
@@ -310,8 +316,14 @@ public with sharing class Collection {
 
 
 	public Map<Datetime, List<SObject>> groupByDatetimes(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, Datetime.class, listType);
-		return (Map<Datetime, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Datetime, List<SObject>>.class);
+		Map<Datetime, List<SObject>> result = new Map<Datetime, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((Datetime) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
@@ -331,8 +343,14 @@ public with sharing class Collection {
 
 
 	public Map<Date, List<SObject>> groupByDates(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, Date.class, listType);
-		return (Map<Date, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Date, List<SObject>>.class);
+		Map<Date, List<SObject>> result = new Map<Date, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((Date) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
@@ -352,8 +370,14 @@ public with sharing class Collection {
 
 
 	public Map<Decimal, List<SObject>> groupByDecimals(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, Decimal.class, listType);
-		return (Map<Decimal, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Decimal, List<SObject>>.class);
+		Map<Decimal, List<SObject>> result = new Map<Decimal, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((Decimal) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
@@ -373,8 +397,14 @@ public with sharing class Collection {
 
 
 	public Map<Id, List<SObject>> groupByIds(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, Id.class, listType);
-		return (Map<Id, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<Id, List<SObject>>.class);
+		Map<Id, List<SObject>> result = new Map<Id, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((Id) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
@@ -394,16 +424,22 @@ public with sharing class Collection {
 
 
 	public Map<String, List<SObject>> groupByStrings(String field, Type listType) {
-		Map<Object, List<SObject>> result = groupByObjects(field, String.class, listType);
-		return (Map<String, List<SObject>>) JSON.deserialize(JSON.serialize(result), Map<String, List<SObject>>.class);
+		Map<String, List<SObject>> result = new Map<String, List<SObject>>();
+
+		Map<Object, List<SObject>> grouped = groupByObjects(field, listType);
+		for(Object key : grouped.keySet()) {
+			result.put((String) key, grouped.get(key));
+		}
+
+		return result;
 	}
 
 
-	public Map<Object, List<SObject>> groupByObjects(String field, Type objectType, Type listType) {
+	public Map<Object, List<SObject>> groupByObjects(String field, Type listType) {
 		Map<Object, List<SObject>> result = new Map<Object, List<SObject>>();
 
 		for(SObject record : records) {
-			Object key = JSON.deserialize(JSON.serialize(record.get(field)), objectType);
+			Object key = record.get(field);
 
 			if(!result.containsKey(key)) {
 				result.put(key,(List<SObject>) listType.newInstance());
