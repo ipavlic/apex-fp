@@ -127,6 +127,21 @@ Collection filtered = accountCollection.filter(Match.record(prototype));
 
 Fields that are present on the *prototype* object must also be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
+#### `ChangeMatch`
+
+`ChangeMatch` compares two record lists and returns `true` if fields defined using the `at()` method have different values.
+This can be used to detect changes in Triggers.
+
+```apex
+List<Account> old = Trigger.old;
+List<Account> accounts = Trigger.new;
+
+Collection.of(accounts).filter(Change.of(old).at(Account.Name));
+Collection.of(accounts).filter(Change.of(old).at('RecordType'));
+Collection.of(accounts).filter(Change.of(old).at(new List<SObjectField>{ Account.Name, Account.Phone }));
+
+```
+
 ### `remove`
 <a name="remove"></a>
 
