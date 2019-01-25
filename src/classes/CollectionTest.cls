@@ -128,9 +128,43 @@ public class CollectionTest {
 	}
 
 	@IsTest
+	public static void testGroupByStringsApiFieldName() {
+		Collection c = Collection.of(testAccounts());
+		Map<String, List<Account>> accountsByName = c.groupByStrings('Name');
+		System.assertEquals(2, accountsByName.size());
+		System.assert(accountsByName.keySet().contains('Foo'));
+		System.assert(accountsByName.keySet().contains('Bar'));
+		System.assertEquals(2, accountsByName.get('Foo').size());
+		System.assertEquals(2, accountsByName.get('Bar').size());
+		for (Account a : accountsByName.get('Foo')) {
+			System.assertEquals('Foo', a.Name);
+		}
+		for (Account a : accountsByName.get('Bar')) {
+			System.assertEquals('Bar', a.Name);
+		}
+	}
+
+	@IsTest
 	public static void testGroupByStringTyping() {
 		Collection c = Collection.of(testAccounts());
 		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
+		List<Account> fooAccounts = accountsByName.get('Foo');
+		List<SObject> objects = fooAccounts;
+		// since fooAccounts points to a returned list of SObjects, it can be anything!
+		System.assert(objects instanceof List<Opportunity>);
+
+		accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
+		fooAccounts = accountsByName.get('Foo');
+		objects = fooAccounts;
+		// this time around, it works fine!
+		System.assert(!(objects instanceof List<Opportunity>));
+		System.assert(objects instanceof List<Account>);
+	}
+
+	@IsTest
+	public static void testGroupByStringTypingApiFieldName() {
+		Collection c = Collection.of(testAccounts());
+		Map<String, List<Account>> accountsByName = c.groupByStrings('Name');
 		List<Account> fooAccounts = accountsByName.get('Foo');
 		List<SObject> objects = fooAccounts;
 		// since fooAccounts points to a returned list of SObjects, it can be anything!
@@ -161,9 +195,39 @@ public class CollectionTest {
 	}
 
 	@IsTest
+	public static void testGroupByDecimalsApiFieldName() {
+		Collection c = Collection.of(testAccounts());
+		Map<Decimal, List<Account>> accountsByRevenue = c.groupByDecimals('AnnualRevenue');
+		System.assertEquals(3, accountsByRevenue.size());
+		System.assert(accountsByRevenue.keySet().contains(60));
+		System.assert(accountsByRevenue.keySet().contains(100));
+		System.assert(accountsByRevenue.keySet().contains(150));
+		System.assertEquals(1, accountsByRevenue.get(60).size());
+		System.assertEquals(1, accountsByRevenue.get(100).size());
+		System.assertEquals(2, accountsByRevenue.get(150).size());
+		for (Account a : accountsByRevenue.get(150)) {
+			System.assertEquals(150.0, a.AnnualRevenue);
+		}
+	}
+
+	@IsTest
 	public static void testGroupByIds() {
 		Collection c = Collection.of(testAccounts());
 		Map<Id, List<Account>> accountsByOwners = c.groupByIds(Account.OwnerId);
+		System.assertEquals(2, accountsByOwners.size());
+		System.assert(accountsByOwners.keySet().contains(firstUserId));
+		System.assert(accountsByOwners.keySet().contains(secondUserId));
+		System.assertEquals(2, accountsByOwners.get(firstUserId).size());
+		System.assertEquals(2, accountsByOwners.get(secondUserId).size());
+		for (Account a : accountsByOwners.get(firstUserId)) {
+			System.assertEquals(firstUserId, a.OwnerId);
+		}
+	}
+
+	@IsTest
+	public static void testGroupByIdsApiFieldName() {
+		Collection c = Collection.of(testAccounts());
+		Map<Id, List<Account>> accountsByOwners = c.groupByIds('OwnerId');
 		System.assertEquals(2, accountsByOwners.size());
 		System.assert(accountsByOwners.keySet().contains(firstUserId));
 		System.assert(accountsByOwners.keySet().contains(secondUserId));
@@ -182,6 +246,24 @@ public class CollectionTest {
 			new User(Title = 'Baz', IsActive = false)
 		});
 		Map<Boolean, List<User>> usersByActive = c.groupByBooleans(User.IsActive);
+		System.assertEquals(2, usersByActive.size());
+		System.assert(usersByActive.keySet().contains(true));
+		System.assert(usersByActive.keySet().contains(false));
+		System.assertEquals(2, usersByActive.get(true).size());
+		System.assertEquals(1, usersByActive.get(false).size());
+		for (User u : usersByActive.get(true)) {
+			System.assertEquals(true, u.IsActive);
+		}
+	}
+
+	@IsTest
+	public static void testGroupByBooleansApiFieldName() {
+		Collection c = Collection.of(new List<User>{
+			new User(Title = 'Foo', IsActive = true),
+			new User(Title = 'Bar', IsActive = true),
+			new User(Title = 'Baz', IsActive = false)
+		});
+		Map<Boolean, List<User>> usersByActive = c.groupByBooleans('IsActive');
 		System.assertEquals(2, usersByActive.size());
 		System.assert(usersByActive.keySet().contains(true));
 		System.assert(usersByActive.keySet().contains(false));

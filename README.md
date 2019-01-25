@@ -187,16 +187,28 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunit
 |-------------------|--------|-------------|
 | `Map<Boolean, List<SObject>>` | `groupByBooleans(Schema.SObjectField field)` | Groups records by Boolean `field` values |
 | `Map<Boolean, List<SObject>>` | `groupByBooleans(Schema.SObjectField field, Type listType)` | Groups records by Boolean `field` values, with specified list type |
+| `Map<Boolean, List<SObject>>` | `groupByBooleans(String apiFieldName)` | Groups records by Boolean `apiFieldName` values |
+| `Map<Boolean, List<SObject>>` | `groupByBooleans(String apiFieldName, Type listType)` | Groups records by Boolean `apiFieldName` values, with specified list type |
 | `Map<Date, List<SObject>>` | `groupByDates(Schema.SObjectField field)` | Groups records by Date `field` values |
 | `Map<Date, List<SObject>>` | `groupByDates(Schema.SObjectField field, Type listType)` | Groups records by Date `field` values, with specified list type |
+| `Map<Date, List<SObject>>` | `groupByDates(String apiFieldName)` | Groups records by Date `apiFieldName` values |
+| `Map<Date, List<SObject>>` | `groupByDates(String apiFieldName, Type listType)` | Groups records by Date `apiFieldName` values, with specified list type |
 | `Map<Date, List<SObject>>` | `groupByDatetimes(Schema.SObjectField field)` | Groups records by Datetime `field` values |
 | `Map<Date, List<SObject>>` | `groupByDatetimes(Schema.SObjectField field, Type listType)` | Groups records by Datetime `field` values, with specified list type |
+| `Map<Date, List<SObject>>` | `groupByDatetimes(String apiFieldName)` | Groups records by Datetime `apiFieldName` values |
+| `Map<Date, List<SObject>>` | `groupByDatetimes(String apiFieldName, Type listType)` | Groups records by Datetime `apiFieldName` values, with specified list type |
 | `Map<Decimal, List<SObject>>` | `groupByDecimals(Schema.SObjectField field)` | Groups records by numeric `field` values |
 | `Map<Decimal, List<SObject>>` | `groupByDecimals(Schema.SObjectField field, Type listType)` | Groups records by numeric `field` values, with specified list type |
+| `Map<Decimal, List<SObject>>` | `groupByDecimals(String apiFieldName)` | Groups records by numeric `apiFieldName` values |
+| `Map<Decimal, List<SObject>>` | `groupByDecimals(String apiFieldName, Type listType)` | Groups records by numeric `apiFieldName` values, with specified list type |
 | `Map<Id, List<SObject>>` | `groupByIds(Schema.SObjectField field)` | Groups records by Id `field` values |
 | `Map<Id, List<SObject>>` | `groupByIds(Schema.SObjectField field, Type listType)` | Groups records by Id `field` values, with specified list type |
+| `Map<Id, List<SObject>>` | `groupByIds(String apiFieldName)` | Groups records by Id `apiFieldName` values |
+| `Map<Id, List<SObject>>` | `groupByIds(String apiFieldName, Type listType)` | Groups records by Id `apiFieldName` values, with specified list type |
 | `Map<String, List<SObject>>` | `groupByStrings(Schema.SObjectField field)` | Groups records by String `field` values |
 | `Map<String, List<SObject>>` | `groupByStrings(Schema.SObjectField field, Type listType)` | Groups records by String `field` values, with specified list type |
+| `Map<String, List<SObject>>` | `groupByStrings(String apiFieldName)` | Groups records by String `apiFieldName` values |
+| `Map<String, List<SObject>>` | `groupByStrings(String apiFieldName, Type listType)` | Groups records by String `apiFieldName` values, with specified list type |
 
 ### `pick`
 <a name="pick"></a>
