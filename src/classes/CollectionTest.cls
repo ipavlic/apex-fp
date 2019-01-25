@@ -14,6 +14,19 @@ public class CollectionTest {
 	}
 
 	@IsTest
+	public static void testAsMap() {
+		Map<Id, SObject> recordMap = Collection.of(testAccounts()).asMap();
+		System.assertEquals(4, recordMap.size());
+	}
+
+	@IsTest
+	public static void testAsTypedMap() {
+		List<Account> accounts = testAccounts();
+		Map<Id, Account> accountMap = (Map<Id, Account>) Collection.of(accounts).asMap(Map<Id, Account>.class);
+		System.assertEquals(accounts[0], accountMap.get(accounts[0].Id));
+	}
+
+	@IsTest
 	public static void testPluckDecimals() {
 		List<Decimal> revenues = Collection.of(testAccounts()).pluckDecimals(Account.AnnualRevenue);
 		System.assertEquals(4, revenues.size());

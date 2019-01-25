@@ -38,6 +38,16 @@ public with sharing class Collection {
 		return typedSet;
 	}
 
+	public Map<Id, SObject> asMap() {
+		return new Map<Id, SObject>(records);
+	}
+
+	public Map<Id, SObject> asMap(Type mapType) {
+		Map<Id, SObject> typedMap = (Map<Id, SObject>) mapType.newInstance();
+		typedMap.putAll(records);
+		return typedMap;
+	}
+
 	public Collection filter(SObjectPredicate predicate) {
 		List<SObject> filtered = new List<SObject>();
 		for (SObject record : records) {

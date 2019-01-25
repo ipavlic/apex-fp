@@ -283,7 +283,7 @@ Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); 
 ## Important notes on the type system in Apex
 <a name="type-system"></a>
 
-Apex allows assignment of `SObject` collection to its “subclass”, and the other way around:
+Apex allows assignment of `SObject` lists and sets to its “subclass”, and the other way around:
 
 ```apex
 List<SObject> objects = new List<SObject>();
@@ -301,7 +301,7 @@ System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
 ```
 
-Collection’s `asList()` and `asSet()` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient, but `instanceof` can provide unexpected results.
+Collection’s `asList()` and `asSet()` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is not required in either case, but `instanceof` can provide unexpected results.
 A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
 
 ```apex
@@ -310,4 +310,16 @@ List<Account> filteredAccounts = accountCollection.asList();
 
 List<Account> filteredAccounts = accountCollection.asList(List<Account>.class);
 // List<Account> returned!
+```
+
+Collection also provides `asMap()` which returns a raw `Map<Id, SObject>`. Properly typed maps cannot be used without a cast.
+
+```apex
+Map<Id, Account> accountMap = accountCollection.asMap(); // Illegal assignment from Map<Id, SObject> to Map<Id, Account>
+Map<Id, SObject> recordMap = accountCollection.asMap(); // Works!
+```
+
+For typed maps, both a cast and the correct concrete type must be provided:
+```apex
+Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, Account>.class); // Works!
 ```
