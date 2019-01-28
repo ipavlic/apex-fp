@@ -563,4 +563,14 @@ public class CollectionTest {
 		System.assertEquals(123, opportunities[0].Amount);
 		System.assertEquals(123, opportunities[1].Amount);
 	}
+
+	@IsTest
+	static void testReduce() {
+		Decimal sum = Collection.of(new List<Opportunity>{
+			new Opportunity(Amount = 100),
+			new Opportunity(Amount = 150)
+		}).reduceDecimals(Reducers.sumDecimals(Opportunity.Amount));
+
+		System.assertEquals(250, sum);
+	}
 }

@@ -373,4 +373,15 @@ public with sharing class Collection {
 		}
 		return Collection.of(transformed);
 	}
+
+	public Decimal reduceDecimals(SObjectDecimalToDecimalFunction fn) {
+		return reduceDecimals(fn, 0);
+	}
+
+	public Decimal reduceDecimals(SObjectDecimalToDecimalFunction fn, Decimal accumulator) {
+		for (SObject record : records) {
+			accumulator = fn.apply(record, accumulator);
+		}
+		return accumulator;
+	}
 }
