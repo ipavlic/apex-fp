@@ -30,6 +30,7 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 - [`pluck`](#pluck)
 - [`mapAll`](#map-all)
 - [`mapSome`](#map-some)
+- [`reduce`](#reduce)
 
 ### `filter`
 <a name="filter"></a>
@@ -291,6 +292,29 @@ Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping current view elements that satisfy `predicate` with `fn`, and keeping those that do not satisfy `predicate` unchanged. |
+
+
+### Reduce
+<a name="reduce"></a>
+
+Reducing works by issuing a _reduceType_ for the appropriate data _type_, and providing an appropriate reducer function which maps from `(SObject, Type)` pair to `Type`. For example, `SObjectDecimalToDecimalFunction` maps from `(SObject, Decimal)` to `Decimal`.
+
+Lambda comes with sample reducers built in which can be accessed through the `Reducers` class. Custom reducers can be written as required.
+
+
+```apex
+List<Opportunity> opps = new List<Opportunity>{
+    new Opportunity(Amount = 100),
+    new Opportunity(Amount = 150)
+};
+
+Decimal total = Collection.of(opps).reduceDecimals(Reducers.sumDecimals(Opportunity.Amount));
+```
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Decimal` | `reduceDecimals(SObjectDecimalToDecimalFunction fn)` | Returns a `Decimal` result of reducing the collection with function `fn`. |
+
 
 ## Important notes on the type system in Apex
 <a name="type-system"></a>
