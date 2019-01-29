@@ -52,6 +52,8 @@ Collection fieldMatched = accountCollection.filter(Match.field(Account.Name).equ
 
 #### `FieldsMatch`
 
+<img src="images/filterFieldsMatch.png" height="120">
+
 `FieldsMatch` returns `true` if a record satisfies all field matching conditions.
 
 `FieldsMatch` is constructed with a fluent interface. `Match` factory method `field` returns an `IncompleteFieldsMatch`. 
@@ -112,6 +114,8 @@ Fields used in field conditions must be available on the collection which is fil
 
 #### `RecordMatch`
 
+<img src="images/filterRecordMatch.png" height="120">
+
 `RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
 defined on a prototype record do not have to match.
 
@@ -131,10 +135,14 @@ Fields that are present on the *prototype* object must also be available on the 
 ### `remove`
 <a name="remove"></a>
 
+<img src="images/remove.png" height="100">
+
 `remove` works just like `filter`, but records which match a predicate are removed from the `Collection` view instead of kept.
 
 ### `pluck`
 <a name="pluck"></a>
+
+<img src="images/pluck.png" height="100">
 
 Plucks field values from a `Collection` view of records into a `List` of appropriate type.
 
@@ -178,6 +186,8 @@ List<String> accountNames = Collection.of(opportunities).pluckStrings('Account.N
 ### `groupBy`
 <a name="group-by"></a>
 
+<img src="images/groupBy.png" height="200">
+
 Groups records by values of a specified field.
 
 ```apex
@@ -214,6 +224,8 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunit
 ### `pick`
 <a name="pick"></a>
 
+<img src="images/pick.png" height="100">
+
 Returns a new `Collection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
 ```apex
@@ -233,6 +245,8 @@ Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'A
 
 ### `mapAll`
 <a name="map-all"></a>
+
+<img src="images/mapAll.png" height="100">
 
 Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
 
@@ -271,6 +285,8 @@ Collection.of(opps).mapAll(Transform.record(new Opportunity(Name = 'Test'))); //
 ### `mapSome`
 <a name="map-some"></a>
 
+<img src="images/mapSome.png" height="100">
+
 Returns a new `Collection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
 
 ```apex
@@ -297,10 +313,14 @@ Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); 
 ### Reduce
 <a name="reduce"></a>
 
-Reducing works by issuing a _reduceType_ for the appropriate data _type_, and providing an appropriate reducer function which maps from `(SObject, Type)` pair to `Type`. For example, `SObjectDecimalToDecimalFunction` maps from `(SObject, Decimal)` to `Decimal`.
+Reducing works through _reduceType_ functions on `Collection`, for the appropriate _type_. For example, `reduceDecimals` is used to reduce records to a `Decimal` value.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Decimal` | `reduceDecimals(SObjectDecimalToDecimalFunction fn)` | Returns a `Decimal` result of reducing the collection with function `fn`. |
+
 
 Lambda comes with sample reducers built in which can be accessed through the `Reducers` class. Custom reducers can be written as required.
-
 
 ```apex
 List<Opportunity> opps = new List<Opportunity>{
