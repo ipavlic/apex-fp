@@ -1,9 +1,20 @@
 public class SObjectFieldReader {
-	public Object read(SObject record, String fieldPath) {
-		if (String.isBlank(fieldPath)) {
-			throw new LambdaException('Provided field path is blank');
+	static Map<String, String[]> relationPartsCache = new Map<String, String[]>();
+
+	private String[] relationParts(String relation) {
+		String[] parts = relationPartsCache.get(relation);
+		if (parts == null) {
+			parts = relation.split('\\.');
+			relationPartsCache.put(relation, parts);
 		}
-		String[] pathParts = fieldPath.split('\\.');
+		return parts;
+	}
+
+	public Object read(SObject record, String relation) {
+		if (String.isBlank(relation)) {
+			throw new LambdaException('Provided relation is blank');
+		}
+		String[] pathParts = relationParts(relation);
 		SObject currentRecord = record;
 		for (Integer i = 0; i < pathParts.size() - 1; i++) {
 			String relationPart = pathParts[i];
@@ -11,13 +22,13 @@ public class SObjectFieldReader {
 				SObject nextRecord = currentRecord.getSObject(relationPart);
 				if (nextRecord == null) {
 					throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
-							relationPart, fieldPath, currentRecord.getSObjectType().getDescribe().getName()
+							relationPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 					}));
 				}
 				currentRecord = currentRecord.getSObject(relationPart);
 			} catch (SObjectException e) {
 				throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
-						relationPart, fieldPath, currentRecord.getSObjectType().getDescribe().getName()
+						relationPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 				}));
 			}
 		}
@@ -27,7 +38,7 @@ public class SObjectFieldReader {
 			fieldValue = currentRecord.get(lastPart);
 		} catch (SObjectException e) {
 			throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
-					lastPart, fieldPath, currentRecord.getSObjectType().getDescribe().getName()
+					lastPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 			}));
 		}
 		return fieldValue;
