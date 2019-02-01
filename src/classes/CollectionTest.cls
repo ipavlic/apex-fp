@@ -565,12 +565,24 @@ public class CollectionTest {
 	}
 
 	@IsTest
-	static void testReduce() {
-		Decimal sum = Collection.of(new List<Opportunity>{
+	static void testMapToDecimal() {
+		List<Decimal> amounts = Collection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
-		}).reduceDecimals(Reducers.sumDecimals(Opportunity.Amount));
+		}).mapToDecimal(Opportunity.Amount).asList();
 
-		System.assertEquals(250, sum);
+		System.assertEquals(100, amounts[0]);
+		System.assertEquals(150, amounts[1]);
+	}
+
+	@IsTest
+	static void testMapToDouble() {
+		List<Double> amounts = Collection.of(new List<Opportunity>{
+			new Opportunity(Amount = 100),
+			new Opportunity(Amount = 150)
+		}).mapToDouble(Opportunity.Amount).asList();
+
+		System.assertEquals(100, amounts[0]);
+		System.assertEquals(150, amounts[1]);
 	}
 }

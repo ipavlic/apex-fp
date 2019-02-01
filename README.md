@@ -30,7 +30,8 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 - [`pluck`](#pluck)
 - [`mapAll`](#map-all)
 - [`mapSome`](#map-some)
-- [`reduce`](#reduce)
+- [`mapToDecimal`](#map-to-decimal)
+- [`mapToDouble`](#map-to-double)
 
 ### `filter`
 <a name="filter"></a>
@@ -310,17 +311,48 @@ Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); 
 | `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping current view elements that satisfy `predicate` with `fn`, and keeping those that do not satisfy `predicate` unchanged. |
 
 
-### Reduce
-<a name="reduce"></a>
+### `mapToDecimal`
+<a name="map-to-decimal"></a>
 
-Reducing works through _reduceType_ functions on `Collection`, for the appropriate _type_. For example, `reduceDecimals` is used to reduce records to a `Decimal` value.
+<img src="images/mapToDecimal.png" height="100">
+
+Maps a numeric field to a `DecimalCollection`. This is similar to `pluckDecimals`, but unlike a raw `List<Decimal>` returns a `DecimalCollection` which provides further functions.
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Decimal` | `reduceDecimals(SObjectDecimalToDecimalFunction fn)` | Returns a `Decimal` result of reducing the collection with function `fn`. |
+| `DecimalCollection` | `mapToDecimal(Schema.SObjectField field)` | Plucks Decimal `field` values into a `DecimalCollection`. |
+| `DecimalCollection` | `mapToDecimal(String relation)` | Plucks Decimal values at `relation` into a `DecimalCollection`. |
+
+Functions on `DecimalCollection` include `sum` and `average`.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Decimal` | `sum()` | Sums non-null Decimal values. Returns `null` if no such values exist in the collection. |
+| `Decimal` | `average()` | Averages non-null Decimal values. Returns `null` if no such values exist in the collection. |
+| `DecimalCollection` | `filter(ObjectPredicate predicate)` | Filters all values satisfying the `predicate` into a new `DecimalCollection` view. |
+| `DecimalCollection` | `filter(DecimalPredicate predicate)` | Filters all values satisfying the `predicate` into a new `DecimalCollection` view. |
 
 
-Lambda comes with sample reducers built in which can be accessed through the `Reducers` class. Custom reducers can be written as required.
+### `mapToDouble`
+<a name="map-to-double"></a>
+
+<img src="images/mapToDouble.png" height="100">
+
+Maps a numeric field to a `DoubleCollection`. This is similar to `pluckDoubles`, but unlike a raw `List<Double>` returns a `DoubleCollection` which provides further functions.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `DoubleCollection` | `mapToDouble(Schema.SObjectField field)` | Plucks Double `field` values into a `DoubleCollection`. |
+| `DoubleCollection` | `mapToDouble(String relation)` | Plucks Double values at `relation` into a `DoubleCollection`. |
+
+Functions on `DoubleCollection` include `sum` and `average`.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Double` | `sum()` | Sums non-null Double values. Returns `null` if no such values exist in the collection. |
+| `Double` | `average()` | Averages non-null Double values. Returns `null` if no such values exist in the collection. |
+| `DoubleCollection` | `filter(ObjectPredicate predicate)` | Filters all values satisfying the `predicate` into a new `DoubleCollection` view. |
+| `DoubleCollection` | `filter(DoublePredicate predicate)` | Filters all values satisfying the `predicate` into a new `DoubleCollection` view. |
 
 ```apex
 List<Opportunity> opps = new List<Opportunity>{
@@ -328,13 +360,8 @@ List<Opportunity> opps = new List<Opportunity>{
     new Opportunity(Amount = 150)
 };
 
-Decimal total = Collection.of(opps).reduceDecimals(Reducers.sumDecimals(Opportunity.Amount));
+Double average = Collection.of(opps).mapToDouble(Opportunity.Amount).average();
 ```
-
-| Modifier and type | Method | Description |
-|-------------------|--------|-------------|
-| `Decimal` | `reduceDecimals(SObjectDecimalToDecimalFunction fn)` | Returns a `Decimal` result of reducing the collection with function `fn`. |
-
 
 ## Important notes on the type system in Apex
 <a name="type-system"></a>

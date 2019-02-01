@@ -13,13 +13,13 @@ public class IncompleteFieldsMatch {
 	}
 
 	// helper for all other methods
-	private FieldsMatch filterWith(Relation relation, Object value) {
+	private FieldsMatch filterWith(BinaryRelation relation, Object value) {
 		baseMatch.addCondition(new FieldMatchCondition(fieldPath, relation, value));
 		return baseMatch;
 	}
 
 	public FieldsMatch equals(Object value) {
-		return filterWith(Relation.EQUALS, value);
+		return filterWith(BinaryRelation.EQUALS, value);
 	}
 
 	public FieldsMatch eq(Object value) {
@@ -27,7 +27,7 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch notEquals(Object value) {
-		return filterWith(Relation.NOT_EQUALS, value);
+		return filterWith(BinaryRelation.NOT_EQUALS, value);
 	}
 
 	public FieldsMatch neq(Object value) {
@@ -35,7 +35,7 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch lessThan(Object value) {
-		return filterWith(Relation.LESS_THAN, value);
+		return filterWith(BinaryRelation.LESS_THAN, value);
 	}
 
 	public FieldsMatch lt(Object value) {
@@ -43,7 +43,7 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch lessThanOrEquals(Object value) {
-		return filterWith(Relation.LESS_THAN_OR_EQUALS, value);
+		return filterWith(BinaryRelation.LESS_THAN_OR_EQUALS, value);
 	}
 
 	public FieldsMatch leq(Object value) {
@@ -51,7 +51,7 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch greaterThan(Object value) {
-		return filterWith(Relation.GREATER_THAN, value);
+		return filterWith(BinaryRelation.GREATER_THAN, value);
 	}
 
 	public FieldsMatch gt(Object value) {
@@ -59,7 +59,7 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch greaterThanOrEquals(Object value) {
-		return filterWith(Relation.GREATER_THAN_OR_EQUALS, value);
+		return filterWith(BinaryRelation.GREATER_THAN_OR_EQUALS, value);
 	}
 
 	public FieldsMatch geq(Object value) {
@@ -71,11 +71,11 @@ public class IncompleteFieldsMatch {
 	}
 
 	public FieldsMatch isIn(Object value) {
-		return filterWith(Relation.IS_IN, value);
+		return filterWith(BinaryRelation.IS_IN, value);
 	}
 
 	public FieldsMatch notIn(Object value) {
-		return filterWith(Relation.NOT_IN, value);
+		return filterWith(BinaryRelation.NOT_IN, value);
 	}
 
 	public FieldsMatch isNotIn(Object value) {

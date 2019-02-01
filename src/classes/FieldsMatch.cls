@@ -3,9 +3,9 @@ public class FieldsMatch implements SObjectPredicate {
 	private PrimitiveComparer primitiveComparer = new PrimitiveComparer();
 	private SObjectFieldReader fieldReader = new SObjectFieldReader();
 
-	private static Set<Relation> setComparisons = new Set<Relation>{
-		Relation.IS_IN,
-		Relation.NOT_IN
+	private static Set<BinaryRelation> setComparisons = new Set<BinaryRelation>{
+		BinaryRelation.IS_IN,
+		BinaryRelation.NOT_IN
 	};
 
 	private List<FieldMatchCondition> matchConditions;

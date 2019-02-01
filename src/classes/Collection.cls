@@ -374,14 +374,29 @@ public with sharing class Collection {
 		return Collection.of(transformed);
 	}
 
-	public Decimal reduceDecimals(SObjectDecimalToDecimalFunction fn) {
-		return reduceDecimals(fn, 0);
+	public DecimalCollection mapToDecimal(Schema.SObjectField field) {
+		return mapToDecimal(field.getDescribe().getName());
 	}
 
-	public Decimal reduceDecimals(SObjectDecimalToDecimalFunction fn, Decimal accumulator) {
+	public DecimalCollection mapToDecimal(String relation) {
+		SObjectFieldReader reader = new SObjectFieldReader();
+		List<Decimal> decimals = new List<Decimal>();
 		for (SObject record : records) {
-			accumulator = fn.apply(record, accumulator);
+			decimals.add((Decimal) reader.read(record, relation));
 		}
-		return accumulator;
+		return new DecimalCollection(decimals);
+	}
+
+	public DoubleCollection mapToDouble(Schema.SObjectField field) {
+		return mapToDouble(field.getDescribe().getName());
+	}
+
+	public DoubleCollection mapToDouble(String relation) {
+		SObjectFieldReader reader = new SObjectFieldReader();
+		List<Double> doubles = new List<Double>();
+		for (SObject record : records) {
+			doubles.add((Double) reader.read(record, relation));
+		}
+		return new DoubleCollection(doubles);
 	}
 }
