@@ -48,6 +48,31 @@ public with sharing class Collection {
 		return typedMap;
 	}
 
+	public Collection difference(Collection other, Set<Schema.SObjectField> comparisonFields) {
+		List<SObject> different = new List<SObject>();
+		if (other != null && !other.isEmpty() && !this.isEmpty()) {
+			Map<Id, SObject> otherMap = new Map<Id, SObject>(other.records);
+			for (SObject record : records) {
+				SObject counterpart = otherMap.get(record.Id);
+				if (counterpart == null) {
+					different.add(record);
+				} else {
+					for (Schema.SObjectField field : comparisonFields) {
+						if (record.get(field) != counterpart.get(field)) {
+							different.add(record);
+							break;
+						}
+					}
+				}
+			}
+		}
+		return Collection.of(different);
+	}
+
+	public Boolean isEmpty() {
+		return records.isEmpty();
+	}
+
 	public Collection filter(SObjectPredicate predicate) {
 		List<SObject> filtered = new List<SObject>();
 		for (SObject record : records) {

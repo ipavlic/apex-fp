@@ -23,6 +23,8 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 
 ## `Collection` functions
 
+- [`isEmpty`](#is-empty)
+- [`difference`](#difference)
 - [`filter`](#filter)
 - [`remove`](#remove)
 - [`groupBy`](#group-by)
@@ -32,6 +34,20 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 - [`mapSome`](#map-some)
 - [`mapToDecimal`](#map-to-decimal)
 - [`mapToDouble`](#map-to-double)
+
+### `isEmpty`
+<a name="is-empty"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Boolean` 		| `isEmpty()` 			| Returns `true` if this collection contains no elements. |
+
+### `difference`
+<a name="difference"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `Collection` 		| `difference(Collection other, Set<Schema.SObjectField> comparisonFields)` 			| Returns a collection view of those records that are not equal in the `other` list, considering only `comparisonFields` in the comparison. |
 
 ### `filter`
 <a name="filter"></a>

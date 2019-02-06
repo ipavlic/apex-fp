@@ -27,6 +27,52 @@ public class CollectionTest {
 	}
 
 	@IsTest
+	public static void testDifference() {
+		Id accountId1 = TestUtility.getTestId(Account.SObjectType);
+		Id accountId2 = TestUtility.getTestId(Account.SObjectType);
+		Id accountId3 = TestUtility.getTestId(Account.SObjectType);
+
+		Collection c1 = Collection.of(new List<Account>{
+			new Account(Id = accountId1, Name = 'Foo')
+		});
+
+		Collection c2 = Collection.of(new List<Account>{
+			new Account(Id = accountId1, Name = 'Bar')
+		});
+
+		Collection diff1 = c1.difference(c2, new Set<Schema.SObjectField>{Account.Name});
+		List<Account> diffList1 = diff1.asList();
+		System.assertEquals(1, diffList1.size());
+		System.assertEquals(accountId1, diffList1[0].Id);
+
+		Collection diff2 = c1.difference(c2, new Set<Schema.SObjectField>{Account.Name});
+		List<Account> diffList2 = diff2.asList();
+		System.assertEquals(1, diffList2.size());
+		System.assertEquals(accountId1, diffList2[0].Id);
+
+		Collection diff3 = c1.difference(c2, new Set<Schema.SObjectField>{Account.Name, Account.Id});
+		List<Account> diffList3 = diff3.asList();
+		System.assertEquals(1, diffList3.size());
+		System.assertEquals(accountId1, diffList3[0].Id);
+
+		Collection c3 = Collection.of(new List<Account>{
+			new Account(Id = accountId1, Name = 'Foo'),
+			new Account(Id = accountId2, Name = 'Bar'),
+			new Account(Id = accountId3, Name = 'Baz')
+		});
+
+		Collection c4 = Collection.of(new List<Account>{
+			new Account(Id = accountId1, Name = 'Foo'),
+			new Account(Id = accountId3, Name = 'Baz')
+		});
+
+		Collection diff4 = c3.difference(c4, new Set<Schema.SObjectField>{Account.Name, Account.Id});
+		List<Account> diffList4 = diff4.asList();
+		System.assertEquals(1, diffList4.size());
+		System.assertEquals(accountId2, diffList4[0].Id);
+	}
+
+	@IsTest
 	public static void testPluckDecimals() {
 		List<Decimal> revenues = Collection.of(testAccounts()).pluckDecimals(Account.AnnualRevenue);
 		System.assertEquals(4, revenues.size());
