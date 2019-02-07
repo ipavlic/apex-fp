@@ -20,19 +20,4 @@ public class DoubleCollectionTest {
 		System.assertEquals(100, filtered[0]);
 		System.assertEquals(150, filtered[1]);
 	}
-
-	private class LowPassPredicate implements DoublePredicate {
-		public Boolean apply(Double d) {
-			return d < 100;
-		}
-	}
-
-	@IsTest
-	static void testFilterWithDoublePredicate() {
-		DoubleCollection c = new DoubleCollection(new List<Double>{50, 101, 500, 25, 300});
-		List<Double> filtered = c.filter(new LowPassPredicate()).asList();
-		System.assertEquals(2, filtered.size());
-		System.assertEquals(50, filtered[0]);
-		System.assertEquals(25, filtered[1]);
-	}
 }

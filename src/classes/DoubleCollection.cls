@@ -4,7 +4,12 @@ public class DoubleCollection {
 
 	public DoubleCollection(List<Double> doubles) {
 		this.doubles = doubles;
-		nonNulls = filter(ObjectPredicates.NotNull).asList();
+		nonNulls = new List<Double>();
+		for (Double d : doubles) {
+			if (ObjectPredicates.NotNull.apply(d)) {
+				nonNulls.add(d);
+			}
+		}
 	}
 
 	public List<Double> asList() {
@@ -37,16 +42,6 @@ public class DoubleCollection {
 	}
 
 	public DoubleCollection filter(ObjectPredicate predicate) {
-		List<Double> filtered = new List<Decimal>();
-		for (Double d : doubles) {
-			if (predicate.apply(d)) {
-				filtered.add(d);
-			}
-		}
-		return new DoubleCollection(filtered);
-	}
-
-	public DoubleCollection filter(DoublePredicate predicate) {
 		List<Double> filtered = new List<Decimal>();
 		for (Double d : doubles) {
 			if (predicate.apply(d)) {
