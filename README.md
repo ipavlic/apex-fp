@@ -288,15 +288,15 @@ List<Opportunity> opps = new List<Opportunity>{
 Collection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 ```
 
-One `SObjectToSObjectFunction` is provided out of the box, `RecordTransform`. It is instantiated through a factory method on `Transform`:
+One `SObjectToSObjectFunction` is provided out of the box, `CopyFields`. It is instantiated through a factory method, `CopyFields.fromRecord`.
 
-#### `RecordTransform`
+#### `CopyFields`
 
-`RecordTransform` copies all defined fields from `prototype` record to the record it is applied to. Values of fields defined for `prototype` are overwritten on
+`CopyFields` copies all defined fields from `prototype` record to the record it is applied to. Values of fields defined for `prototype` are overwritten on
 target records. Other fields on target record are not modified.
 
 ```apex
-Collection.of(opps).mapAll(Transform.record(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
+Collection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
 ```
 
 ### `mapSome`
