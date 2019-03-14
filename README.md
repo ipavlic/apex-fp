@@ -13,7 +13,7 @@ List<Account> accounts = new List<Account>{
 Collection accountCollection = Collection.of(accounts);
 
 Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
-Collection mapped = filtered.mapAll(Transform.record(new Account(High_Value__c = true)));
+Collection mapped = filtered.mapAll(CopyFields.fromRecord(new Account(High_Value__c = true)));
 Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 ```
 
