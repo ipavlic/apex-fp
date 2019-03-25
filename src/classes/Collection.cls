@@ -424,4 +424,90 @@ public with sharing class Collection {
 		}
 		return new DoubleCollection(doubles);
 	}
+    
+    public static void Sort(List<sObject> items, sObjectField field)
+    {
+        integer min_index;
+        integer listSize = items.size();
+        
+        Schema.DisplayType dt = field.getDescribe().getType();
+        
+        for (integer index = 0; index < listSize - 1; index++) 
+        { 
+            min_index = index; 
+            
+            for (integer nextIndex = index + 1; nextIndex < listSize; nextIndex++) 
+            {
+                if(dt == Schema.DisplayType.CURRENCY)
+                {
+                    if ((double)items[nextIndex].get(field) < (double)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.DATE)
+                {
+                    if ((date)items[nextIndex].get(field) < (date)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.DATETIME)
+                {
+                    if ((datetime)items[nextIndex].get(field) < (datetime)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.DOUBLE)
+                {
+                    if ((double)items[nextIndex].get(field) < (double)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.INTEGER)
+                {
+                    if ((integer)items[nextIndex].get(field) < (integer)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.LONG)
+                {
+                    if ((long)items[nextIndex].get(field) < (long)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else if(dt == Schema.DisplayType.STRING)
+                {
+                    if ((string)items[nextIndex].get(field) < (string)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+                else
+                {
+                    // we can catch the rest as STRING, will not get the best result but better than no sorting
+                    // can be implemented as types are discovered
+                    if ((string)items[nextIndex].get(field) < (string)items[min_index].get(field)) 
+                    {
+                        min_index = nextIndex; 
+                    }
+                }
+            }
+
+            swap(items, min_index, index); 
+        } 
+    }
+    
+    private static List<object> Swap(List<object> items, integer x, integer y)
+    {
+        object tmp = items[x];
+        items[x] = items[y];
+        items[y] = tmp;
+        
+        return items;
+    }
 }

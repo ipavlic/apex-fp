@@ -631,4 +631,26 @@ public class CollectionTest {
 		System.assertEquals(100, amounts[0]);
 		System.assertEquals(150, amounts[1]);
 	}
+    
+    @IsTest
+	public static void testSortName() {
+		List<Account> records = Collection.of(testAccounts()).asList();
+        Collection.sort(records, Account.Name);
+
+        system.assertEquals('Bar', records.get(0).Name);
+        system.assertEquals('Bar', records.get(1).Name);
+        system.assertEquals('Foo', records.get(2).Name);
+        system.assertEquals('Foo', records.get(3).Name);
+	}
+    
+    @IsTest
+	public static void testSortRevenue() {
+		List<Account> records = Collection.of(testAccounts()).asList();
+        Collection.sort(records, Account.AnnualRevenue);
+
+        system.assertEquals('Bar', records.get(0).Name);
+        system.assertEquals('Foo', records.get(1).Name);
+        system.assertEquals(60, records.get(0).AnnualRevenue);
+        system.assertEquals(100, records.get(1).AnnualRevenue);
+	}
 }
