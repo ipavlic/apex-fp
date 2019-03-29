@@ -1,106 +1,48 @@
 public class PrimitiveComparer {
-	public ComparisonResult compareBooleans(Boolean a, Boolean b) {
-		if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.NOT_EQUALS;
-		}
+	public Integer compareBooleans(Boolean a, Boolean b) {
+		return (a == b) ? 0 : (a ? 1 : -1);
 	}
 
-	public ComparisonResult compareDates(Date a, Date b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareDates(Date a, Date b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareTimes(Time a, Time b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareTimes(Time a, Time b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareDatetimes(Datetime a, Datetime b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareDatetimes(Datetime a, Datetime b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareDecimals(Decimal a, Decimal b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareDecimals(Decimal a, Decimal b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareDoubles(Double a, Double b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareDoubles(Double a, Double b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareIds(Id a, Id b) {
-		if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.NOT_EQUALS;
-		}
+	public Integer compareIds(Id a, Id b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareIntegers(Integer a, Integer b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareIntegers(Integer a, Integer b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareLongs(Long a, Long b) {
-		if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareLongs(Long a, Long b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public ComparisonResult compareStrings(String a, String b) {
-		if (a != b && (a == null || b == null)) {
-			return ComparisonResult.NOT_EQUALS;
-		} else if (a < b) {
-			return ComparisonResult.LESS_THAN;
-		} else if (a == b) {
-			return ComparisonResult.EQUALS;
-		} else {
-			return ComparisonResult.GREATER_THAN;
-		}
+	public Integer compareStrings(String a, String b) {
+		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
 	/**
 	 * A comparison for primitive data types
 	 */
-	public ComparisonResult compare(Object first, Object second) {
+	public Integer compare(Object first, Object second) {
 		if (first instanceof Boolean && second instanceof Boolean) {
 			return this.compareBooleans((Boolean)first, (Boolean)second);
 		}
@@ -130,8 +72,7 @@ public class PrimitiveComparer {
 		}
 		else if (first instanceof Time && second instanceof Time) {
 			return this.compareTimes((Time)first, (Time)second);
-		} else {
-			return ComparisonResult.NOT_EQUALS;
 		}
+		throw new LambdaException('Comparison for provided types is not supported');
 	}
 }

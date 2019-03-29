@@ -440,6 +440,18 @@ public class CollectionTest {
 	}
 
 	@IsTest
+	static void testUnsupportedFilteringType() {
+		Collection c = Collection.of(testFilterAccounts());
+
+		try {
+			List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals(TimeZone.getTimeZone('CET'))).asList();
+			System.assert(false);
+		} catch (LambdaException e) {
+			System.assert(e.getMessage().contains('not supported'));
+		}
+	}
+
+	@IsTest
 	static void testFieldEqualsOkFilter() {
 		Collection c = Collection.of(testFilterAccounts());
 

@@ -1,7 +1,7 @@
 public class FieldsMatch implements SObjectPredicate {
 
-	private PrimitiveComparer primitiveComparer = new PrimitiveComparer();
-	private SObjectFieldReader fieldReader = new SObjectFieldReader();
+	private static PrimitiveComparer primitiveComparer = new PrimitiveComparer();
+	private static SObjectFieldReader fieldReader = new SObjectFieldReader();
 
 	private static Set<BinaryRelation> setComparisons = new Set<BinaryRelation>{
 		BinaryRelation.IS_IN,
@@ -63,34 +63,34 @@ public class FieldsMatch implements SObjectPredicate {
 				return isValueContained == false;
 			}
 			when else {
-				return false;
+				throw new LambdaException('Relation not recognized: ' + condition.relation);
 			}
 		}
 	}
 
 	private Boolean comparisonConditionSatisfied(FieldMatchCondition condition, Object fieldValue) {
-		ComparisonResult result = primitiveComparer.compare(fieldValue, condition.value);
+		Integer result = primitiveComparer.compare(fieldValue, condition.value);
 		switch on condition.relation {
 			when EQUALS {
-				return result == ComparisonResult.EQUALS;
+				return result == 0;
 			}
 			when NOT_EQUALS {
-				return result == ComparisonResult.NOT_EQUALS;
+				return result != 0;
 			}
 			when LESS_THAN {
-				return result == ComparisonResult.LESS_THAN;
+				return result < 0;
 			}
 			when LESS_THAN_OR_EQUALS {
-				return result == ComparisonResult.LESS_THAN || result == ComparisonResult.EQUALS;
+				return result <= 0;
 			}
 			when GREATER_THAN {
-				return result == ComparisonResult.GREATER_THAN;
+				return result > 0;
 			}
 			when GREATER_THAN_OR_EQUALS {
-				return result == ComparisonResult.GREATER_THAN || result == ComparisonResult.EQUALS;
+				return result >= 0;
 			}
 			when else {
-				return false;
+				throw new LambdaException('Relation not recognized: ' + condition.relation);
 			}
 		}
 	}
@@ -124,6 +124,6 @@ public class FieldsMatch implements SObjectPredicate {
 			Set<String> validValues = (Set<String>) valueSet;
 			return validValues.contains((String) value);
 		}
-		throw new LambdaException('Provided set type is not supported by the filter.');
+		throw new LambdaException('Provided set type is not supported by the filter');
 	}
 }
