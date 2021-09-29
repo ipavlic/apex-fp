@@ -1,5 +1,5 @@
 @IsTest
-public class CollectionTest {
+public class SObjectCollectionTest {
 
 	static Id firstUserId = TestUtility.getTestId(User.SObjectType);
 	static Id secondUserId = TestUtility.getTestId(User.SObjectType);
