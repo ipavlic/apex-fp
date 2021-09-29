@@ -411,7 +411,7 @@ public class CollectionTest {
 	@IsTest
 	static void testHasValue() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Industry).hasValue()).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.BillingCountry).hasValue()).asList();
 		System.assertEquals(0, filtered.size());
 
 		filtered = (List<Account>) c.filter(Match.field(Account.Name).hasValue()).asList();

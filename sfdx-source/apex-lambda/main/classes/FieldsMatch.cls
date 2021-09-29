@@ -69,6 +69,19 @@ public class FieldsMatch implements SObjectPredicate {
 	}
 
 	private Boolean comparisonConditionSatisfied(FieldMatchCondition condition, Object fieldValue) {
+		if (condition.value == null) {
+			switch on condition.relation {
+				when EQUALS {
+					return fieldValue == null;
+				}
+				when NOT_EQUALS {
+					return fieldValue != null;
+				}
+				when else {
+					return false;
+				}
+			}
+		}
 		Integer result = primitiveComparer.compare(fieldValue, condition.value);
 		switch on condition.relation {
 			when EQUALS {
