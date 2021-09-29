@@ -10,18 +10,18 @@ List<Account> accounts = new List<Account>{
     new Account(Name = 'Bar', AnnualRevenue = 30000)
 }
 
-Collection accountCollection = Collection.of(accounts);
+SObjectCollection accountCollection = SObjectCollection.of(accounts);
 
-Collection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
-Collection mapped = filtered.mapAll(CopyFields.fromRecord(new Account(High_Value__c = true)));
-Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
+SObjectCollection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
+SObjectCollection mapped = filtered.mapAll(CopyFields.fromRecord(new Account(High_Value__c = true)));
+SObjectCollection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 ```
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-## `Collection` functions
+## `SObjectCollection` functions
 
 - [`isEmpty`](#is-empty)
 - [`difference`](#difference)
@@ -47,24 +47,24 @@ Collection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Collection` 		| `difference(Collection other, Set<Schema.SObjectField> comparisonFields)` 			| Returns a collection view of those records that are not equal in the `other` list, considering only `comparisonFields` in the comparison. |
+| `SObjectCollection` 		| `difference(SObjectCollection other, Set<Schema.SObjectField> comparisonFields)` 			| Returns a collection view of those records that are not equal in the `other` list, considering only `comparisonFields` in the comparison. |
 
 ### `filter`
 <a name="filter"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Collection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `Collection` view of records that satisfied predicate |
+| `SObjectCollection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectCollection` view of records that satisfied predicate |
 
 Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`:
 
 ```apex
-Collection accountCollection = Collection.of(accounts);
+SObjectCollection accountCollection = SObjectCollection.of(accounts);
 
 Account prototype = new Account(Name = 'Foo');
-Collection recordMatched = accountCollection.filter(Match.record(prototype));
+SObjectCollection recordMatched = accountCollection.filter(Match.record(prototype));
 
-Collection fieldMatched = accountCollection.filter(Match.field(Account.Name).equals('Foo'));
+SObjectCollection fieldMatched = accountCollection.filter(Match.field(Account.Name).equals('Foo'));
 ```
 
 #### `FieldsMatch`
@@ -85,7 +85,7 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 `FieldsMatch` can be provided directly to `filter` method:
 
 ```apex
-Collection filtered = Collection.of(accounts).filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
+SObjectCollection filtered = SObjectCollection.of(accounts).filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
 
 ##### `IncompleteFieldsMatch`
@@ -142,7 +142,7 @@ Account prototype = new Account(
     AnnualRevenue = 50000000
 );
 // Accounts named 'Test' with an AnnualRevenue of **exactly** 50,000,000 are matched
-Collection filtered = accountCollection.filter(Match.record(prototype));
+SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
 ```
 
 ##### Warning :warning:
@@ -161,7 +161,7 @@ Fields that are present on the *prototype* object must also be available on the 
 
 <img src="images/pluck.png" height="100">
 
-Plucks field values from a `Collection` view of records into a `List` of appropriate type.
+Plucks field values from a `SObjectCollection` view of records into a `List` of appropriate type.
 
 ```apex
 List<Account> accounts = new List<Account>{
@@ -169,7 +169,7 @@ List<Account> accounts = new List<Account>{
 	new Account(Name = 'Bar')
 }
 // Names are plucked into a new list, ['Foo', 'Bar']
-List<String> names = Collection.of(accounts).pluckStrings(Account.Name);
+List<String> names = SObjectCollection.of(accounts).pluckStrings(Account.Name);
 ```
 
 Pluck can also be used for deeper relations by using `String` field paths instead of `Schema.SObjectField` parameters.
@@ -181,7 +181,7 @@ List<Opportunity> opportunities = new List<Opportunity>{
 };
 
 // Names are plucked into a new list ['Foo', 'Bar']
-List<String> accountNames = Collection.of(opportunities).pluckStrings('Account.Name');
+List<String> accountNames = SObjectCollection.of(opportunities).pluckStrings('Account.Name');
 ```
 
 | Modifier and type | Method | Description |
@@ -208,7 +208,7 @@ List<String> accountNames = Collection.of(opportunities).pluckStrings('Account.N
 Groups records by values of a specified field.
 
 ```apex
-Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunities).groupByDates(Opportunity.CloseDate, opportunities);
+Map<Date, List<Opportunity>> opportunitiesByCloseDate = SObjectCollection.of(opportunities).groupByDates(Opportunity.CloseDate, opportunities);
 ```
 
 | Modifier and type | Method | Description |
@@ -243,33 +243,33 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = Collection.of(opportunit
 
 <img src="images/pick.png" height="100">
 
-Returns a new `Collection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
+Returns a new `SObjectCollection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
 ```apex
 List<Opportunity> opportunities = new List<Opportunity>{
 	new Opportunity(Name = 'Foo', Amount = 10000, Description = 'Bar')
 }
 // Picked contains just Name and Amount fields. Description is not present.
-Collection picked = Collection.of(opportunities).pick(new Set<String>{'Name', 'Amount'});
+SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<String>{'Name', 'Amount'});
 ```
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Collection` | `pick(List<Schema.SObjectField> fields)` | Picks fields into a new `Collection` view |
-| `Collection` | `pick(Set<Schema.SObjectField> fields)` | Picks fields into a new `Collection` view |
-| `Collection` | `pick(List<String> apiFieldNames)` | Picks fields into a new `Collection` view |
-| `Collection` | `pick(Set<String> apiFieldNames)` | Picks fields into a new `Collection` view |
+| `SObjectCollection` | `pick(List<Schema.SObjectField> fields)` | Picks fields into a new `SObjectCollection` view |
+| `SObjectCollection` | `pick(Set<Schema.SObjectField> fields)` | Picks fields into a new `SObjectCollection` view |
+| `SObjectCollection` | `pick(List<String> apiFieldNames)` | Picks fields into a new `SObjectCollection` view |
+| `SObjectCollection` | `pick(Set<String> apiFieldNames)` | Picks fields into a new `SObjectCollection` view |
 
 ### `mapAll`
 <a name="map-all"></a>
 
 <img src="images/mapAll.png" height="100">
 
-Maps all elements of `Collection` view into another `Collection` view with the provided `SObjectToSObjectFunction` mapping function.
+Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided `SObjectToSObjectFunction` mapping function.
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping all current view elements with `fn` |
+| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `SObjectCollection` view formed by mapping all current view elements with `fn` |
 
 
 ```apex
@@ -285,7 +285,7 @@ List<Opportunity> opps = new List<Opportunity>{
     new Opportunity(Amount = 150)
 };
 
-Collection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
+SObjectCollection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 ```
 
 One `SObjectToSObjectFunction` is provided out of the box, `CopyFields`. It is instantiated through a factory method, `CopyFields.fromRecord`.
@@ -296,7 +296,7 @@ One `SObjectToSObjectFunction` is provided out of the box, `CopyFields`. It is i
 target records. Other fields on target record are not modified.
 
 ```apex
-Collection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
+SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
 ```
 
 ### `mapSome`
@@ -304,7 +304,7 @@ Collection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))
 
 <img src="images/mapSome.png" height="100">
 
-Returns a new `Collection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
+Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
 
 ```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
@@ -319,12 +319,12 @@ List<Opportunity> opps = new List<Opportunity>{
     new Opportunity(Amount = 150)
 };
 
-Collection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); // 100 remains, but 150 has been doubled to 300
+SObjectCollection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); // 100 remains, but 150 has been doubled to 300
 ```
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `Collection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `Collection` view formed by mapping current view elements that satisfy `predicate` with `fn`, and keeping those that do not satisfy `predicate` unchanged. |
+| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `SObjectCollection` view formed by mapping current view elements that satisfy `predicate` with `fn`, and keeping those that do not satisfy `predicate` unchanged. |
 
 
 ### `mapToDecimal`
@@ -376,7 +376,7 @@ List<Opportunity> opps = new List<Opportunity>{
     new Opportunity(Amount = 150)
 };
 
-Double average = Collection.of(opps).mapToDouble(Opportunity.Amount).average();
+Double average = SObjectCollection.of(opps).mapToDouble(Opportunity.Amount).average();
 ```
 
 ## Important notes on the type system in Apex
@@ -400,7 +400,7 @@ System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
 ```
 
-Collection’s `asList()` and `asSet()` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is not required in either case, but `instanceof` can provide unexpected results.
+`asList()` and `asSet()` on `SObjectCollection` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is not required in either case, but `instanceof` can provide unexpected results.
 A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
 
 ```apex
@@ -411,7 +411,7 @@ List<Account> filteredAccounts = accountCollection.asList(List<Account>.class);
 // List<Account> returned!
 ```
 
-Collection also provides `asMap()` which returns a raw `Map<Id, SObject>`. Properly typed maps cannot be used without a cast.
+`SObjectCollection` also provides `asMap()` which returns a raw `Map<Id, SObject>`. Properly typed maps cannot be used without a cast.
 
 ```apex
 Map<Id, Account> accountMap = accountCollection.asMap(); // Illegal assignment from Map<Id, SObject> to Map<Id, Account>

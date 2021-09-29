@@ -1,16 +1,16 @@
-public with sharing class Collection {
+public with sharing class SObjectCollection {
 
 	private List<SObject> records;
 
-	public static Collection of(Iterable<SObject> records) {
-		return new Collection(records);
+	public static SObjectCollection of(Iterable<SObject> records) {
+		return new SObjectCollection(records);
 	}
 
-	public static Collection of(Set<SObject> records) {
-		return new Collection(new List<SObject>(records));
+	public static SObjectCollection of(Set<SObject> records) {
+		return new SObjectCollection(new List<SObject>(records));
 	}
 
-	private Collection(Iterable<SObject> records) {
+	private SObjectCollection(Iterable<SObject> records) {
 		this.records = new List<SObject>();
 		Iterator<SObject> iter = records.iterator();
 		while (iter.hasNext()) {
@@ -48,7 +48,7 @@ public with sharing class Collection {
 		return typedMap;
 	}
 
-	public Collection difference(Collection other, Set<Schema.SObjectField> comparisonFields) {
+	public SObjectCollection difference(SObjectCollection other, Set<Schema.SObjectField> comparisonFields) {
 		List<SObject> different = new List<SObject>();
 		if (other != null && !other.isEmpty() && !this.isEmpty()) {
 			Map<Id, SObject> otherMap = new Map<Id, SObject>(other.records);
@@ -66,31 +66,31 @@ public with sharing class Collection {
 				}
 			}
 		}
-		return Collection.of(different);
+		return SObjectCollection.of(different);
 	}
 
 	public Boolean isEmpty() {
 		return records.isEmpty();
 	}
 
-	public Collection filter(SObjectPredicate predicate) {
+	public SObjectCollection filter(SObjectPredicate predicate) {
 		List<SObject> filtered = new List<SObject>();
 		for (SObject record : records) {
 			if (predicate.apply(record)) {
 				filtered.add(record);
 			}
 		}
-		return Collection.of(filtered);
+		return SObjectCollection.of(filtered);
 	}
 
-	public Collection remove(SObjectPredicate predicate) {
+	public SObjectCollection remove(SObjectPredicate predicate) {
 		List<SObject> remaining = new List<SObject>();
 		for (SObject record : records) {
 			if (!predicate.apply(record)) {
 				remaining.add(record);
 			}
 		}
-		return Collection.of(remaining);
+		return SObjectCollection.of(remaining);
 	}
 
 	public List<Boolean> pluckBooleans(Schema.SObjectField field) {
@@ -347,11 +347,11 @@ public with sharing class Collection {
 		return groupByStrings(field.getDescribe().getName());
 	}
 
-	public Collection pick(List<Schema.SObjectField> fields) {
+	public SObjectCollection pick(List<Schema.SObjectField> fields) {
 		return pick(new Set<Schema.SObjectField>(fields));
 	}
 
-	public Collection pick(Set<Schema.SObjectField> fields) {
+	public SObjectCollection pick(Set<Schema.SObjectField> fields) {
 		Set<String> fieldNames = new Set<String>();
 		for (Schema.SObjectField field : fields) {
 			Schema.DescribeFieldResult describe = field.getDescribe();
@@ -360,7 +360,7 @@ public with sharing class Collection {
 		return pick(fieldNames);
 	}
 
-	public Collection pick(Set<String> apiFieldNames) {
+	public SObjectCollection pick(Set<String> apiFieldNames) {
 		List<SObject> picked = new List<SObject>();
 		for (SObject record : records) {
 			SObject result = record.getSObjectType().newSObject();
@@ -372,22 +372,22 @@ public with sharing class Collection {
 			}
 			picked.add(result);
 		}
-		return Collection.of(picked);
+		return SObjectCollection.of(picked);
 	}
 
-	public Collection pick(List<String> apiFieldNames) {
+	public SObjectCollection pick(List<String> apiFieldNames) {
 		return pick(new Set<String>(apiFieldNames));
 	}
 
-	public Collection mapAll(SObjectToSObjectFunction fn) {
+	public SObjectCollection mapAll(SObjectToSObjectFunction fn) {
 		List<SObject> mapped = new List<SObject>();
 		for (SObject record : records) {
 			mapped.add(fn.apply(record));
 		}
-		return Collection.of(mapped);
+		return SObjectCollection.of(mapped);
 	}
 
-	public Collection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
+	public SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
 		List<SObject> transformed = new List<SObject>();
 		for (SObject record : records) {
 			if (predicate.apply(record)) {
@@ -396,7 +396,7 @@ public with sharing class Collection {
 				transformed.add(record);
 			}
 		}
-		return Collection.of(transformed);
+		return SObjectCollection.of(transformed);
 	}
 
 	public DecimalCollection mapToDecimal(Schema.SObjectField field) {
