@@ -41,6 +41,16 @@ public class DecimalCollection {
 		return s != null ? s.divide(nonNulls.size(), scale, roundingMode) : null;
 	}
 
+	public DecimalCollection filter(DecimalPredicate predicate) {
+		List<Decimal> filtered = new List<Decimal>();
+		for (Decimal d : decimals) {
+			if (predicate.apply(d)) {
+				filtered.add(d);
+			}
+		}
+		return new DecimalCollection(filtered);
+	}
+
 	public DecimalCollection filter(ObjectPredicate predicate) {
 		List<Decimal> filtered = new List<Decimal>();
 		for (Decimal d : decimals) {

@@ -26,4 +26,19 @@ public class DecimalCollectionTest {
 		System.assertEquals(100, filtered[0]);
 		System.assertEquals(150, filtered[1]);
 	}
+
+	private class IsTen implements DecimalPredicate {
+		public Boolean apply(Decimal d) {
+			return d != null && d == 10;
+		}
+	}
+
+	@IsTest
+	static void testFilterWithDecimalPredicate() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, 10, null, 20, null, 10});
+		List<Decimal> filtered = c.filter(new IsTen()).asList();
+		System.assertEquals(2, filtered.size());
+		System.assertEquals(10, filtered[0]);
+		System.assertEquals(10, filtered[1]);
+	}
 }

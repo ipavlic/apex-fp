@@ -41,8 +41,18 @@ public class DoubleCollection {
 		return s != null ? s / nonNulls.size() : null;
 	}
 
+	public DoubleCollection filter(DoublePredicate predicate) {
+		List<Double> filtered = new List<Double>();
+		for (Double d : doubles) {
+			if (predicate.apply(d)) {
+				filtered.add(d);
+			}
+		}
+		return new DoubleCollection(filtered);
+	}
+
 	public DoubleCollection filter(ObjectPredicate predicate) {
-		List<Double> filtered = new List<Decimal>();
+		List<Double> filtered = new List<Double>();
 		for (Double d : doubles) {
 			if (predicate.apply(d)) {
 				filtered.add(d);
