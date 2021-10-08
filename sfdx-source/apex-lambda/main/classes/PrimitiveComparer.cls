@@ -39,6 +39,10 @@ public class PrimitiveComparer {
 		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
+	public Integer compareNulls(Object a, Object b) {
+		return (a == b) ? 0 : 1;
+	}
+
 	/**
 	 * A comparison for primitive data types
 	 */
@@ -72,6 +76,9 @@ public class PrimitiveComparer {
 		}
 		else if (first instanceof Time && second instanceof Time) {
 			return this.compareTimes((Time)first, (Time)second);
+		}
+		else if (first == null || second == null) {
+			return this.compareNulls((Object) first, (Object) second);
 		}
 		throw new LambdaException('Comparison for provided types is not supported');
 	}
