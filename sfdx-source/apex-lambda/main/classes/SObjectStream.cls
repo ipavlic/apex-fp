@@ -18,6 +18,10 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 		return new SObjectRemovingStream(this, predicate);
 	}
 
+	public SObjectStream mapAll(SObjectToSObjectFunction fn) {
+		return new SObjectMappingStream(this, fn);
+	}
+
 	public virtual Boolean hasNext() {
 		return recordsIterator.hasNext();
 	}

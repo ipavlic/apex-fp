@@ -428,6 +428,8 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 `SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java's `Stream`.
 
 - [`filter`](#stream-filter)
+- [`remove`](#stream-filter)
+- [`mapAll`](#stream-filter)
 
 ### `filter`
 <a name="stream-filter"></a>
@@ -439,8 +441,11 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`
 
 ### `remove`
-<a name="stream-filter"></a>
+<a name="stream-remove"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `SObjectStream` 		| `remove(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with removing of records that satisfy `predicate` |
+
+### `mapAll`
+<a name="stream-mapAll"></a>
