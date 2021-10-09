@@ -423,9 +423,9 @@ For typed maps, both a cast and the correct concrete type must be provided:
 Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, Account>.class); // Works!
 ```
 
-## `SObjectStream` functions :construction:
+## :construction: `SObjectStream` functions 
 
-`SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java's `Stream`.
+`SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java’s `Stream`. It’s under construction and could rapidly change. 
 
 - [`filter`](#stream-filter)
 - [`remove`](#stream-remove)
@@ -436,7 +436,7 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy `predicate` |
+| `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy `predicate` added at the end |
 
 Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`
 
@@ -445,11 +445,18 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectStream` 		| `remove(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with removing of records that satisfy `predicate` |
+| `SObjectStream` 		| `remove(SObjectPredicate predicate)` 			| Returns an `SObjectStream` chain with removing of records that satisfy `predicate` added at the end |
 
 ### `mapAll`
 <a name="stream-mapAll"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a `SObjectStream` chain with mapping of records with `fn` |
+| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of records with `fn` added at the end |
+
+### `mapSome`
+<a name="stream-mapAll"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `SObjectCollection` | `mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of those records that satisfy `predicate` with `fn` added at the end |

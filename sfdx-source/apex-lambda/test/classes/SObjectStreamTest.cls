@@ -77,4 +77,30 @@ public class SObjectStreamTest {
 			System.assertEquals(100, ((Account) record).AnnualRevenue);
 		}
 	}
+
+	@IsTest
+	public static void testMapSome() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'Ok'),
+			new Account(Name = 'Wrong'),
+			new Account(Name = 'Ok'),
+			new Account(Name = 'Wrong')
+		};
+		Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), CopyFields.fromRecord(new Account(AnnualRevenue = 100)));
+		
+		List<SObject> mapped = new List<SObject>();
+		while (iter.hasNext()) {
+			mapped.add(iter.next());
+		}
+		
+		System.assertEquals(4, mapped.size());
+		for (SObject record : mapped) {
+			Account a = (Account) record;
+			if (a.Name == 'Ok') {
+				System.assertEquals(100, a.AnnualRevenue);
+			} else {
+				System.assertEquals(null, a.AnnualRevenue);
+			}
+		}
+	}
 }

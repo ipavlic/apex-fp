@@ -11,16 +11,21 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 	}
 
 	public SObjectStream filter(SObjectPredicate predicate) {
-		return new SObjectFilteringStream(this, predicate);
+		return new SObjectStreamFilter(this, predicate);
 	}
 
 	public SObjectStream remove(SObjectPredicate predicate) {
-		return new SObjectRemovingStream(this, predicate);
+		return new SObjectStreamRemove(this, predicate);
 	}
 
 	public SObjectStream mapAll(SObjectToSObjectFunction fn) {
-		return new SObjectMappingStream(this, fn);
+		return new SObjectStreamMapAll(this, fn);
 	}
+
+	public SObjectStream mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
+		return new SObjectStreamMapSome(this, predicate, fn);
+	}
+
 
 	public virtual Boolean hasNext() {
 		return recordsIterator.hasNext();

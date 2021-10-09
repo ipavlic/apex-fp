@@ -1,10 +1,10 @@
-public with sharing class SObjectFilteringStream extends SObjectStream {
+public with sharing class SObjectStreamFilter extends SObjectStream {
 	
 	private SObjectPredicate predicate;
 	private SObject next;
 	private Boolean hasNext;
 	
-	public SObjectFilteringStream(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
+	public SObjectStreamFilter(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
 		super(recordsIterator);
 		this.predicate = predicate;
 	}

@@ -1,7 +1,7 @@
-public with sharing class SObjectMappingStream extends SObjectStream {
+public with sharing class SObjectStreamMapAll extends SObjectStream {
 	private SObjectToSObjectFunction fn;
 	
-	public SObjectMappingStream(Iterator<SObject> recordsIterator, SObjectToSObjectFunction fn) {
+	public SObjectStreamMapAll(Iterator<SObject> recordsIterator, SObjectToSObjectFunction fn) {
 		super(recordsIterator);
 		this.fn = fn;
 	}

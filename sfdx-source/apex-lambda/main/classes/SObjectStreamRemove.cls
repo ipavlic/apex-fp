@@ -1,10 +1,10 @@
-public with sharing class SObjectRemovingStream extends SObjectStream {
+public with sharing class SObjectStreamRemove extends SObjectStream {
 	
 	private SObjectPredicate predicate;
 	private SObject next;
 	private Boolean hasNext;
 	
-	public SObjectRemovingStream(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
+	public SObjectStreamRemove(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
 		super(recordsIterator);
 		this.predicate = predicate;
 	}
