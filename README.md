@@ -430,6 +430,7 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 - [`filter`](#stream-filter)
 - [`remove`](#stream-remove)
 - [`mapAll`](#stream-mapAll)
+- [`mapSome`](#stream-mapSome)
 
 ### `filter`
 <a name="stream-filter"></a>
@@ -455,7 +456,7 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 | `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of records with `fn` added at the end |
 
 ### `mapSome`
-<a name="stream-mapAll"></a>
+<a name="stream-mapSome"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
