@@ -1,7 +1,7 @@
 @IsTest
 public class SObjectStreamTest {
 	@IsTest
-	public static void testIteration() {
+	public static void testFilter() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60),
@@ -20,7 +20,7 @@ public class SObjectStreamTest {
 	}
 
 	@IsTest
-	public static void testIterationChaining() {
+	public static void testFilterChaining() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60),
@@ -35,5 +35,25 @@ public class SObjectStreamTest {
 		}
 		System.assertEquals(1, filtered.size());
 		System.assertEquals(accounts[2], filtered[0]);
+	}
+
+	@IsTest
+	public static void testRemove() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'Ok', AnnualRevenue = 100),
+			new Account(Name = 'Wrong', AnnualRevenue = 60),
+			new Account(Name = 'Ok', AnnualRevenue = 150),
+			new Account(Name = 'Wrong', AnnualRevenue = 150)
+		};
+		Iterator<SObject> iter = SObjectStream.of(accounts).remove(Match.field(Account.Name).equals('Wrong'));		
+		
+		List<SObject> filtered = new List<SObject>();
+		while (iter.hasNext()) {
+			filtered.add(iter.next());
+		}
+		
+		System.assertEquals(2, filtered.size());
+		System.assertEquals(accounts[0], filtered[0]);
+		System.assertEquals(accounts[2], filtered[1]);
 	}
 }

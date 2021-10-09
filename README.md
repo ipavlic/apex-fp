@@ -423,7 +423,7 @@ For typed maps, both a cast and the correct concrete type must be provided:
 Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, Account>.class); // Works!
 ```
 
-## `SObjectStream` functions
+## `SObjectStream` functions :construction:
 
 `SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java's `Stream`.
 
@@ -434,6 +434,13 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy predicate added |
+| `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy `predicate` |
 
 Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`
+
+### `remove`
+<a name="stream-filter"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `SObjectStream` 		| `remove(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with removing of records that satisfy `predicate` |

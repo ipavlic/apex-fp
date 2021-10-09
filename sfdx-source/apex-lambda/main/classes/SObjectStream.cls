@@ -14,6 +14,10 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 		return new SObjectFilteringStream(this, predicate);
 	}
 
+	public SObjectStream remove(SObjectPredicate predicate) {
+		return new SObjectRemovingStream(this, predicate);
+	}
+
 	public virtual Boolean hasNext() {
 		return recordsIterator.hasNext();
 	}
@@ -22,7 +26,7 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 		return recordsIterator.next();
 	}
 
-	public List<SObject> asList() {
+	public List<SObject> toList() {
 		List<SObject> records = new List<SObject>();
 		while (hasNext()) {
 			records.add(next());

@@ -1,10 +1,10 @@
-public with sharing class SObjectFilteringStream extends SObjectStream {
+public with sharing class SObjectRemovingStream extends SObjectStream {
 	
 	private SObjectPredicate predicate;
 	private SObject next;
 	private Boolean hasNext;
 	
-	public SObjectFilteringStream(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
+	public SObjectRemovingStream(Iterator<SObject> recordsIterator, SObjectPredicate predicate) {
 		super(recordsIterator);
 		this.predicate = predicate;
 	}
@@ -12,7 +12,7 @@ public with sharing class SObjectFilteringStream extends SObjectStream {
 	private Boolean tryAdvance() {
 		while (recordsIterator.hasNext()) {
 			SObject nextRecord = recordsIterator.next();
-			if (predicate.apply(nextRecord)) {
+			if (!predicate.apply(nextRecord)) {
 				next = nextRecord;
 				hasNext = true;
 				return true;
