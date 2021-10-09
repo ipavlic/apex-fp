@@ -422,3 +422,18 @@ For typed maps, both a cast and the correct concrete type must be provided:
 ```apex
 Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, Account>.class); // Works!
 ```
+
+## `SObjectStream` functions
+
+`SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java's `Stream`.
+
+- [`filter`](#stream-filter)
+
+### `filter`
+<a name="stream-filter"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy predicate added |
+
+Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`
