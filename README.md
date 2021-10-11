@@ -453,11 +453,11 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of records with `fn` added at the end |
+| `SObjectStream` | `mapAll(SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of records with `fn` added at the end |
 
 ### `mapSome`
 <a name="stream-mapSome"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectCollection` | `mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of those records that satisfy `predicate` with `fn` added at the end |
+| `SObjectStream` | `mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of those records that satisfy `predicate` with `fn` added at the end |
