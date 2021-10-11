@@ -27,7 +27,7 @@ Lambda offers eager and lazy evaluation.
 
 Eager evaluation through `SObjectCollection` is stable, richer, easier to use and is not consumable.
 
-Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required.
+Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required, but is consumable and has to be recreated for every use.
 
 - [`SObjectCollection`](#sobject-collection)
 - [`SObjectStream`](#sobject-stream)
