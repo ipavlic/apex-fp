@@ -21,7 +21,19 @@ SObjectCollection remaining = mapped.remove(Match.record(new Account(Name = 'Bar
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
+# Documentation
+
+Lambda offers eager and lazy evaluation. 
+
+Eager evaluation through `SObjectCollection` is stable, richer, easier to use and is not consumable.
+
+Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required.
+
+- [`SObjectCollection`](#sobject-collection)
+- [`SObjectStream`](#sobject-stream)
+
 ## `SObjectCollection` functions
+<a name="sobject-collection"></a>
 
 - [`isEmpty`](#is-empty)
 - [`difference`](#difference)
@@ -423,7 +435,8 @@ For typed maps, both a cast and the correct concrete type must be provided:
 Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, Account>.class); // Works!
 ```
 
-## :construction: `SObjectStream` functions 
+## :construction: `SObjectStream` functions
+<a name="sobject-stream"></a> 
 
 `SObjectStream` aims to provide `SObjectCollection` facilities but with a lazy evaluation, similar to Java’s `Stream`. It’s under construction and could rapidly change. 
 
