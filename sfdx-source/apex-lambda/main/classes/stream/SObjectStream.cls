@@ -26,7 +26,6 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 		return new SObjectStreamMapSome(this, predicate, fn);
 	}
 
-
 	public virtual Boolean hasNext() {
 		return recordsIterator.hasNext();
 	}
