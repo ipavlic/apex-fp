@@ -414,8 +414,6 @@ Fields used in field conditions must be available on records that are tested, ot
 #### `FieldsMatch`
 <a name="fields-match"></a>
 
-<img src="images/filterFieldsMatch.png" height="120">
-
 `FieldsMatch` implements `SObjectPredicate` and returns `true` if a record satisfies all field matching conditions. `FieldsMatch` is constructed from an `IncompleteFieldsMatch` with a fluent interface. Additional conditions can be defined with `also`, or its alias, `field`:
 
 | Modifier and type | Method | Alias | Description |
@@ -429,8 +427,6 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 
 #### `RecordMatch`
 <a name="record-match"></a>
-
-<img src="images/filterRecordMatch.png" height="120">
 
 `RecordMatch` is an `SObjectPredicate` that returns `true` if record fields are equal to those defined on a `prototype` record. Fields that are not
 defined on a prototype record do not have to match.
