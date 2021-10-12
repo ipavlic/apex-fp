@@ -4,7 +4,7 @@ public with sharing class SObjectPredicates {
 	public static SObjectPredicate NotNull = new NotNull();
 
 	private class AlwaysTrue implements SObjectPredicate {
-		public Boolean apply(Object obj) {
+		public Boolean apply(SObject record) {
 			return true;
 		}
 	}

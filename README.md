@@ -399,6 +399,7 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 Function factories generate functions that can be used for [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
 
 - [`Match`](#match)
+- [`SObjectPredicates`](#sobject-predicates)
 - [`CopyFields`](#copy-fields)
 
 ### `Match`
@@ -467,6 +468,17 @@ SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
 ##### Warning :warning:
 
 Fields that are present on the *prototype* object must also be available on records that are tested, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+
+### `SObjectPredicates`
+<a name="sobject-predicates"></a>
+
+`SObjectPredicates` contains simple predicates.
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `AlwaysTrue` | `AlwaysTrue` | Returns a `SObjectPredicate` implementing `AlwaysTrue` which returns `true` for every record. |
+| `NotNull` | `NotNull` | Returns a `SObjectPredicate` implementing `NotNull` which returns `true` for records that are not null. |
+
 
 ### `CopyFields`
 <a name="copy-fields"></a>
