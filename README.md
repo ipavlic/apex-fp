@@ -29,8 +29,11 @@ Eager evaluation through `SObjectCollection` is stable, richer, easier to use an
 
 Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required, but is consumable and has to be recreated for every use.
 
+Lambda comes with a set of function factories, that can be used for both Collections and Streams.
+
 - [`SObjectCollection`](#sobject-collection)
 - [`SObjectStream`](#sobject-stream)
+- [`Function factories`](#function-factories)
 
 ## `SObjectCollection` functions
 <a name="sobject-collection"></a>
@@ -66,9 +69,9 @@ Lazy evaluation through `SObjectStream` can be more efficient for large data set
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectCollection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectCollection` view of records that satisfied predicate |
+| `SObjectCollection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectCollection` view of records that satisfied predicate. |
 
-Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`:
+Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`.
 
 ```apex
 SObjectCollection accountCollection = SObjectCollection.of(accounts);
@@ -76,90 +79,8 @@ SObjectCollection accountCollection = SObjectCollection.of(accounts);
 Account prototype = new Account(Name = 'Foo');
 SObjectCollection recordMatched = accountCollection.filter(Match.record(prototype));
 
-SObjectCollection fieldMatched = accountCollection.filter(Match.field(Account.Name).equals('Foo'));
+SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
-
-#### `FieldsMatch`
-
-<img src="images/filterFieldsMatch.png" height="120">
-
-`FieldsMatch` returns `true` if a record satisfies all field matching conditions.
-
-`FieldsMatch` is constructed with a fluent interface. `Match` factory method `field` returns an `IncompleteFieldsMatch`. 
-`FieldsMatch` is obtained from the `IncompleteFieldsMatch` by providing a matching condition on the field. `FieldsMatch`
-can be expanded with a new matching condition to get another `IncompleteFieldsMatch`. The process is continued until all 
-desired matching conditions are defined.
-
-```apex
-FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
-```
-
-`FieldsMatch` can be provided directly to `filter` method:
-
-```apex
-SObjectCollection filtered = SObjectCollection.of(accounts).filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
-```
-
-##### `IncompleteFieldsMatch`
-
-| Modifier and type | Method | Alias | Description |
-|-------------------|--------|-------|-------------|
-| `FieldsMatch` | `equals(Object value)`				| `eq` | Defines an equality comparison condition for the current field |
-| `FieldsMatch` | `notEquals(Object value)`			| `neq` | Defines an inequality comparison condition for the current field |
-| `FieldsMatch` | `lessThan(Object value)`				| `lt` | Defines a less than comparison condition for the current field |
-| `FieldsMatch` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals condition for the current field |
-| `FieldsMatch` | `greaterThan(Object value)`			| `gt` | Defines a greater than condition for the current field |
-| `FieldsMatch` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals condition for the current field |
-| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field |
-| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field |
-| `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
-
-##### `FieldsMatch`
-
-Additional conditions can be defined with `also`, or its alias, `field`:
-
-| Modifier and type | Method | Alias | Description |
-|-------------------|--------|-------|-------------|
-| `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
-| `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
-
-##### Warning :warning:
-
-`isIn` and `isNotIn` support a `Set` of one of the following types:
-
-- `Boolean`
-- `Date`
-- `Datetime`
-- `Decimal`
-- `Double`
-- `Id`
-- `Integer`
-- `Long`
-- `String`
-
-**Other types are not supported and will throw an exception**.
-
-Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
-
-#### `RecordMatch`
-
-<img src="images/filterRecordMatch.png" height="120">
-
-`RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
-defined on a prototype record do not have to match.
-
-```apex
-Account prototype = new Account(
-    Name = 'Test',
-    AnnualRevenue = 50000000
-);
-// Accounts named 'Test' with an AnnualRevenue of **exactly** 50,000,000 are matched
-SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
-```
-
-##### Warning :warning:
-
-Fields that are present on the *prototype* object must also be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
 ### `remove`
 <a name="remove"></a>
@@ -281,7 +202,7 @@ Maps all elements of `SObjectCollection` view into another `SObjectCollection` v
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `SObjectCollection` view formed by mapping all current view elements with `fn` |
+| `SObjectCollection` | `mapAll(SObjectToSObjectFunction fn)` | Returns a new `SObjectCollection` view formed by mapping all current view elements with `fn`. `SObjectToSobject` functions can be built by [`function factories`](#function-factories), or an instance of class that `implements` the `SObjectToSobject` interface can be provided. |
 
 
 ```apex
@@ -412,7 +333,7 @@ System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
 ```
 
-`asList()` and `asSet()` on `SObjectCollection` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is not required in either case, but `instanceof` can provide unexpected results.
+`asList()` and `asSet()` on `SObjectCollection` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is  not required in either case, but `instanceof` can provide unexpected results.
 A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
 
 ```apex
@@ -474,3 +395,90 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `SObjectStream` | `mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of those records that satisfy `predicate` with `fn` added at the end |
+
+## Function factories
+<a name="function-factories"></a>
+
+Function factories generate functions that can be used in Collections and Streams.
+
+### `Match`
+<a name="match"></a>
+
+| Modifier and type | Method | Description |
+|-------------------|--------|-------------|
+| `RecordMatch` | `record(SObject prototype)` | Returns a `SObjectPredicate` implementing `RecordMatch` which returns `true` if fields on a record are equal to those defined on the provided `prototype`. Fields that are not defined on the prototype record do not have to match. |
+| `IncompleteFieldsMatch` | `field(Schema.SObjectField field)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
+| `IncompleteFieldsMatch` | `field(String fieldPath)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
+
+#### `FieldsMatch`
+<a name="fields-match"></a>
+
+<img src="images/filterFieldsMatch.png" height="120">
+
+`FieldsMatch` implements `SObjectPredicate` and returns `true` if a record satisfies all field matching conditions. `FieldsMatch` is constructed with a fluent interface. 
+
+```apex
+FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
+```
+
+#### `IncompleteFieldsMatch`
+<a name="incomplete-fields-match"></a>
+
+
+| Modifier and type | Method | Alias | Description |
+|-------------------|--------|-------|-------------|
+| `FieldsMatch` | `equals(Object value)`				| `eq` | Defines an equality comparison condition for the current field |
+| `FieldsMatch` | `notEquals(Object value)`			| `neq` | Defines an inequality comparison condition for the current field |
+| `FieldsMatch` | `lessThan(Object value)`				| `lt` | Defines a less than comparison condition for the current field |
+| `FieldsMatch` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals condition for the current field |
+| `FieldsMatch` | `greaterThan(Object value)`			| `gt` | Defines a greater than condition for the current field |
+| `FieldsMatch` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals condition for the current field |
+| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field |
+| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field |
+| `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
+
+Additional conditions can be defined with `also`, or its alias, `field`:
+
+| Modifier and type | Method | Alias | Description |
+|-------------------|--------|-------|-------------|
+| `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
+| `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
+
+##### Warning :warning:
+
+`isIn` and `isNotIn` support a `Set` of one of the following types:
+
+- `Boolean`
+- `Date`
+- `Datetime`
+- `Decimal`
+- `Double`
+- `Id`
+- `Integer`
+- `Long`
+- `String`
+
+**Other types are not supported and will throw an exception**.
+
+Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
+
+#### `RecordMatch`
+<a name="record-match"></a>
+
+<img src="images/filterRecordMatch.png" height="120">
+
+`RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
+defined on a prototype record do not have to match.
+
+```apex
+Account prototype = new Account(
+    Name = 'Test',
+    AnnualRevenue = 50000000
+);
+// Accounts named 'Test' with an AnnualRevenue of **exactly** 50,000,000 are matched
+SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
+```
+
+##### Warning :warning:
+
+Fields that are present on the *prototype* object must also be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
