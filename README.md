@@ -433,8 +433,8 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 | `FieldsMatch` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals condition for the current field |
 | `FieldsMatch` | `greaterThan(Object value)`			| `gt` | Defines a greater than condition for the current field |
 | `FieldsMatch` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals condition for the current field |
-| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. |
-| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. |
+| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. **Other types are not supported and will throw an exception**. |
+| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. **Other types are not supported and will throw an exception**. |
 | `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
 
 Additional conditions can be defined with `also`, or its alias, `field`:
@@ -443,8 +443,6 @@ Additional conditions can be defined with `also`, or its alias, `field`:
 |-------------------|--------|-------|-------------|
 | `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
 | `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
-
-**Other types are not supported and will throw an exception**.
 
 Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
