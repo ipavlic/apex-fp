@@ -1,8 +1,4 @@
-<p align="center">
-  <h1 align="center"><img src="images/lambda.png" height="32"></h1>
-</p>
-
-Lambda provides functional constructs for `SObject` collections!
+Apex FP provides functional constructs for `SObject` collections!
 
 ```apex
 List<Account> accounts = new List<Account>{
@@ -23,19 +19,18 @@ while (filteredStream.hasNext()) {
 }
 ```
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
 # Documentation
-
-Lambda offers eager and lazy evaluation. 
+Apex FP offers eager and lazy evaluation. 
 
 Eager evaluation through `SObjectCollection` is stable, richer, easier to use and is not consumable.
 
 Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required, but is consumable and has to be recreated for every use.
 
-Lambda comes with a set of function factories, that can be used for both [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
+Apex FP comes with a set of function factories, that can be used for both [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
 
 - [`SObjectCollection`](#sobject-collection)
 - [`SObjectStream`](#sobject-stream)
@@ -101,14 +96,10 @@ SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).
 ### `remove`
 <a name="remove"></a>
 
-<img src="images/remove.png" height="100">
-
 `remove` works just like `filter`, but records which match a predicate are removed from the `Collection` view instead of kept.
 
 ### `pluck`
 <a name="pluck"></a>
-
-<img src="images/pluck.png" height="100">
 
 Plucks field values from a `SObjectCollection` view of records into a `List` of appropriate type.
 
@@ -150,8 +141,6 @@ List<String> accountNames = SObjectCollection.of(opportunities).pluckStrings('Ac
 ### `groupBy`
 <a name="group-by"></a>
 
-<img src="images/groupBy.png" height="200">
-
 Groups records by values of a specified field.
 
 ```apex
@@ -188,8 +177,6 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = SObjectCollection.of(opp
 ### `pick`
 <a name="pick"></a>
 
-<img src="images/pick.png" height="100">
-
 Returns a new `SObjectCollection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
 ```apex
@@ -209,8 +196,6 @@ SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<Stri
 
 ### `mapAll`
 <a name="map-all"></a>
-
-<img src="images/mapAll.png" height="100">
 
 Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided `SObjectToSObjectFunction` mapping function.
 
@@ -240,8 +225,6 @@ One `SObjectToSObjectFunction` is provided out of the box, [`CopyFields`](#copy-
 ### `mapSome`
 <a name="map-some"></a>
 
-<img src="images/mapSome.png" height="100">
-
 Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
 
 ```apex
@@ -268,8 +251,6 @@ SObjectCollection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmou
 ### `mapToDecimal`
 <a name="map-to-decimal"></a>
 
-<img src="images/mapToDecimal.png" height="100">
-
 Maps a numeric field to a `DecimalCollection`. This is similar to `pluckDecimals`, but unlike a raw `List<Decimal>` returns a `DecimalCollection` which provides further functions.
 
 | Modifier and type | Method | Description |
@@ -289,8 +270,6 @@ Functions on `DecimalCollection` include `sum` and `average`.
 
 ### `mapToDouble`
 <a name="map-to-double"></a>
-
-<img src="images/mapToDouble.png" height="100">
 
 Maps a numeric field to a `DoubleCollection`. This is similar to `pluckDoubles`, but unlike a raw `List<Double>` returns a `DoubleCollection` which provides further functions.
 
@@ -443,8 +422,6 @@ Fields used in field conditions must be available on records that are tested, ot
 #### `FieldsMatch`
 <a name="fields-match"></a>
 
-<img src="images/filterFieldsMatch.png" height="120">
-
 `FieldsMatch` implements `SObjectPredicate` and returns `true` if a record satisfies all field matching conditions. `FieldsMatch` is constructed from an `IncompleteFieldsMatch` with a fluent interface. Additional conditions can be defined with `also`, or its alias, `field`:
 
 | Modifier and type | Method | Alias | Description |
@@ -458,8 +435,6 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 
 #### `RecordMatch`
 <a name="record-match"></a>
-
-<img src="images/filterRecordMatch.png" height="120">
 
 `RecordMatch` is an `SObjectPredicate` that returns `true` if record fields are equal to those defined on a `prototype` record. Fields that are not
 defined on a prototype record do not have to match.
