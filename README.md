@@ -433,8 +433,8 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 | `FieldsMatch` | `lessThanOrEquals(Object value)` 	| `leq` | Defines a less than or equals condition for the current field |
 | `FieldsMatch` | `greaterThan(Object value)`			| `gt` | Defines a greater than condition for the current field |
 | `FieldsMatch` | `greaterThanOrEquals(Object value)`	| `geq` | Defines a greaterThanOrEquals condition for the current field |
-| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field |
-| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field |
+| `FieldsMatch` | `isIn(Object value)` 				| 		| Defines a set membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. |
+| `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. |
 | `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
 
 Additional conditions can be defined with `also`, or its alias, `field`:
@@ -443,20 +443,6 @@ Additional conditions can be defined with `also`, or its alias, `field`:
 |-------------------|--------|-------|-------------|
 | `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
 | `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
-
-##### Warning :warning:
-
-`isIn` and `isNotIn` support a `Set` of one of the following types:
-
-- `Boolean`
-- `Date`
-- `Datetime`
-- `Decimal`
-- `Double`
-- `Id`
-- `Integer`
-- `Long`
-- `String`
 
 **Other types are not supported and will throw an exception**.
 
