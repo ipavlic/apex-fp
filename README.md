@@ -473,5 +473,6 @@ Values of fields defined for `prototype` are overwritten on
 target records. Other fields on target record are not modified.
 
 ```apex
-SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test' on every record in collection
+SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test')));
+// Name field has been overwritten with 'Test' on every record in collection
 ```
