@@ -476,9 +476,13 @@ Fields that are present on the *prototype* object must also be available on reco
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `AlwaysTrue` | `AlwaysTrue` | Returns a `SObjectPredicate` implementing `AlwaysTrue` which returns `true` for every record. |
-| `NotNull` | `NotNull` | Returns a `SObjectPredicate` implementing `NotNull` which returns `true` for records that are not null. |
+| `AlwaysTrue` | `AlwaysTrue` | Returns `AlwaysTrue` which implements `SObjectPredicate` and returns `true` for every record. |
+| `NotNull` | `NotNull` | Returns `NotNull` which implmenets `SObjectPredicate` and returns `true` for records that are not null. |
 
+```apex
+SObjectCollection.of(accounts).filter(SObjectPredicates.NotNull);
+SObjectStream.of(opportunities).filter(SObjectPredicates.NotNull);
+```
 
 ### `CopyFields`
 <a name="copy-fields"></a>
