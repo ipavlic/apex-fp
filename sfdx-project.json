@@ -1,11 +1,11 @@
 {
   "packageDirectories": [
     {
-      "path": "sfdx-source/apex-lambda",
+      "path": "sfdx-source/apex-fp",
       "default": true
     }
   ],
-  "name": "apex-lambda",
+  "name": "apex-fp",
   "namespace": "",
   "sfdcLoginUrl": "https://login.salesforce.com",
   "sourceApiVersion": "52.0"
