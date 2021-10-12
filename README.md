@@ -30,7 +30,7 @@ Eager evaluation through `SObjectCollection` is stable, richer, easier to use an
 
 Lazy evaluation through `SObjectStream` can be more efficient for large data sets and can be performed for only as long as required, but is consumable and has to be recreated for every use.
 
-Lambda comes with a set of function factories, that can be used for both [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
+Apex FP comes with a set of function factories, that can be used for both [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
 
 - [`SObjectCollection`](#sobject-collection)
 - [`SObjectStream`](#sobject-stream)
