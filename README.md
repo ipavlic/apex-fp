@@ -19,7 +19,7 @@ while (filteredStream.hasNext()) {
 }
 ```
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
@@ -86,14 +86,10 @@ SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).
 ### `remove`
 <a name="remove"></a>
 
-<img src="images/remove.png" height="100">
-
 `remove` works just like `filter`, but records which match a predicate are removed from the `Collection` view instead of kept.
 
 ### `pluck`
 <a name="pluck"></a>
-
-<img src="images/pluck.png" height="100">
 
 Plucks field values from a `SObjectCollection` view of records into a `List` of appropriate type.
 
@@ -137,8 +133,6 @@ List<String> accountNames = SObjectCollection.of(opportunities).pluckStrings('Ac
 ### `groupBy`
 <a name="group-by"></a>
 
-<img src="images/groupBy.png" height="200">
-
 Groups records by values of a specified field.
 
 ```apex
@@ -175,8 +169,6 @@ Map<Date, List<Opportunity>> opportunitiesByCloseDate = SObjectCollection.of(opp
 ### `pick`
 <a name="pick"></a>
 
-<img src="images/pick.png" height="100">
-
 Returns a new `SObjectCollection` view of the collection which keeps just the specified fields, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
 ```apex
@@ -196,8 +188,6 @@ SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<Stri
 
 ### `mapAll`
 <a name="map-all"></a>
-
-<img src="images/mapAll.png" height="100">
 
 Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided `SObjectToSObjectFunction` mapping function.
 
@@ -227,8 +217,6 @@ One `SObjectToSObjectFunction` is provided out of the box, [`CopyFields`](#copy-
 ### `mapSome`
 <a name="map-some"></a>
 
-<img src="images/mapSome.png" height="100">
-
 Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `predicate`, and keeping those that do not unchanged.
 
 ```apex
@@ -255,8 +243,6 @@ SObjectCollection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmou
 ### `mapToDecimal`
 <a name="map-to-decimal"></a>
 
-<img src="images/mapToDecimal.png" height="100">
-
 Maps a numeric field to a `DecimalCollection`. This is similar to `pluckDecimals`, but unlike a raw `List<Decimal>` returns a `DecimalCollection` which provides further functions.
 
 | Modifier and type | Method | Description |
@@ -276,8 +262,6 @@ Functions on `DecimalCollection` include `sum` and `average`.
 
 ### `mapToDouble`
 <a name="map-to-double"></a>
-
-<img src="images/mapToDouble.png" height="100">
 
 Maps a numeric field to a `DoubleCollection`. This is similar to `pluckDoubles`, but unlike a raw `List<Double>` returns a `DoubleCollection` which provides further functions.
 
