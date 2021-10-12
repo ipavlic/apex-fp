@@ -15,6 +15,12 @@ SObjectCollection accountCollection = SObjectCollection.of(accounts);
 SObjectCollection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
 SObjectCollection mapped = filtered.mapAll(CopyFields.fromRecord(new Account(High_Value__c = true)));
 SObjectCollection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
+
+SObjectStream accountStream = SObjectStream.of(accounts);
+SObjectStream filteredStream = accountStream.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
+while (filteredStream.hasNext()) {
+    SObject account = filteredStream.next();
+}
 ```
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-lambda&ref=master">
