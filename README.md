@@ -48,9 +48,19 @@ Lambda comes with a set of function factories, that can be used for both [`SObje
 - [`difference`](#difference)
 - [`filter`](#filter)
 - [`remove`](#remove)
-- [`groupBy`](#group-by)
+- [`groupByBooleans`](#group-by)
+- [`groupByDates`](#group-by)
+- [`groupByDatetimes`](#group-by)
+- [`groupByDecimals`](#group-by)
+- [`groupByIds`](#group-by)
+- [`groupByStrings`](#group-by)
 - [`pick`](#pick)
-- [`pluck`](#pluck)
+- [`pluckBooleans`](#pluck)
+- [`pluckDates`](#pluck)
+- [`pluckDatetimes`](#pluck)
+- [`pluckDecimals`](#pluck)
+- [`pluckIds`](#pluck)
+- [`pluckStrings`](#pluck)
 - [`mapAll`](#map-all)
 - [`mapSome`](#map-some)
 - [`mapToDecimal`](#map-to-decimal)
@@ -136,8 +146,6 @@ List<String> accountNames = SObjectCollection.of(opportunities).pluckStrings('Ac
 | `List<Id>` | `pluckIds(Schema.SObjectField field)` | Plucks Id `field` values |
 | `List<Id>` | `pluckIds(String relation)` | Plucks Id `relation` values |
 | `List<Id>` | `pluckIds()` | Plucks values of `Id` field |
-| `List<String>` | `strings(Schema.SObjectField field)` | Plucks String or Id `field` values |
-| `List<String>` | `strings(Schema.SObjectField relation)` | Plucks String or Ids `relation` values |
 
 ### `groupBy`
 <a name="group-by"></a>
