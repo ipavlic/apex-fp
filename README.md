@@ -360,8 +360,8 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 
 - [`filter`](#stream-filter)
 - [`remove`](#stream-remove)
-- [`mapAll`](#stream-mapAll)
-- [`mapSome`](#stream-mapSome)
+- [`mapAll`](#stream-map-all)
+- [`mapSome`](#stream-map-some)
 
 ### `filter`
 <a name="stream-filter"></a>
@@ -370,7 +370,7 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 |-------------------|--------|-------------|
 | `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy `predicate` added at the end |
 
-Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`
+Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on [`Match`](#match).
 
 ### `remove`
 <a name="stream-remove"></a>
@@ -380,14 +380,14 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 | `SObjectStream` 		| `remove(SObjectPredicate predicate)` 			| Returns an `SObjectStream` chain with removing of records that satisfy `predicate` added at the end |
 
 ### `mapAll`
-<a name="stream-mapAll"></a>
+<a name="stream-map-all"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
 | `SObjectStream` | `mapAll(SObjectToSObjectFunction fn)` | Returns an `SObjectStream` chain with mapping of records with `fn` added at the end |
 
 ### `mapSome`
-<a name="stream-mapSome"></a>
+<a name="stream-map-some"></a>
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
@@ -397,6 +397,9 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 <a name="function-factories"></a>
 
 Function factories generate functions that can be used for [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
+
+- [`Match`](#match)
+- [`CopyFields`](#copy-fields)
 
 ### `Match`
 <a name="match"></a>
@@ -410,7 +413,7 @@ Function factories generate functions that can be used for [`SObjectCollection`]
 #### `IncompleteFieldsMatch`
 <a name="incomplete-fields-match"></a>
 
-`IncompleteFieldsMatch` starts the fluent interface for building a `FieldsMatch`. Adding a condition through methods on the `IncompleteFieldsMatch` yields a `FieldsMatch`, which implements `SObjectPredicate`. The process can be continued to add more field conditions.
+`IncompleteFieldsMatch` starts the fluent interface for building a `FieldsMatch`. Adding a condition through methods on the `IncompleteFieldsMatch` yields a `FieldsMatch`, which is an `SObjectPredicate`. The process can be continued to add more field conditions.
 
 | Modifier and type | Method | Alias | Description |
 |-------------------|--------|-------|-------------|
@@ -449,7 +452,7 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 
 <img src="images/filterRecordMatch.png" height="120">
 
-`RecordMatch` returns `true` if record fields are equal to those defined on a “prototype” record. Fields that are not
+`RecordMatch` is an `SObjectPredicate` that returns `true` if record fields are equal to those defined on a `prototype` record. Fields that are not
 defined on a prototype record do not have to match.
 
 ```apex
@@ -466,11 +469,11 @@ SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
 Fields that are present on the *prototype* object must also be available on records that are tested, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
 
 ### `CopyFields`
+<a name="copy-fields"></a>
 
-`CopyFields` provides a factory for `SObjectToSObjectFunction` mapping functions that copy all defined fields from `prototype` record to the record it is applied to. 
+`CopyFields` is an `SObjectToSObjectFunction` that copies all defined fields from `prototype` record to the record it is applied to. Values of fields defined for `prototype` are overwritten on the target records. Other fields on target record are not modified.
 
-Values of fields defined for `prototype` are overwritten on
-target records. Other fields on target record are not modified.
+It is instantiated with a factory method `fromRecord`.
 
 ```apex
 SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test')));
