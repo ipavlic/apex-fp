@@ -427,6 +427,8 @@ Function factories generate functions that can be used for [`SObjectCollection`]
 | `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. **Other types are not supported and will throw an exception**. |
 | `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
 
+##### Warning :warning:
+
 Fields used in field conditions must be available on records that are tested, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
 #### `FieldsMatch`
