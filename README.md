@@ -410,17 +410,6 @@ Function factories generate functions that can be used for [`SObjectCollection`]
 | `IncompleteFieldsMatch` | `field(Schema.SObjectField field)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
 | `IncompleteFieldsMatch` | `field(String fieldPath)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
 
-#### `FieldsMatch`
-<a name="fields-match"></a>
-
-<img src="images/filterFieldsMatch.png" height="120">
-
-`FieldsMatch` implements `SObjectPredicate` and returns `true` if a record satisfies all field matching conditions. `FieldsMatch` is constructed with a fluent interface. 
-
-```apex
-FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
-```
-
 #### `IncompleteFieldsMatch`
 <a name="incomplete-fields-match"></a>
 
@@ -437,14 +426,25 @@ FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualReven
 | `FieldsMatch` | `isNotIn(Object value)` 				| `notIn` | Defines a set non-membership condition for the current field. `value` has to be a `Set<T>`, where `T` is a `Boolean`, `Date`, `Datetime`, `Decimal`, `Double`, `Id`, `Integer`, `Long` or `String`. **Other types are not supported and will throw an exception**. |
 | `FieldsMatch` | `hasValue()` 						| `notNull` | Defines a non-null condition for the current field |
 
+Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
+
+#### `FieldsMatch`
+<a name="fields-match"></a>
+
+<img src="images/filterFieldsMatch.png" height="120">
+
+`FieldsMatch` implements `SObjectPredicate` and returns `true` if a record satisfies all field matching conditions. `FieldsMatch` is constructed with a fluent interface. 
+
+```apex
+FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
+```
+
 Additional conditions can be defined with `also`, or its alias, `field`:
 
 | Modifier and type | Method | Alias | Description |
 |-------------------|--------|-------|-------------|
 | `IncompleteFieldsMatch` | `also(Schema.SObjectField field)` | `field` | Defines another condition to match |
 | `IncompleteFieldsMatch` | `also(String fieldPath)` | `field` | Defines another condition to match |
-
-Fields used in field conditions must be available on the collection which is filtered, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception can be thrown.
 
 #### `RecordMatch`
 <a name="record-match"></a>
