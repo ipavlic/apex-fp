@@ -399,7 +399,7 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 ## Function factories
 <a name="function-factories"></a>
 
-Function factories generate functions that can be used in Collections and Streams.
+Function factories generate functions that can be used for [`SObjectCollection`](#sobject-collection) and [`SObjectStream`](#sobject-stream) instances.
 
 ### `Match`
 <a name="match"></a>
