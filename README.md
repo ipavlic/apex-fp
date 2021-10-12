@@ -1,8 +1,4 @@
-<p align="center">
-  <h1 align="center"><img src="images/lambda.png" height="32"></h1>
-</p>
-
-Lambda provides functional constructs for `SObject` collections!
+Apex FP provides functional constructs for `SObject` collections!
 
 ```apex
 List<Account> accounts = new List<Account>{
@@ -28,8 +24,7 @@ while (filteredStream.hasNext()) {
 </a>
 
 # Documentation
-
-Lambda offers eager and lazy evaluation. 
+Apex FP offers eager and lazy evaluation. 
 
 Eager evaluation through `SObjectCollection` is stable, richer, easier to use and is not consumable.
 
