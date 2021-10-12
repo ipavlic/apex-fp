@@ -227,16 +227,7 @@ List<Opportunity> opps = new List<Opportunity>{
 SObjectCollection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 ```
 
-One `SObjectToSObjectFunction` is provided out of the box, `CopyFields`. It is instantiated through a factory method, `CopyFields.fromRecord`.
-
-#### `CopyFields`
-
-`CopyFields` copies all defined fields from `prototype` record to the record it is applied to. Values of fields defined for `prototype` are overwritten on
-target records. Other fields on target record are not modified.
-
-```apex
-SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test'
-```
+One `SObjectToSObjectFunction` is provided out of the box, [`CopyFields`](#copy-fields). It is instantiated through a factory method, `CopyFields.fromRecord`
 
 ### `mapSome`
 <a name="map-some"></a>
@@ -473,3 +464,14 @@ SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
 ##### Warning :warning:
 
 Fields that are present on the *prototype* object must also be available on records that are tested, otherwise a `System.SObjectException: SObject row was retrieved via SOQL without querying the requested field` exception will be thrown.
+
+### `CopyFields`
+
+`CopyFields` provides a factory for `SObjectToSObjectFunction` mapping functions that copy all defined fields from `prototype` record to the record it is applied to. 
+
+Values of fields defined for `prototype` are overwritten on
+target records. Other fields on target record are not modified.
+
+```apex
+SObjectCollection.of(opps).mapAll(CopyFields.fromRecord(new Opportunity(Name = 'Test'))); // Name field has been overwritten with 'Test' on every record in collection
+```
