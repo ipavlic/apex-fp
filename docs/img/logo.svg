@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.1//EN" "http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd">
+<svg width="100%" height="100%" viewBox="0 0 1134 1182" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" xml:space="preserve" xmlns:serif="http://www.serif.com/" style="fill-rule:evenodd;clip-rule:evenodd;stroke-linejoin:round;stroke-miterlimit:2;">
+    <g transform="matrix(1,0,0,1,-23.9978,2.27374e-13)">
+        <g transform="matrix(5.53745,0,0,5.53745,-1862.55,-1199.13)">
+            <path d="M362.727,216.549L486.652,429.843L545.315,429.843L422.17,216.549L362.727,216.549Z" style="fill:url(#_Linear1);"/>
+        </g>
+        <g transform="matrix(5.53745,0,0,5.53745,-2904.12,-1140.34)">
+            <path d="M601.536,293.217L631.098,344.097L587.448,419.225L528.785,419.225L601.536,293.217Z" style="fill:url(#_Linear2);"/>
+        </g>
+    </g>
+    <defs>
+        <linearGradient id="_Linear1" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(168.698,0,0,213.294,376.617,323.196)"><stop offset="0" style="stop-color:rgb(1,118,211);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(1,68,134);stop-opacity:1"/></linearGradient>
+        <linearGradient id="_Linear2" x1="0" y1="0" x2="1" y2="0" gradientUnits="userSpaceOnUse" gradientTransform="matrix(168.698,0,0,213.294,376.617,323.196)"><stop offset="0" style="stop-color:rgb(1,118,211);stop-opacity:1"/><stop offset="1" style="stop-color:rgb(1,68,134);stop-opacity:1"/></linearGradient>
+    </defs>
+</svg>
