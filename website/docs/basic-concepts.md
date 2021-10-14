@@ -27,7 +27,7 @@ List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filte
 To enable functional programming, Apex FP provides three things:
 1. **Functional interfaces** 
 2. **Function factories**
-3. **Classes that use functions**
+3. **Higher order functions**
 
 ## Functional interfaces
 
