@@ -1,4 +1,4 @@
-public class RecordMatch implements SObjectPredicate {
+public class RecordFieldsMatch implements SObjectPredicate {
 	private SObject prototype;
 	private Map<String, Object> populatedFieldsMap;
 
@@ -11,7 +11,7 @@ public class RecordMatch implements SObjectPredicate {
 		return true;
 	}
 
-	public RecordMatch(sObject prototype) {
+	public RecordFieldsMatch(sObject prototype) {
 		this.prototype = prototype;
 		this.populatedFieldsMap = prototype.getPopulatedFieldsAsMap();
 	}

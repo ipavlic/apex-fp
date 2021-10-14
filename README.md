@@ -10,7 +10,7 @@ SObjectCollection accountCollection = SObjectCollection.of(accounts);
 
 SObjectCollection filtered = accountCollection.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
 SObjectCollection mapped = filtered.mapAll(CopyFields.fromRecord(new Account(High_Value__c = true)));
-SObjectCollection remaining = mapped.remove(Match.record(new Account(Name = 'Bar')));
+SObjectCollection remaining = mapped.remove(Match.recordFields(new Account(Name = 'Bar')));
 
 SObjectStream accountStream = SObjectStream.of(accounts);
 SObjectStream filteredStream = accountStream.filter(Match.field(Account.AnnualRevenue).greaterThan(40000));
@@ -82,13 +82,13 @@ Apex FP comes with a set of function factories, that can be used for both [`SObj
 |-------------------|--------|-------------|
 | `SObjectCollection` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectCollection` view of records that satisfied predicate. |
 
-Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on `Match`.
+Two predicates are provided out of the box, `FieldsMatch` and `RecordFieldsMatch`. They are instantiated through factory methods on `Match`.
 
 ```apex
 SObjectCollection accountCollection = SObjectCollection.of(accounts);
 
 Account prototype = new Account(Name = 'Foo');
-SObjectCollection recordMatched = accountCollection.filter(Match.record(prototype));
+SObjectCollection recordMatched = accountCollection.filter(Match.recordFields(prototype));
 
 SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
@@ -357,7 +357,7 @@ Map<Id, Account> recordMap = (Map<Id, Account>) accountCollection.asMap(Map<Id, 
 |-------------------|--------|-------------|
 | `SObjectStream` 		| `filter(SObjectPredicate predicate)` 			| Returns a `SObjectStream` chain with filtering of records that satisfy `predicate` added at the end |
 
-Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. They are instantiated through factory methods on [`Match`](#match).
+Two predicates are provided out of the box, `FieldsMatch` and `RecordFieldsMatch`. They are instantiated through factory methods on [`Match`](#match).
 
 ### `remove`
 <a name="stream-remove"></a>
@@ -394,7 +394,7 @@ Function factories generate functions that can be used for [`SObjectCollection`]
 
 | Modifier and type | Method | Description |
 |-------------------|--------|-------------|
-| `RecordMatch` | `record(SObject prototype)` | Returns a `SObjectPredicate` implementing `RecordMatch` which returns `true` if fields on a record are equal to those defined on the provided `prototype`. Fields that are not defined on the prototype record do not have to match. |
+| `RecordFieldsMatch` | `record(SObject prototype)` | Returns a `SObjectPredicate` implementing `RecordFieldsMatch` which returns `true` if fields on a record are equal to those defined on the provided `prototype`. Fields that are not defined on the prototype record do not have to match. |
 | `IncompleteFieldsMatch` | `field(Schema.SObjectField field)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
 | `IncompleteFieldsMatch` | `field(String fieldPath)` | Returns an `IncompleteFieldsMatch` which starts the fluent interface for building a `FieldsMatch` |
 
@@ -433,10 +433,10 @@ Fields used in field conditions must be available on records that are tested, ot
 FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
 ```
 
-#### `RecordMatch`
+#### `RecordFieldsMatch`
 <a name="record-match"></a>
 
-`RecordMatch` is an `SObjectPredicate` that returns `true` if record fields are equal to those defined on a `prototype` record. Fields that are not
+`RecordFieldsMatch` is an `SObjectPredicate` that returns `true` if record fields are equal to those defined on a `prototype` record. Fields that are not
 defined on a prototype record do not have to match.
 
 ```apex
@@ -445,7 +445,7 @@ Account prototype = new Account(
     AnnualRevenue = 50000000
 );
 // Accounts named 'Test' with an AnnualRevenue of **exactly** 50,000,000 are matched
-SObjectCollection filtered = accountCollection.filter(Match.record(prototype));
+SObjectCollection filtered = accountCollection.filter(Match.recordFields(prototype));
 ```
 
 ##### Warning :warning:

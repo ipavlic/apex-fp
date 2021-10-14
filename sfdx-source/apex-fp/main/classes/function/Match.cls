@@ -1,6 +1,6 @@
 public class Match {
-	public static RecordMatch record(SObject prototype) {
-		return new RecordMatch(prototype);
+	public static RecordFieldsMatch recordFields(SObject prototype) {
+		return new RecordFieldsMatch(prototype);
 	}
 
 	public static IncompleteFieldsMatch field(Schema.SObjectField field) {

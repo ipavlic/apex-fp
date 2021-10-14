@@ -548,13 +548,13 @@ public class SObjectCollectionTest {
 	static void testComparisonFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Match.record(new Account(AnnualRevenue = 150))).asList();
+		List<Account> filtered = (List<Account>) c.filter(Match.recordFields(new Account(AnnualRevenue = 150))).asList();
 		System.assertEquals(2, filtered.size());
 		for (Account acc : filtered) {
 			System.assertEquals(150, acc.AnnualRevenue);
 		}
 
-		List<Account> remaining = (List<Account>) c.remove(Match.record(new Account(AnnualRevenue = 150))).asList();
+		List<Account> remaining = (List<Account>) c.remove(Match.recordFields(new Account(AnnualRevenue = 150))).asList();
 		System.assertEquals(2, remaining.size());
 		for (Account acc : remaining) {
 			System.assertNotEquals(150, acc.AnnualRevenue);
