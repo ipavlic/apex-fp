@@ -9,7 +9,7 @@ const config = {
   title: 'Apex FP',
   tagline: 'Functional programming for Salesforce Apex',
   url: 'https://your-docusaurus-test-site.com',
-  baseUrl: '/',
+  baseUrl: '/apex-fp/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
