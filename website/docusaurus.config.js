@@ -114,10 +114,9 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      gtag: {
-        trackingID: 'G-PNTCNPSG2Z',
-        // Optional fields.
-        anonymizeIP: true, // Should IPs be anonymized?
+      googleAnalytics: {
+        trackingID: 'UA-29918609-3',
+        anonymizeIP: true
       }
     }),
 };
