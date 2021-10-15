@@ -114,10 +114,14 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
-      googleAnalytics: {
-        trackingID: 'UA-29918609-3',
+      gtag: {
+        trackingID: 'G-PNTCNPSG2Z',
         anonymizeIP: true
       }
+      // googleAnalytics: {
+      //   trackingID: '',
+      //   anonymizeIP: true
+      // }
     }),
 };
 
