@@ -53,6 +53,11 @@ Second, because we cannot define anonymous classes or functions in Apex, Apex FP
 ```apex
 SObjectPredicate isNameFoo = Match.field(Opportunity.Name).equals('Foo');
 ```
+`Copy` can be used to build mapping functions which copy defined values from a prototype record to all the records in a collection. 
+
+```apex
+SObjectToSObjectFunction copyParentId = Copy.recordFields(new Account(ParentId = parentId));
+```
 
 ## Higher order functions
 
@@ -65,6 +70,13 @@ For example, they both have a `filter` method. It accepts a `SObjectPredicate` f
 ```apex title="main/classes/collection/SObjectCollection.cls"
 public class SObjectCollection {
 	public SObjectCollection filter(SObjectPredicate predicate)
+}
+```
+Another example is `mapAll` which accepts an `SObjectToSObjectFunction` instance and applies it to records in a collection to get new records. 
+
+```apex title="main/classes/collection/SObjectCollection.cls"
+public class SObjectCollection {
+	public SObjectCollection mapAll(SObjectToSObjectFunction fn)
 }
 ```
 
