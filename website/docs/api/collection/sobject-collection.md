@@ -340,3 +340,92 @@ List<Opportunity> opps = new List<Opportunity>{
 
 Double average = SObjectCollection.of(opps).mapToDouble(Opportunity.Amount).average();
 ```
+
+## asList
+
+Returns a `List` of records in the collection, either as a raw `List<SObject>`, or as a `List<T>` where `T` is a “subclass“ of `SObject`.
+
+:::caution
+Apex allows assignment of `SObject` lists and sets to its “subclass”, and the other way around:
+
+```apex
+List<SObject> objects = new List<SObject>();
+List<Account> accounts = objects; // compiles!
+
+List<Account> accounts = new List<Account>();
+List<SObject> objects = accounts; // compiles as well!
+```
+
+An `SObject` list is an instance of any `SObject` “subclass” list!
+
+```apex
+List<SObject> objects = new List<SObject>();
+System.debug(objects instanceof List<Account>); // true
+System.debug(objects instanceof List<Opportunity>); // true
+```
+
+`asList()` and `asSet()` on `SObjectCollection` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is  not required in either case, but `instanceof` can provide unexpected results.
+A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
+
+```apex
+List<Account> filteredAccounts = accountCollection.asList();
+// List<SObject> returned!
+
+List<Account> filteredAccounts = accountCollection.asList(List<Account>.class);
+// List<Account> returned!
+```
+:::
+
+**Signature**
+```apex
+List<SObject> asList()
+List<SObject> asList(Type listType)
+```
+
+**Example**
+```apex
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).asList(); // works, but instanceof can provide unexpected results
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).asList(List<Opportunity>.class); // always works
+```
+
+## asSet
+
+Returns a `Set` of records in the collection, either as a raw `Set<SObject>`, or as a `Set<T>` where `T` is a “subclass“ of `SObject`.
+
+**Signature**
+```apex
+List<SObject> asSet()
+List<SObject> asSet(Type listType)
+```
+
+:::caution
+Refer to [asList](#asList) for potential issues with `instanceof`.
+:::
+
+## asMap
+
+Returns a grouping of records by their `Id`s, either as a raw `Map<Id, SObject>`, or as a `Map<Id, List<T>>`, where `T` is a “subclasses“ of `SObject`.
+
+:::caution
+Unlike `asList()`, `asMap()` cannot be assigned to a `Map<Id, T>` directly for `T` that are a “subclass“ of `SObject`.
+
+```apex
+List<Account> accounts = SObjectCollection.of(accounts).asList() // works!
+Map<Id, Account> accountsById = SObjectCollection.of(accounts).asMap() // DOES NOT WORK!!!
+```
+Both a cast and the correct concrete type must be provided to assign to a `Map<Id, T>`.
+
+```apex
+Map<Id, Account> recordMap = (Map<Id, Account>) SObjectCollection.of(accounts).asMap(Map<Id, Account>.class); // works!
+```
+We can however assign to a raw `Map<Id, SObject>` without providing a type *or* a cast:
+```apex
+Map<Id, SObject> recordMap = SObjectCollection.of(accounts).asMap(); // Works!
+```
+:::
+
+**Signature**
+```apex
+Map<Id, SObject> asMap()
+Map<Id, SObject> asMap(Type mapType)
+```
