@@ -613,11 +613,11 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapWithCopyFields() {
+	static void testMapWithCopyRecordFields() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
-		}).mapAll(CopyFields.fromRecord(new Opportunity(Amount = 123))).asList();
+		}).mapAll(Copy.recordFields(new Opportunity(Amount = 123))).asList();
 		System.assertEquals(123, opportunities[0].Amount);
 		System.assertEquals(123, opportunities[1].Amount);
 	}
