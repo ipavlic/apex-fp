@@ -8,4 +8,4 @@ Apex FP provides functional constructs for `SObject` collections!
 
 # Read the documentation
 
-<a href="http://www.apexfp.org">Apex FP documentation</a>
+<a href="https://www.apexfp.org">Apex FP documentation</a>
