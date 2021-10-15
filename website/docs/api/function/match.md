@@ -1,6 +1,6 @@
 # `Match`
 
-Match is a matching predicate factory.
+`Match` is a matching predicate factory.
 
 ## `recordFields`
 

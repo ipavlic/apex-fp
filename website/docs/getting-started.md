@@ -3,9 +3,17 @@ sidebar_position: 1
 slug: '/'
 ---
 
-# Basic concepts
+# Getting started
 
-Apex is a very static language. There is a very small surface of the language where something dynamic can happen and it’s mostly related to the `SObject` class which is a syntactic sugar over a `Map<String, Object>`. With Apex, we have to write imperative code in loops to transform data.
+## Installation
+
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
+  <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png"></img>
+</a>
+
+## Basic concepts
+
+With Apex, we have to write imperative code in loops to transform data.
 
 ```apex title="Apex imperative style filtering"
 List<Opportunity> opportunities = [SELECT ...];
@@ -29,7 +37,7 @@ To enable functional programming, Apex FP provides three things:
 2. **Function factories**
 3. **Higher order functions**
 
-## Functional interfaces
+### Functional interfaces
 
 First, Apex FP defines a reasonable set of **functional interfaces** for functions. Unlike most modern languages, Apex does not support functions as "first class citizens". Apex FP therefore provides interfaces for common classes of functions out of the box, like "functions that take an `SObject` and return a `Boolean`":
 
@@ -46,7 +54,7 @@ public interface SObjectToSObjectFunction {
 }
 ```
 
-## Function factories
+### Function factories
 
 Second, because we cannot define anonymous classes or functions in Apex, Apex FP provides **function factories** that can create common functions which respect Apex FP’s functional interfaces. For example, `Match` can be used to build a function which tests if a record matches some criteria.
 
@@ -59,7 +67,7 @@ SObjectPredicate isNameFoo = Match.field(Opportunity.Name).equals('Foo');
 SObjectToSObjectFunction copyParentId = Copy.recordFields(new Account(ParentId = parentId));
 ```
 
-## Higher order functions
+### Higher order functions
 
 Finally, Apex FP provides classes with **higher order functions** as methods. Higher order functions are functions that take functions as arguments and use them to transform data.
 
@@ -95,7 +103,7 @@ Imagine we’re looking for a first opportunity that has a large amount. We coul
 With `SObjectStream`, we iterate through the stream to check one opportunity at a time, and as soon as we find a large opportunity, we can stop checking. `SObjectStream` requires some additional effort to iterate through records. We can also only use it once. After it’s consumed, we have to recreate it.
 :::
 
-## Putting it all together
+### Putting it all together
 
 With **functional interfaces**, **function factories** and a nice set of classes for working with `SObject` collections with **higher order functions** , we finally get to data transformation expressions like:
 
