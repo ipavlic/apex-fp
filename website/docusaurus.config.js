@@ -114,6 +114,10 @@ const config = {
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },
+      googleAnalytics: {
+        trackingID: 'G-PNTCNPSG2Z',
+        anonymizeIP: true
+      }
     }),
 };
 
