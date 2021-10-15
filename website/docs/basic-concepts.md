@@ -56,7 +56,11 @@ SObjectPredicate isNameFoo = Match.field(Opportunity.Name).equals('Foo');
 
 ## Higher order functions
 
-Finally, Apex FP provides classes with **higher order functions** as methods. Higher order functions are functions that take functions as arguments and use them to transform data. For example, `SObjectCollection` and `SObjectStream` both have a `filter` method. It accepts a `SObjectPredicate` function instance and uses it to test whether records satisfy the predicate, and keeps just the ones that do. `filter` is therefore a higher order function.
+Finally, Apex FP provides classes with **higher order functions** as methods. Higher order functions are functions that take functions as arguments and use them to transform data.
+
+The majority of higher order functions are provided by two main classes [`SObjectCollection`](api/collection/sobject-collection), and [`SObjectStream`](api/stream/sobject-stream).
+
+For example, they both have a `filter` method. It accepts a `SObjectPredicate` function instance and uses it to test whether records satisfy the predicate, and keeps just the ones that do. `filter` is therefore a higher order function.
 
 ```apex title="main/classes/collection/SObjectCollection.cls"
 public class SObjectCollection {
@@ -66,10 +70,23 @@ public class SObjectCollection {
 
 You can use Apex FP’s function factories, write your own functions or mix and match.
 
+
+
+:::info
+
+`SObjectCollection` transforms data **eagerly**, while `SObjectStream` does so **lazily**. What’s the difference?
+
+Imagine we’re looking for a first opportunity that has a large amount. We could use `filter` to filter those opportunities that have a large amount and then take the first one.
+
+`SObjectCollection` would first check the entire list of opportunities to find all opportunties that are larger than a certain amount, and then take the first one out of them. `SObjectCollection` is more convenient to use, but it might not be as performant for large datasets if we are looking for one or a couple of elements from the filtered collection. We can also use it as many times as we like.
+
+With `SObjectStream`, we iterate through the stream to check one opportunity at a time, and as soon as we find a large opportunity, we can stop checking. `SObjectStream` requires some additional effort to iterate through records. We can also only use it once. After it’s consumed, we have to recreate it.
+:::
+
 ## Putting it all together
 
 With **functional interfaces**, **function factories** and a nice set of classes for working with `SObject` collections with **higher order functions** , we finally get to data transformation expressions like:
 
 ```apex
 List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000)).asList();
-``` 
+```
