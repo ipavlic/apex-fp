@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# SObjectCollection
+# `SObjectCollection`
 
 `SObjectCollection` is an eager collection of `SObject` instances.
 
