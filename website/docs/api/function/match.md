@@ -1,6 +1,6 @@
 # `Match`
 
-`Match` is a matching predicate factory, designed to build functions for higher order functions of [`SObjectCollection`](sobject-collection) and [`SObjectStream`](sobject-stream).
+`Match` is a matching predicate factory, designed to build functions for higher order functions of [`SObjectCollection`](../collection/sobject-collection) and [`SObjectStream`](../stream/sobject-stream).
 
 ## `recordFields`
 
