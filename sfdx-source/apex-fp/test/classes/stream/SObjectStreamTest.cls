@@ -65,7 +65,7 @@ public class SObjectStreamTest {
 			new Account(Name = 'Ok'),
 			new Account(Name = 'Wrong')
 		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).mapAll(CopyFields.fromRecord(new Account(AnnualRevenue = 100)));		
+		Iterator<SObject> iter = SObjectStream.of(accounts).mapAll(Copy.recordFields(new Account(AnnualRevenue = 100)));		
 		
 		List<SObject> mapped = new List<SObject>();
 		while (iter.hasNext()) {
@@ -86,7 +86,7 @@ public class SObjectStreamTest {
 			new Account(Name = 'Ok'),
 			new Account(Name = 'Wrong')
 		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), CopyFields.fromRecord(new Account(AnnualRevenue = 100)));
+		Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), Copy.recordFields(new Account(AnnualRevenue = 100)));
 		
 		List<SObject> mapped = new List<SObject>();
 		while (iter.hasNext()) {
