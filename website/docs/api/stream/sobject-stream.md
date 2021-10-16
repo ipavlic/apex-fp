@@ -24,52 +24,6 @@ SObjectStream.of(accounts);
 SObjectStream.of(Trigger.old);
 ```
 
-## `filter`
-
-**Signature**
-
-```apex
-SObjectStream filter(SObjectPredicate predicate)
-```
-**Example**
-
-## `remove`
-
-**Signature**
-
-```apex
-SObjectStream remove(SObjectPredicate predicate)
-```
-**Example**
-
-## `mapAll`
-
-**Signature**
-
-```apex
-SObjectStream mapAll(SObjectToSObjectFunction fn)
-```
-**Example**
-
-## `mapSome`
-
-**Signature**
-
-```apex
-SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
-```
-**Example**
-
-## `find`
-
-Iterates over elements of the collection, returning the first record `predicate` returns `true` for, or `null` if an element is not found.
-
-**Signature**
-
-```apex
-SObject find(SObjectPredicate predicate)
-```
-
 ## `hasNext`
 
 **Signature**
@@ -100,6 +54,53 @@ while (largeOpportunities.hasNext()) {
 	Opportunity opp = (Opportunity) largeOpportunities.next();
 }
 ```
+
+## `filter`
+
+Returns a stream consisting of the elements of this stream that match the given `predicate`.
+
+**Signature**
+
+```apex
+SObjectStream filter(SObjectPredicate predicate)
+```
+
+## `find`
+
+Iterates over elements of the collection, returning the first record `predicate` returns `true` for, or `null` if an element is not found. Consumes the stream.
+
+**Signature**
+
+```apex
+SObject find(SObjectPredicate predicate)
+```
+
+## `mapAll`
+
+**Signature**
+
+```apex
+SObjectStream mapAll(SObjectToSObjectFunction fn)
+```
+
+## `mapSome`
+
+**Signature**
+
+```apex
+SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
+```
+
+## `remove`
+
+Returns a stream consisting of the elements of this stream that do not match the given `predicate`.
+
+**Signature**
+
+```apex
+SObjectStream remove(SObjectPredicate predicate)
+```
+**Example**
 
 ## `toList`
 
