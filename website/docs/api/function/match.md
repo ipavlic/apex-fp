@@ -1,12 +1,12 @@
 # `Match`
 
-`Match` is a matching predicate factory.
+`Match` is a matching predicate factory, designed to build functions for higher order functions of [`SObjectCollection`](sobject-collection) and [`SObjectStream`](sobject-stream).
 
 ## `recordFields`
 
 **Signature**
 
-Builds a record field matching predicate. The predicate returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality. 
+Builds a [`RecordFieldMatch`](record-fields-match), a record matching predicate. The predicate returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality.
 
 ```apex
 RecordFieldsMatch recordFields(SObject prototype)
