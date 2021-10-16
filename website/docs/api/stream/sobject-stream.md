@@ -67,7 +67,7 @@ SObjectStream filter(SObjectPredicate predicate)
 
 ## `find`
 
-Iterates over elements of the collection, returning the first record `predicate` returns `true` for, or `null` if an element is not found. Consumes the stream.
+Returns the first record `predicate` returns `true` for, or `null` if an element is not found. This consumes the stream.
 
 **Signature**
 

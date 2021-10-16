@@ -170,6 +170,35 @@ List<String> accountRelationNames = SObjectCollection.of(opportunities).pluckStr
 
 ## groupBy
 
+:::caution
+Apex allows assignment of `SObject` lists and sets to its “subclass”, and the other way around. An `SObject` list is an instance of any `SObject` “subclass” list!
+
+```apex
+List<SObject> objects = new List<SObject>();
+System.debug(objects instanceof List<Account>); // true
+System.debug(objects instanceof List<Opportunity>); // true
+```
+
+`groupByT` methods return a raw `Map<T, List<SObject>>` when `listType` is not provided. This is more convenient and a cast is not required, but `instanceof` can provide unexpected results.
+
+```apex title="Grouping without providing a listType"
+Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
+List<Account> fooAccounts = accountsByName.get('Foo');
+List<SObject> objects = fooAccounts;
+// since fooAccounts points to a returned list of SObjects, it can be anything!
+System.assert(objects instanceof List<Opportunity>);
+```
+When `listType` is provided, map values are properly typed lists, and there are no unexpected results with `instanceof`. 
+```apex title="Grouping with a listType provided"
+accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
+fooAccounts = accountsByName.get('Foo');
+objects = fooAccounts;
+// this time around, it works fine!
+System.assert(!(objects instanceof List<Opportunity>));
+System.assert(objects instanceof List<Account>);
+```
+:::
+
 ### `groupByBooleans`
 
 Groups records by `Boolean` values at `field` or `apiFieldName`, with an optional strong `listType`.
@@ -417,20 +446,21 @@ Refer to [asList](#asList) for potential issues with `instanceof`.
 Returns a grouping of records by their `Id`s, either as a raw `Map<Id, SObject>`, or as a `Map<Id, List<T>>`, where `T` is a “subclasses“ of `SObject`.
 
 :::caution
-Unlike `asList()`, `asMap()` cannot be assigned to a `Map<Id, T>` directly for `T` that are a “subclass“ of `SObject`.
-
-```apex
-List<Account> accounts = SObjectCollection.of(accounts).asList() // works!
-Map<Id, Account> accountsById = SObjectCollection.of(accounts).asMap() // DOES NOT WORK!!!
-```
-Both a cast and the correct concrete type must be provided to assign to a `Map<Id, T>`.
-
-```apex
-Map<Id, Account> recordMap = (Map<Id, Account>) SObjectCollection.of(accounts).asMap(Map<Id, Account>.class); // works!
-```
-We can however assign to a raw `Map<Id, SObject>` without providing a type *or* a cast:
+We can assign to a raw `Map<Id, SObject>` directly:
 ```apex
 Map<Id, SObject> recordMap = SObjectCollection.of(accounts).asMap(); // Works!
+```
+However, to assign to a `Map<Id, T>`, where `T` is a “subclass“ of `SObject`, we have to both cast and provide the correct concrete `mapType`.
+
+```apex
+Map<Id, Account> recordMap = (Map<Id, Account>) SObjectCollection.of(accounts).asMap(Map<Id, Account>.class);
+```
+That’s because unlike `List<SObject>` and `Set<SObject>` which can be assigned to a `List<T>` and a `Set<T>` respectively, a `Map<Id, SObject>` cannot be directly assigned to a `Map<Id, T>`, where `T` is a “subclass“ of `SObject`.
+
+```apex
+List<Account> accountList = SObjectCollection.of(accounts).asList() // works!
+Set<Account> accountSet = SObjectCollection.of(accounts).asSet() // works!
+Map<Id, Account> accountsById = SObjectCollection.of(accounts).asMap() // DOES NOT WORK!!!
 ```
 :::
 
