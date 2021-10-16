@@ -103,4 +103,30 @@ public class SObjectStreamTest {
 			}
 		}
 	}
+
+	@IsTest
+	public static void findFindsAnExistingRecord() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'One'),
+			new Account(Name = 'Two'),
+			new Account(Name = 'Three'),
+			new Account(Name = 'Four')
+		};
+
+		SObject acc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Three'));
+		System.assertEquals(accounts[2], acc);
+	}
+
+	@IsTest
+	public static void findReturnsNullWhenRecordDoesNotExist() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'One'),
+			new Account(Name = 'Two'),
+			new Account(Name = 'Three'),
+			new Account(Name = 'Four')
+		};
+
+		SObject acc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Five'));
+		System.assertEquals(null, acc);
+	}
 }

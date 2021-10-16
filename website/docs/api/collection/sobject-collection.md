@@ -79,13 +79,13 @@ SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).
 
 ## `find`
 
-Iterates over elements of the collection, returning the first record `predicate` returns `true` for.
+Iterates over elements of the collection, returning the first record `predicate` returns `true` for, or `null` if an element is not found.
 
 **Signature**
 
-
-
-**Example**
+```apex
+SObject find(SObjectPredicate predicate)
+```
 
 ## pluck
 

@@ -60,6 +60,16 @@ SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
 ```
 **Example**
 
+## `find`
+
+Iterates over elements of the collection, returning the first record `predicate` returns `true` for, or `null` if an element is not found.
+
+**Signature**
+
+```apex
+SObject find(SObjectPredicate predicate)
+```
+
 ## `hasNext`
 
 **Signature**
