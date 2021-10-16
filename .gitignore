@@ -1,6 +1,5 @@
 .project
 .settings/
-config/
 debug/
 *.sublime-project
 salesforce.schema

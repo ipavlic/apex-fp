@@ -77,6 +77,16 @@ SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).
 
 `remove` works just like `filter`, but records which match a predicate are *removed* from the collection view instead of kept.
 
+## `find`
+
+Iterates over elements of the collection, returning the first record `predicate` returns `true` for.
+
+**Signature**
+
+
+
+**Example**
+
 ## pluck
 
 ### `pluckBooleans`

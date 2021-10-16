@@ -437,4 +437,13 @@ public with sharing class SObjectCollection {
 		}
 		return new DatetimeCollection(datetimes);
 	}
+
+	public SObject find(SObjectPredicate predicate) {
+		for (SObject record : records) {
+			if (predicate.apply(record)) {
+				return record;
+			}
+		}
+		return null;
+	}
 }
