@@ -1,6 +1,6 @@
 # `RecordFieldsMatch`
 
-Implements [`SObjectPredicate`](sobject-predicate).
+Implements [`SObjectPredicate`](SObjectPredicate).
 
 ## `RecordFieldsMatch`
 

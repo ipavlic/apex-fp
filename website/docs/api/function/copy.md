@@ -1,6 +1,6 @@
 # `Copy`
 
-`Copy` is a factory for [`SObjectToSObjectFunction`](sobject-to-sobject-function) mapping functions.
+`Copy` is a factory for [`SObjectToSObjectFunction`](SObjectToSObjectFunction) mapping functions.
 
 ## `recordFields`
 

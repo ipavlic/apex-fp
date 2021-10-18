@@ -71,7 +71,7 @@ SObjectToSObjectFunction copyParentId = Copy.recordFields(new Account(ParentId =
 
 Finally, Apex FP provides classes with **higher order functions** as methods. Higher order functions are functions that take functions as arguments and use them to transform data.
 
-The majority of higher order functions are provided by two main classes [`SObjectCollection`](api/collection/sobject-collection), and [`SObjectStream`](api/stream/sobject-stream).
+The majority of higher order functions are provided by two main classes [`SObjectCollection`](api/collection/SObjectCollection), and [`SObjectStream`](api/stream/SObjectStream).
 
 For example, they both have a `filter` method. It accepts a `SObjectPredicate` function instance and uses it to test whether records satisfy the predicate, and keeps just the ones that do. `filter` is therefore a higher order function.
 

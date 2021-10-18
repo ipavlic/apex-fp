@@ -1,6 +1,6 @@
 # `CopyRecordFields`
 
-Implements [`SObjectToSObjectFunction`](sobject-to-sobject-function). To be used through the [`Copy`](copy) function factory, instead of directly.
+Implements [`SObjectToSObjectFunction`](SObjectToSObjectFunction). To be used through the [`Copy`](Copy) function factory, instead of directly.
 
 ## `CopyRecordFields`
 
