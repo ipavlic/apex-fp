@@ -643,4 +643,16 @@ public class SObjectCollectionTest {
 		System.assertEquals(100, amounts[0]);
 		System.assertEquals(150, amounts[1]);
 	}
+
+	@IsTest
+	static void testFind() {
+		List<Account> accounts = new List<Account>{new Account(Name = 'Foo'), new Account(Name = 'Bar')};
+		SObjectCollection accountCollection = SObjectCollection.of(accounts);
+		OptionalSObject maybeFoo = accountCollection.find(Match.field(Account.Name).equals('Foo'));
+		System.assert(maybeFoo.isPresent());
+		System.assertEquals(accounts[0], maybeFoo.get());
+
+		OptionalSObject maybeBaz = accountCollection.find(Match.field(Account.Name).equals('Baz'));
+		System.assertEquals(false, maybeBaz.isPresent());
+	}
 }

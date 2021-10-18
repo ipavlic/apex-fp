@@ -113,12 +113,13 @@ public class SObjectStreamTest {
 			new Account(Name = 'Four')
 		};
 
-		SObject acc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Three'));
-		System.assertEquals(accounts[2], acc);
+		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Three'));
+		System.assert(maybeAcc.isPresent());
+		System.assertEquals(accounts[2], maybeAcc.get());
 	}
 
 	@IsTest
-	public static void findReturnsNullWhenRecordDoesNotExist() {
+	public static void findReturnsEmptyWhenRecordDoesNotExist() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'One'),
 			new Account(Name = 'Two'),
@@ -126,7 +127,7 @@ public class SObjectStreamTest {
 			new Account(Name = 'Four')
 		};
 
-		SObject acc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Five'));
-		System.assertEquals(null, acc);
+		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Five'));
+		System.assert(!maybeAcc.isPresent());
 	}
 }

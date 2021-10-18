@@ -26,14 +26,14 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 		return new SObjectStreamMapSome(this, predicate, fn);
 	}
 
-	public SObject find(SObjectPredicate predicate) {
+	public OptionalSObject find(SObjectPredicate predicate) {
 		while (hasNext()) {
 			SObject record = next();
 			if (predicate.apply(record)) {
-				return record;
+				return OptionalSObject.of(record);
 			}
 		}
-		return null;
+		return OptionalSObject.empty();
 	}
 
 	public virtual Boolean hasNext() {

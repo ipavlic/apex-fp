@@ -425,12 +425,12 @@ public with sharing class SObjectCollection {
 		return new DoubleCollection(doubles);
 	}
 
-	public SObject find(SObjectPredicate predicate) {
+	public OptionalSObject find(SObjectPredicate predicate) {
 		for (SObject record : records) {
 			if (predicate.apply(record)) {
-				return record;
+				return OptionalSObject.of(record);
 			}
 		}
-		return null;
+		return OptionalSObject.empty();
 	}
 }
