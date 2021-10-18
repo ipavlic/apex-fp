@@ -67,12 +67,12 @@ SObjectStream filter(SObjectPredicate predicate)
 
 ## `find`
 
-Returns the first record `predicate` returns `true` for, or `null` if an element is not found. This consumes the stream.
+Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if an element is not found. This consumes the stream.
 
 **Signature**
 
 ```apex
-SObject find(SObjectPredicate predicate)
+OptionalSObject find(SObjectPredicate predicate)
 ```
 
 ## `mapAll`
