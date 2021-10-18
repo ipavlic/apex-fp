@@ -425,19 +425,6 @@ public with sharing class SObjectCollection {
 		return new DoubleCollection(doubles);
 	}
 
-	public DatetimeCollection mapToDatetime(Schema.SObjectField field) {
-		return mapToDatetime(field.getDescribe().getName());
-	}
-
-	public DatetimeCollection mapToDatetime(String relation) {
-		SObjectFieldReader reader = new SObjectFieldReader();
-		List<Datetime> datetimes = new List<Datetime>();
-		for (SObject record : records) {
-			datetimes.add((Datetime) reader.read(record, relation));
-		}
-		return new DatetimeCollection(datetimes);
-	}
-
 	public SObject find(SObjectPredicate predicate) {
 		for (SObject record : records) {
 			if (predicate.apply(record)) {
