@@ -1,1 +1,1 @@
-public class LambdaException extends Exception {}
+public with sharing class LambdaException extends Exception {}
