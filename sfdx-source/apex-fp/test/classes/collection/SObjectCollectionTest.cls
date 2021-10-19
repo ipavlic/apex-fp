@@ -1,5 +1,5 @@
-@IsTest
-public class SObjectCollectionTest {
+@IsTest(isParallel=true)
+private class SObjectCollectionTest {
 
 	static Id firstUserId = TestUtility.getTestId(User.SObjectType);
 	static Id secondUserId = TestUtility.getTestId(User.SObjectType);
@@ -14,20 +14,20 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testAsMap() {
+	private static void testAsMap() {
 		Map<Id, SObject> recordMap = SObjectCollection.of(testAccounts()).asMap();
 		System.assertEquals(4, recordMap.size());
 	}
 
 	@IsTest
-	public static void testAsTypedMap() {
+	private static void testAsTypedMap() {
 		List<Account> accounts = testAccounts();
 		Map<Id, Account> accountMap = (Map<Id, Account>) SObjectCollection.of(accounts).asMap(Map<Id, Account>.class);
 		System.assertEquals(accounts[0], accountMap.get(accounts[0].Id));
 	}
 
 	@IsTest
-	public static void testDifference() {
+	private static void testDifference() {
 		Id accountId1 = TestUtility.getTestId(Account.SObjectType);
 		Id accountId2 = TestUtility.getTestId(Account.SObjectType);
 		Id accountId3 = TestUtility.getTestId(Account.SObjectType);
@@ -73,7 +73,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckDecimals() {
+	private static void testPluckDecimals() {
 		List<Decimal> revenues = SObjectCollection.of(testAccounts()).pluckDecimals(Account.AnnualRevenue);
 		System.assertEquals(4, revenues.size());
 		System.assertEquals(100.0, revenues[0]);
@@ -83,7 +83,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckStrings() {
+	private static void testPluckStrings() {
 		List<String> names = SObjectCollection.of(testAccounts()).pluckStrings(Account.Name);
 		System.assertEquals(4, names.size());
 		System.assertEquals('Foo', names[0]);
@@ -93,7 +93,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckIdsAsStrings() {
+	private static void testPluckIdsAsStrings() {
 		List<String> ownerIds = SObjectCollection.of(testAccounts()).pluckStrings(Account.OwnerId);
 		System.assertEquals(4, ownerIds.size());
 		System.assertEquals(firstUserId, ownerIds[0]);
@@ -103,7 +103,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckIds() {
+	private static void testPluckIds() {
 		List<Id> ownerIds = SObjectCollection.of(testAccounts()).pluckIds(Account.OwnerId);
 		// workaround for List.contains bug
 		Set<Id> idSet = new Set<Id>(ownerIds);
@@ -113,7 +113,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckRecordIds() {
+	private static void testPluckRecordIds() {
 		List<Account> accounts = testAccounts();
 		List<Id> recordIds = SObjectCollection.of(accounts).pluckIds();
 		System.assertEquals(4, recordIds.size());
@@ -126,7 +126,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testPluckBooleans() {
+	private static void testPluckBooleans() {
 		List<User> users = new List<User>{
 			new User(Title = 'Foo', IsActive = true),
 			new User(Title = 'Bar', IsActive = true),
@@ -140,7 +140,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testFieldsMatchFilter() {
+	private static void testFieldsMatchFilter() {
 		SObjectCollection c = SObjectCollection.of(new List<Account>{
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
 			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
@@ -157,7 +157,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByStrings() {
+	private static void testGroupByStrings() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
 		System.assertEquals(2, accountsByName.size());
@@ -174,7 +174,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByStringsApiFieldName() {
+	private static void testGroupByStringsApiFieldName() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<String, List<Account>> accountsByName = c.groupByStrings('Name');
 		System.assertEquals(2, accountsByName.size());
@@ -191,7 +191,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByStringTyping() {
+	private static void testGroupByStringTyping() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
 		List<Account> fooAccounts = accountsByName.get('Foo');
@@ -208,7 +208,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByStringTypingApiFieldName() {
+	private static void testGroupByStringTypingApiFieldName() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<String, List<Account>> accountsByName = c.groupByStrings('Name');
 		List<Account> fooAccounts = accountsByName.get('Foo');
@@ -225,7 +225,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByDecimals() {
+	private static void testGroupByDecimals() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<Decimal, List<Account>> accountsByRevenue = c.groupByDecimals(Account.AnnualRevenue);
 		System.assertEquals(3, accountsByRevenue.size());
@@ -241,7 +241,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByDecimalsApiFieldName() {
+	private static void testGroupByDecimalsApiFieldName() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<Decimal, List<Account>> accountsByRevenue = c.groupByDecimals('AnnualRevenue');
 		System.assertEquals(3, accountsByRevenue.size());
@@ -257,7 +257,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByIds() {
+	private static void testGroupByIds() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<Id, List<Account>> accountsByOwners = c.groupByIds(Account.OwnerId);
 		System.assertEquals(2, accountsByOwners.size());
@@ -271,7 +271,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByIdsApiFieldName() {
+	private static void testGroupByIdsApiFieldName() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<Id, List<Account>> accountsByOwners = c.groupByIds('OwnerId');
 		System.assertEquals(2, accountsByOwners.size());
@@ -285,7 +285,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByBooleans() {
+	private static void testGroupByBooleans() {
 		SObjectCollection c = SObjectCollection.of(new List<User>{
 			new User(Title = 'Foo', IsActive = true),
 			new User(Title = 'Bar', IsActive = true),
@@ -303,7 +303,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void testGroupByBooleansApiFieldName() {
+	private static void testGroupByBooleansApiFieldName() {
 		SObjectCollection c = SObjectCollection.of(new List<User>{
 			new User(Title = 'Foo', IsActive = true),
 			new User(Title = 'Bar', IsActive = true),
@@ -321,7 +321,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void pickShouldPickFields() {
+	private static void pickShouldPickFields() {
 		SObjectCollection c = SObjectCollection.of(new List<Account>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Account(Name = 'Test2', AnnualRevenue = 200)
@@ -333,7 +333,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void pickedFieldsShouldHaveValues() {
+	private static void pickedFieldsShouldHaveValues() {
 		SObjectCollection c = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Name = 'Test', Amount = 100, Description = 'Test description')
 		});
@@ -346,7 +346,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void pickShouldPickHeterogenousRecords() {
+	private static void pickShouldPickHeterogenousRecords() {
 		SObjectCollection c = SObjectCollection.of(new List<SObject>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
@@ -356,7 +356,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	public static void pickShouldHaveMatchingObjectTypes() {
+	private static void pickShouldHaveMatchingObjectTypes() {
 		SObjectCollection c = SObjectCollection.of(new List<SObject>{
 			new Account(Name = 'Test1', AnnualRevenue = 100),
 			new Opportunity(Name = 'Test1', Description = 'Test description')
@@ -385,7 +385,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testRelationalFiltering() {
+	private static void testRelationalFiltering() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60)
@@ -409,7 +409,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testHasValue() {
+	private static void testHasValue() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.BillingCountry).hasValue()).asList();
 		System.assertEquals(0, filtered.size());
@@ -420,7 +420,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testIsIn() {
+	private static void testIsIn() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150})).asList();
 		System.assertEquals(3, filtered.size());
@@ -430,7 +430,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testIsNotIn() {
+	private static void testIsNotIn() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60})).asList();
 		System.assertEquals(3, filtered.size());
@@ -440,7 +440,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testUnsupportedFilteringType() {
+	private static void testUnsupportedFilteringType() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		try {
@@ -452,7 +452,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testFieldEqualsOkFilter() {
+	private static void testFieldEqualsOkFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok')).asList();
@@ -471,7 +471,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMultipleFieldFilter() {
+	private static void testMultipleFieldFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
 
@@ -490,7 +490,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testSameFieldTokenExclusionCriteria() {
+	private static void testSameFieldTokenExclusionCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
@@ -501,7 +501,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testSameFieldExclusionCriteria() {
+	private static void testSameFieldExclusionCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
@@ -512,7 +512,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testLongChaining() {
+	private static void testLongChaining() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
@@ -523,7 +523,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testSameFieldSandwichCriteria() {
+	private static void testSameFieldSandwichCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
@@ -534,7 +534,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testSameTokenSandwichCriteria() {
+	private static void testSameTokenSandwichCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
@@ -545,7 +545,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testComparisonFilter() {
+	private static void testComparisonFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		List<Account> filtered = (List<Account>) c.filter(Match.recordFields(new Account(AnnualRevenue = 150))).asList();
@@ -562,7 +562,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testListTyping() {
+	private static void testListTyping() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 		List<sObject> filtered = c.filter(Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
 		System.assert(filtered instanceof List<Account>);
@@ -591,7 +591,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapAll() {
+	private static void testMapAll() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
@@ -602,7 +602,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapSome() {
+	private static void testMapSome() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
@@ -613,7 +613,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testForEachWithAssignTo() {
+	private static void testForEachWithAssignTo() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
@@ -623,7 +623,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapToDecimal() {
+	private static void testMapToDecimal() {
 		List<Decimal> amounts = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
@@ -634,7 +634,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapToDouble() {
+	private static void testMapToDouble() {
 		List<Double> amounts = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
@@ -645,7 +645,7 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testFind() {
+	private static void testFind() {
 		List<Account> accounts = new List<Account>{new Account(Name = 'Foo'), new Account(Name = 'Bar')};
 		SObjectCollection accountCollection = SObjectCollection.of(accounts);
 		OptionalSObject maybeFoo = accountCollection.find(Match.field(Account.Name).equals('Foo'));

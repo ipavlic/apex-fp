@@ -1,18 +1,18 @@
-@IsTest
-public class OptionalSObjectTest {
+@IsTest(isParallel=true)
+private class OptionalSObjectTest {
 	@IsTest
-	public static void optionalCanBeNull() {
+	private static void optionalCanBeNull() {
 		OptionalSObject optional = OptionalSObject.of(null);
 	}
 
 	@IsTest
-	public static void nullIsNotPresent() {
+	private static void nullIsNotPresent() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		System.assertEquals(false, optional.isPresent());
 	}
 
 	@IsTest
-	public static void getThrowsNoSuchElementExceptionWhenValueIsNotPresent() {
+	private static void getThrowsNoSuchElementExceptionWhenValueIsNotPresent() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		try {
 			SObject value = optional.get();
@@ -23,7 +23,7 @@ public class OptionalSObjectTest {
 	}
 
 	@IsTest
-	public static void getReturnsValueWhenValueIsPresent() {
+	private static void getReturnsValueWhenValueIsPresent() {
 		Account account = new Account(Name = 'Foo');
 		OptionalSObject optional = OptionalSObject.of(account);
 		SObject record = optional.get();
@@ -31,7 +31,7 @@ public class OptionalSObjectTest {
 	}
 
 	@IsTest
-	public static void orElseReturnsOtherValueWhenValueIsNotPresent() {
+	private static void orElseReturnsOtherValueWhenValueIsNotPresent() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		SObject other = new Account(Name = 'Foo');
 		SObject value = optional.orElse(other);
@@ -39,7 +39,7 @@ public class OptionalSObjectTest {
 	}
 
 	@IsTest
-	public static void orElseThrowThrowsWhenValueIsNotPreset() {
+	private static void orElseThrowThrowsWhenValueIsNotPreset() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		SObject other = new Account(Name = 'Foo');
 		try {

@@ -1,8 +1,8 @@
-@IsTest
-public class PrimitiveComparerTest {
+@IsTest(isParallel=true)
+private class PrimitiveComparerTest {
 
 	@IsTest
-	public static void booleanComparison() {
+	private static void booleanComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(0, comparer.compareBooleans(true, true));
 		System.assertEquals(0, comparer.compareBooleans(false, false));
@@ -11,7 +11,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void dateComparison() {
+	private static void dateComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareDates(Date.newInstance(2013,5,1), Date.newInstance(2013,6,1)));
 		System.assertEquals(0, comparer.compareDates(Date.newInstance(2013,4,1), Date.newInstance(2013,4,1)));
@@ -19,7 +19,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void datetimeComparison() {
+	private static void datetimeComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareDatetimes(Datetime.newInstance(2013,5,1), Datetime.newInstance(2013,6,1)));
 		System.assertEquals(0, comparer.compareDatetimes(Datetime.newInstance(2013,4,1), Datetime.newInstance(2013,4,1)));
@@ -27,7 +27,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void timeComparison() {
+	private static void timeComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareTimes(Time.newInstance(1,0,0,0), Time.newInstance(2,0,0,0)));
 		System.assertEquals(0, comparer.compareTimes(Time.newInstance(3,0,0,0), Time.newInstance(3,0,0,0)));
@@ -35,7 +35,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void decimalComparison() {
+	private static void decimalComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareDecimals(Decimal.valueOf(1), Decimal.valueOf(3)));
 		System.assertEquals(0, comparer.compareDecimals(Decimal.valueOf(1), Decimal.valueOf(1)));
@@ -43,7 +43,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void doubleComparison() {
+	private static void doubleComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareDoubles(Double.valueOf(1), Double.valueOf(3)));
 		System.assertEquals(0, comparer.compareDoubles(Double.valueOf(1), Double.valueOf(1)));
@@ -51,7 +51,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void integerComparison() {
+	private static void integerComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareIntegers(1, 3));
 		System.assertEquals(0, comparer.compareIntegers(1, 1));
@@ -59,7 +59,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void idComparison() {
+	private static void idComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		Id a = '000000000000001', b = '000000000000001', c = '000000000000002';
 		System.assertEquals(0, comparer.compareIds(a, b));
@@ -67,7 +67,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void longComparison() {
+	private static void longComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareLongs(1L, 3L));
 		System.assertEquals(0, comparer.compareLongs(1L, 1L));
@@ -75,7 +75,7 @@ public class PrimitiveComparerTest {
 	}
 
 	@IsTest
-	public static void stringComparison() {
+	private static void stringComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(-1, comparer.compareStrings('abc', 'bbc'));
 		System.assertEquals(0, comparer.compareStrings('efg', 'efg'));

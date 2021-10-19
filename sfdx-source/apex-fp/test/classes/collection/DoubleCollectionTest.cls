@@ -1,19 +1,19 @@
-@IsTest
-public class DoubleCollectionTest {
+@IsTest(isParallel=true)
+private class DoubleCollectionTest {
 	@IsTest
-	static void testSum() {
+	private static void testSum() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{100, 150});
 		System.assertEquals(250, c.sum());
 	}
 
 	@IsTest
-	static void testAverage() {
+	private static void testAverage() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{100, 150});
 		System.assertEquals(125, c.average());
 	}
 
 	@IsTest
-	static void testFilterWithObjectPredicate() {
+	private static void testFilterWithObjectPredicate() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{null, 100, null, 150, null});
 		List<Double> filtered = c.filter(ObjectPredicates.NotNull).asList();
 		System.assertEquals(2, filtered.size());
@@ -28,7 +28,7 @@ public class DoubleCollectionTest {
 	} 
 
 	@IsTest
-	static void testFilterWithDoublePredicate() {
+	private static void testFilterWithDoublePredicate() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{null, 20, 5, 23});
 		List<Double> filtered = c.filter(new IsGreaterThanTen()).asList();
 		System.assertEquals(2, filtered.size());

@@ -1,7 +1,7 @@
-@IsTest
-public class SObjectStreamTest {
+@IsTest(isParallel=true)
+private class SObjectStreamTest {
 	@IsTest
-	public static void testFilter() {
+	private static void testFilter() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60),
@@ -20,7 +20,7 @@ public class SObjectStreamTest {
 	}
 
 	@IsTest
-	public static void testFilterChaining() {
+	private static void testFilterChaining() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60),
@@ -38,7 +38,7 @@ public class SObjectStreamTest {
 	}
 
 	@IsTest
-	public static void testRemove() {
+	private static void testRemove() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),
 			new Account(Name = 'Wrong', AnnualRevenue = 60),
@@ -105,7 +105,7 @@ public class SObjectStreamTest {
 	// }
 
 	@IsTest
-	public static void findFindsAnExistingRecord() {
+	private static void findFindsAnExistingRecord() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'One'),
 			new Account(Name = 'Two'),
@@ -119,7 +119,7 @@ public class SObjectStreamTest {
 	}
 
 	@IsTest
-	public static void findReturnsEmptyWhenRecordDoesNotExist() {
+	private static void findReturnsEmptyWhenRecordDoesNotExist() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'One'),
 			new Account(Name = 'Two'),

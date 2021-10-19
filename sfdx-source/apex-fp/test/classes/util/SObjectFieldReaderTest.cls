@@ -1,7 +1,7 @@
-@IsTest
-public class SObjectFieldReaderTest {
+@IsTest(isParallel=true)
+private class SObjectFieldReaderTest {
 	@IsTest
-	public static void testResolving() {
+	private static void testResolving() {
 		Account acc = new Account(Name = 'Test');
 		Opportunity opp = new Opportunity(AccountId = acc.Id, Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
 		opp.Account = acc;
@@ -11,7 +11,7 @@ public class SObjectFieldReaderTest {
 	}
 
 	@IsTest
-	public static void testInvalidObjectRelationException() {
+	private static void testInvalidObjectRelationException() {
 		Opportunity opp = new Opportunity(Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
 
 		Exception ex;
@@ -26,7 +26,7 @@ public class SObjectFieldReaderTest {
 	}
 
 	@IsTest
-	public static void testInvalidFieldRelationException() {
+	private static void testInvalidFieldRelationException() {
 		Account acc = new Account(Name = 'Test');
 		Opportunity opp = new Opportunity(AccountId = acc.Id, Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
 		opp.Account = acc;
@@ -43,7 +43,7 @@ public class SObjectFieldReaderTest {
 	}
 
 	@IsTest
-	public static void testBlankRelationException() {
+	private static void testBlankRelationException() {
 		Opportunity opp = new Opportunity(Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
 
 		Exception ex;
