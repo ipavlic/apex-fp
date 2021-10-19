@@ -2,9 +2,9 @@
 sidebar_position: 3
 ---
 
-# `DecimalCollection`
+# DecimalCollection
 
-## `sum`
+## sum
 
 **Signature**
 ```apex
@@ -18,7 +18,7 @@ Sums non-null `Decimal` values. Returns `null` if no such values exist in the co
 Decimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
 ```
 
-## `average`
+## average
 
 Averages non-null Decimal values. Returns `null` if no such values exist in the collection.
 
@@ -32,7 +32,7 @@ Decimal average()
 Decimal average = new DecimalCollection(new List<Decimal>){1, 2, 3}).average(); // 2
 ```
 
-## `filter`
+## filter
 
 Filters all values satisfying the `predicate` into a new `DecimalCollection` view
 

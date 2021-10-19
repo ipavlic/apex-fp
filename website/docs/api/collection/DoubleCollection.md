@@ -2,9 +2,9 @@
 sidebar_position: 2
 ---
 
-# `DoubleCollection`
+# DoubleCollection
 
-## `sum`
+## sum
 
 **Signature**
 ```apex
@@ -18,7 +18,7 @@ Sums non-null `Double` values. Returns `null` if no such values exist in the col
 Double total = new DoubleCollection(new List<Double>){1, 2, 3}).sum(); // 6
 ```
 
-## `average`
+## average
 
 Averages non-null Double values. Returns `null` if no such values exist in the collection.
 
@@ -32,7 +32,7 @@ Double average()
 Double average = new DoubleCollection(new List<Double>){1, 2, 3}).average(); // 2
 ```
 
-## `filter`
+## filter
 
 Filters all values satisfying the `predicate` into a new `DoubleCollection` view
 

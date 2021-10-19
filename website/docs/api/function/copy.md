@@ -1,8 +1,8 @@
-# `Copy`
+# Copy
 
 `Copy` is a factory for [`SObjectToSObjectFunction`](SObjectToSObjectFunction) mapping functions.
 
-## `recordFields`
+## recordFields
 
 **Signature**
 

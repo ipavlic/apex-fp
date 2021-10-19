@@ -2,11 +2,11 @@
 sidebar_position: 1
 ---
 
-# `SObjectCollection`
+# SObjectCollection
 
 `SObjectCollection` is an eager collection of `SObject` instances.
 
-## `of`
+## of
 
 Constructs an `SObjectCollection` with the provided `Iterable<SObject>` or `Set<SObject>`. 
 
@@ -24,7 +24,7 @@ SObjectCollection.of([SELECT Id, Name, Amount FROM Opportunity WHERE Amount > 10
 SObjectCollection.of(Trigger.new);
 ```
 
-## `isEmpty`
+## isEmpty
 
 Returns true is the collection contains no elements, false otherwise.
 
@@ -41,7 +41,7 @@ SObjectCollection.of(new List<SObject>()).isEmpty(); // true
 SObjectCollection.of(new List<Opportunity>{new Opportunity()}).isEmpty(); // false
 ```
 
-## `difference`
+## difference
 
 Returns a collection view of those records that are not equal in the `other` collection, considering only `comparisonFields` in the comparison.
 
@@ -50,7 +50,7 @@ Returns a collection view of those records that are not equal in the `other` col
 ```apex
 SObjectCollection difference(SObjectCollection other, Set<Schema.SObjectField> comparisonFields)
 ```
-## `filter`
+## filter
 
 Returns a `SObjectCollection` view of records that satisfied `predicate`.
 
@@ -73,11 +73,11 @@ SObjectCollection recordMatched = accountCollection.filter(Match.record(prototyp
 SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
 
-## `remove`
+## remove
 
 `remove` works just like `filter`, but records which match a predicate are *removed* from the collection view instead of kept.
 
-## `find`
+## find
 
 Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if an element is not found.
 
@@ -89,7 +89,7 @@ OptionalSObject find(SObjectPredicate predicate)
 
 ## pluck
 
-### `pluckBooleans`
+### pluckBooleans
 
 Plucks `Boolean` values at `field` or `relation`.
 
@@ -100,7 +100,7 @@ List<Boolean> pluckBooleans(Schema.SObjectField field)
 List<Boolean> pluckBooleans(String relation)
 ```
 
-### `pluckDates`
+### pluckDates
 
 Plucks `Date` values at `field` or `relation`.
 
@@ -111,7 +111,7 @@ List<Date> pluckDates(Schema.SObjectField field)
 List<Date> pluckDates(String relation)
 ```
 
-### `pluckDatetimes`
+### pluckDatetimes
 
 Plucks `Datetime` values at `field` or `relation`.
 
@@ -122,7 +122,7 @@ List<Datetime> pluckDatetimes(Schema.SObjectField field)
 List<Datetime> pluckDatetimes(String relation)
 ```
 
-### `pluckDecimals`
+### pluckDecimals
 
 Plucks numerical values at `field` or `relation`.
 
@@ -133,7 +133,7 @@ List<Decimal> pluckDecimals(Schema.SObjectField field)
 List<Decimal> pluckDecimals(String relation)
 ```
 
-### `pluckIds`
+### pluckIds
 
 Plucks `Id` values at `field` or `relation` or `Id` field.
 
@@ -145,7 +145,7 @@ List<Id> pluckIds(String relation)
 List<Id> pluckIds()
 ```
 
-### `pluckStrings`
+### pluckStrings
 
 Plucks `String` values at `field` or `relation`.
 
@@ -199,7 +199,7 @@ System.assert(objects instanceof List<Account>);
 ```
 :::
 
-### `groupByBooleans`
+### groupByBooleans
 
 Groups records by `Boolean` values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -211,7 +211,7 @@ Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field, Type list
 Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field)
 ```
 
-### `groupByDates`
+### groupByDates
 
 Groups records by `Date` values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -223,7 +223,7 @@ Map<Date, List<SObject>> groupByDates(Schema.SObjectField field, Type listType)
 Map<Date, List<SObject>> groupByBooleans(Schema.SObjectField field)
 ```
 
-### `groupByDatetimes`
+### groupByDatetimes
 
 Groups records by `Datetime` values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -235,7 +235,7 @@ Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field, Type li
 Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field)
 ```
 
-### `groupByDecimals`
+### groupByDecimals
 
 Groups records by numeric values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -247,7 +247,7 @@ Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field, Type list
 Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field)
 ```
 
-### `groupByIds`
+### groupByIds
 
 Groups records by `Id` values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -259,7 +259,7 @@ Map<Id, List<SObject>> groupByIds(Schema.SObjectField field, Type listType)
 Map<Id, List<SObject>> groupByIds(Schema.SObjectField field)
 ```
 
-### `groupByStrings`
+### groupByStrings
 
 Groups records by `String` values at `field` or `apiFieldName`, with an optional strong `listType`.
 
@@ -271,7 +271,7 @@ Map<String, List<SObject>> groupByStrings(Schema.SObjectField field, Type listTy
 Map<String, List<SObject>> groupByStrings(Schema.SObjectField field)
 ```
 
-## `pick`
+## pick
 
 Returns a new `SObjectCollection` view of the collection which keeps just the specified `fields`, discarding others. Helps reduce overwriting potential for concurrent updates when locking is not an option.
 
@@ -293,7 +293,7 @@ List<Opportunity> opportunities = new List<Opportunity>{
 SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<String>{'Name', 'Amount'});
 ```
 
-## `mapAll`
+## mapAll
 
 Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided `SObjectToSObjectFunction`-implementing function `fn`.
 
@@ -319,7 +319,7 @@ List<Opportunity> opps = new List<Opportunity>{
 SObjectCollection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
 ```
 
-## `mapSome`
+## mapSome
 
 Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `SObjectPredicate`-implementing `predicate` with `SObjectToSObject`-implementing function `fn`, and keeping those that do not unchanged.
 
@@ -348,7 +348,7 @@ SObjectCollection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmou
 
 ## mapTo
 
-### `mapToDecimal`
+### mapToDecimal
 
 Maps a numeric field at `field` or `relation` to a `DecimalCollection`. This is similar to `pluckDecimals`, but unlike a raw `List<Decimal>` returns a `DecimalCollection` which provides further functions.
 
@@ -358,7 +358,7 @@ DecimalCollection mapToDecimal(Schema.SObjectField field)
 DecimalCollection mapToDecimal(String relation)
 ```
 
-### `mapToDouble`
+### mapToDouble
 
 Maps a numeric field at `field` or `relation` to a `DoubleCollection`. This is similar to `pluckDoubles`, but unlike a raw `List<Double>` returns a `DoubleCollection` which provides further functions.
 

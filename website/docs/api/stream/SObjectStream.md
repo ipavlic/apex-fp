@@ -2,11 +2,11 @@
 sidebar_position: 4
 ---
 
-# `SObjectStream`
+# SObjectStream
 
 `SObjectStream` is a lazy collection of `SObject` instances which implements `Iterator<SObject>`. 
 
-## `of`
+## of
 
 Constructs an `SObjectStream` with the provided `Iterable<SObject>`. 
 
@@ -24,7 +24,7 @@ SObjectStream.of(accounts);
 SObjectStream.of(Trigger.old);
 ```
 
-## `hasNext`
+## hasNext
 
 **Signature**
 
@@ -38,7 +38,7 @@ while (accountStream.hasNext()) {
 	Account acc = (Account) accountStream.next();
 }
 
-## `next`
+## next
 
 **Signature**
 
@@ -55,7 +55,7 @@ while (largeOpportunities.hasNext()) {
 }
 ```
 
-## `filter`
+## filter
 
 Returns a stream consisting of the elements of this stream that match the given `predicate`.
 
@@ -65,7 +65,7 @@ Returns a stream consisting of the elements of this stream that match the given 
 SObjectStream filter(SObjectPredicate predicate)
 ```
 
-## `find`
+## find
 
 Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if an element is not found. This consumes the stream.
 
@@ -75,7 +75,7 @@ Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first recor
 OptionalSObject find(SObjectPredicate predicate)
 ```
 
-## `mapAll`
+## mapAll
 
 **Signature**
 
@@ -83,7 +83,7 @@ OptionalSObject find(SObjectPredicate predicate)
 SObjectStream mapAll(SObjectToSObjectFunction fn)
 ```
 
-## `mapSome`
+## mapSome
 
 **Signature**
 
@@ -91,7 +91,7 @@ SObjectStream mapAll(SObjectToSObjectFunction fn)
 SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
 ```
 
-## `remove`
+## remove
 
 Returns a stream consisting of the elements of this stream that do not match the given `predicate`.
 
@@ -102,7 +102,7 @@ SObjectStream remove(SObjectPredicate predicate)
 ```
 **Example**
 
-## `toList`
+## toList
 
 Collects the stream into a `List`. This consumes the stream.
 

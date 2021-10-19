@@ -1,4 +1,4 @@
-public class SObjectFieldReader {
+public with sharing class SObjectFieldReader {
 	static Map<String, String[]> relationPartsCache = new Map<String, String[]>();
 
 	private String[] relationParts(String relation) {

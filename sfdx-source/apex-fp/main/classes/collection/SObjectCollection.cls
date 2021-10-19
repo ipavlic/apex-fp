@@ -1,6 +1,7 @@
 public with sharing class SObjectCollection {
 
 	private List<SObject> records;
+	private SObjectFieldReader fieldReader;
 
 	public static SObjectCollection of(Iterable<SObject> records) {
 		return new SObjectCollection(records);
@@ -96,16 +97,15 @@ public with sharing class SObjectCollection {
 	public List<Boolean> pluckBooleans(Schema.SObjectField field) {
 		List<Boolean> results = new List<Boolean>();
 		for (SObject rec : records) {
-			results.add((Boolean)rec.get(field));
+			results.add((Boolean) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<Boolean> pluckBooleans(String relation) {
 		List<Boolean> results = new List<Boolean>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((Boolean)reader.read(rec, relation));
+			results.add((Boolean) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -113,16 +113,15 @@ public with sharing class SObjectCollection {
 	public List<Date> pluckDates(Schema.SObjectField field) {
 		List<Date> results = new List<Date>();
 		for (SObject rec : records) {
-			results.add((Date)rec.get(field));
+			results.add((Date) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<Date> pluckDates(String relation) {
 		List<Date> results = new List<Date>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((Date)reader.read(rec, relation));
+			results.add((Date) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -130,16 +129,15 @@ public with sharing class SObjectCollection {
 	public List<Datetime> pluckDatetimes(Schema.SObjectField field) {
 		List<Datetime> results = new List<Datetime>();
 		for (SObject rec : records) {
-			results.add((Datetime)rec.get(field));
+			results.add((Datetime) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<Datetime> pluckDatetimes(String relation) {
 		List<Datetime> results = new List<Datetime>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((Datetime)reader.read(rec, relation));
+			results.add((Datetime) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -147,16 +145,15 @@ public with sharing class SObjectCollection {
 	public List<Decimal> pluckDecimals(Schema.SObjectField field) {
 		List<Decimal> results = new List<Decimal>();
 		for (SObject rec : records) {
-			results.add((Decimal)rec.get(field));
+			results.add((Decimal) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<Decimal> pluckDecimals(String relation) {
 		List<Decimal> results = new List<Decimal>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((Decimal)reader.read(rec, relation));
+			results.add((Decimal) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -172,16 +169,15 @@ public with sharing class SObjectCollection {
 	public List<Id> pluckIds(Schema.SObjectField field) {
 		List<Id> results = new List<Id>();
 		for (SObject rec : records) {
-			results.add((Id)rec.get(field));
+			results.add((Id) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<Id> pluckIds(String relation) {
 		List<Id> results = new List<Id>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((Id)reader.read(rec, relation));
+			results.add((Id) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -189,16 +185,15 @@ public with sharing class SObjectCollection {
 	public List<String> pluckStrings(Schema.SObjectField field) {
 		List<String> results = new List<String>();
 		for (SObject rec : records) {
-			results.add((String)rec.get(field));
+			results.add((String) rec.get(field));
 		}
 		return results;
 	}
 
 	public List<String> pluckStrings(String relation) {
 		List<String> results = new List<String>();
-		SObjectFieldReader reader = new SObjectFieldReader();
 		for (SObject rec : records) {
-			results.add((String) reader.read(rec, relation));
+			results.add((String) fieldReader.read(rec, relation));
 		}
 		return results;
 	}
@@ -404,10 +399,9 @@ public with sharing class SObjectCollection {
 	}
 
 	public DecimalCollection mapToDecimal(String relation) {
-		SObjectFieldReader reader = new SObjectFieldReader();
 		List<Decimal> decimals = new List<Decimal>();
 		for (SObject record : records) {
-			decimals.add((Decimal) reader.read(record, relation));
+			decimals.add((Decimal) fieldReader.read(record, relation));
 		}
 		return new DecimalCollection(decimals);
 	}
@@ -417,10 +411,9 @@ public with sharing class SObjectCollection {
 	}
 
 	public DoubleCollection mapToDouble(String relation) {
-		SObjectFieldReader reader = new SObjectFieldReader();
 		List<Double> doubles = new List<Double>();
 		for (SObject record : records) {
-			doubles.add((Double) reader.read(record, relation));
+			doubles.add((Double) fieldReader.read(record, relation));
 		}
 		return new DoubleCollection(doubles);
 	}

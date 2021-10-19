@@ -6,7 +6,7 @@ sidebar_position: 2
 
 ## Filtering
 
-### `SObjectCollection`
+### SObjectCollection
 
 ```apex title="Find opportunities over 150,000"
 // List<Opportunity> opportunities = ...
@@ -21,7 +21,7 @@ SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).great
 
 ## Grouping
 
-### `SObjectCollection`
+### SObjectCollection
 
 ```apex title="Group accounts by parent accounts"
 Map<Id, List<Account>> accountsByParentId = SObjectCollection.of(accounts).groupByIds(Account.ParentId);
@@ -29,18 +29,18 @@ Map<Id, List<Account>> accountsByParentId = SObjectCollection.of(accounts).group
 
 ## Mapping
 
-### `SObjectCollection`
+### SObjectCollection
 
-```apex title="Pluck opportunity values"
-List<Decimal> opportunityValues = SObjectCollection.of(opportunities).pluckDecimal(Opportunity.Amount);
+```apex title="Create tasks for opportunities of specific stage in a trigger"
+List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
+	.filter(Match.recordFields(new Opportunity(Stage = 'Prospecting')))
+	.mapAll(new MapToSObject(Task.SObjectType).setField(Task.Subject, 'Follow up').mapField(Task.WhatId, Opportunity.Id));
 ```
 
 ```apex title="Find average opportunity value"
 Decimal averageOpportunityValue = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).average();
 ```
 
-```apex title="Change fields on filtered opportunities in a trigger"
-List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
-	.filter(Match.recordFields(new Opportunity(Stage = 'Prospecting')))
-	.mapAll(new CreateOpportunityTask(TaskType.PROSPECTING));
+```apex title="Pluck opportunity values"
+List<Decimal> opportunityValues = SObjectCollection.of(opportunities).pluckDecimal(Opportunity.Amount);
 ```

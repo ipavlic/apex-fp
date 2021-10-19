@@ -1,8 +1,8 @@
-# `CopyRecordFields`
+# CopyRecordFields
 
 Implements [`SObjectToSObjectFunction`](SObjectToSObjectFunction). To be used through the [`Copy`](Copy) function factory, instead of directly.
 
-## `CopyRecordFields`
+## CopyRecordFields
 
 Constructor.
 
@@ -11,7 +11,7 @@ Constructor.
 CopyRecordFields(SObject prototype)
 ```
 
-## `apply`
+## apply
 
 Copies all defined fields on the `prototype` record to the currently iterated record.
 
