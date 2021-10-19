@@ -29,7 +29,7 @@ for (Opportunity opp : opportunities) {
 
 ```apex title="Apex FP declarative style filtering"
 List<Opportunity> opportunities = [SELECT ...];
-List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000));
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000)).asList();
 ```
 
 To enable functional programming, Apex FP provides three things:
