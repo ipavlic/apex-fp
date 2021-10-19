@@ -12,7 +12,7 @@ public with sharing class SObjectStreamFilter extends SObjectStream {
 	private Boolean tryAdvance() {
 		while (recordsIterator.hasNext()) {
 			SObject nextRecord = recordsIterator.next();
-			if (predicate.apply(nextRecord)) {
+			if (predicate.call(nextRecord)) {
 				next = nextRecord;
 				hasNext = true;
 				return true;

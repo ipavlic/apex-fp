@@ -1,3 +1,3 @@
 public interface DecimalPredicate {
-	Boolean apply(Decimal d);
+	Boolean call(Decimal d);
 }

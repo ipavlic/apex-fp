@@ -29,11 +29,18 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 	public OptionalSObject find(SObjectPredicate predicate) {
 		while (hasNext()) {
 			SObject record = next();
-			if (predicate.apply(record)) {
+			if (predicate.call(record)) {
 				return OptionalSObject.of(record);
 			}
 		}
 		return OptionalSObject.empty();
+	}
+
+	public void forEach(SObjectFunction fn) {
+		while (hasNext()) {
+			SObject record = next();
+			fn.call(record);
+		}
 	}
 
 	public virtual Boolean hasNext() {

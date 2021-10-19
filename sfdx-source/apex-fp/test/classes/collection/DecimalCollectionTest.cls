@@ -28,7 +28,7 @@ public class DecimalCollectionTest {
 	}
 
 	private class IsTen implements DecimalPredicate {
-		public Boolean apply(Decimal d) {
+		public Boolean call(Decimal d) {
 			return d != null && d == 10;
 		}
 	}

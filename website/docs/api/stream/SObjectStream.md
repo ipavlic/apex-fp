@@ -75,6 +75,16 @@ Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first recor
 OptionalSObject find(SObjectPredicate predicate)
 ```
 
+## forEach
+
+Iterates through the stream and invokes a function for each record. This consumes the stream.
+
+**Signature**
+
+```apex
+void forEach(SObjectFunction fn)
+```
+
 ## mapAll
 
 **Signature**

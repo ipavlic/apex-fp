@@ -584,7 +584,7 @@ public class SObjectCollectionTest {
 	}
 
 	private class DoubleAmount implements SObjectToSObjectFunction {
-		public SObject apply(SObject record) {
+		public SObject call(SObject record) {
 			record.put('Amount', 2 * (Decimal) record.get('Amount'));
 			return record;
 		}
@@ -613,11 +613,11 @@ public class SObjectCollectionTest {
 	}
 
 	@IsTest
-	static void testMapWithCopyRecordFields() {
+	static void testForEachWithAssignTo() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
-		}).mapAll(Copy.recordFields(new Opportunity(Amount = 123))).asList();
+		}).forEach(AssignTo.SObject().setFields(new Opportunity(Amount = 123))).asList();
 		System.assertEquals(123, opportunities[0].Amount);
 		System.assertEquals(123, opportunities[1].Amount);
 	}

@@ -57,52 +57,52 @@ public class SObjectStreamTest {
 		System.assertEquals(accounts[2], filtered[1]);
 	}
 
-	@IsTest
-	public static void testMapAll() {
-		List<Account> accounts = new List<Account>{
-			new Account(Name = 'Ok'),
-			new Account(Name = 'Wrong'),
-			new Account(Name = 'Ok'),
-			new Account(Name = 'Wrong')
-		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).mapAll(Copy.recordFields(new Account(AnnualRevenue = 100)));		
+	// @IsTest
+	// public static void testMapAll() {
+	// 	List<Account> accounts = new List<Account>{
+	// 		new Account(Name = 'Ok'),
+	// 		new Account(Name = 'Wrong'),
+	// 		new Account(Name = 'Ok'),
+	// 		new Account(Name = 'Wrong')
+	// 	};
+	// 	Iterator<SObject> iter = SObjectStream.of(accounts).mapAll(Copy.recordFields(new Account(AnnualRevenue = 100)));		
 		
-		List<SObject> mapped = new List<SObject>();
-		while (iter.hasNext()) {
-			mapped.add(iter.next());
-		}
+	// 	List<SObject> mapped = new List<SObject>();
+	// 	while (iter.hasNext()) {
+	// 		mapped.add(iter.next());
+	// 	}
 		
-		System.assertEquals(4, mapped.size());
-		for (SObject record : mapped) {
-			System.assertEquals(100, ((Account) record).AnnualRevenue);
-		}
-	}
+	// 	System.assertEquals(4, mapped.size());
+	// 	for (SObject record : mapped) {
+	// 		System.assertEquals(100, ((Account) record).AnnualRevenue);
+	// 	}
+	// }
 
-	@IsTest
-	public static void testMapSome() {
-		List<Account> accounts = new List<Account>{
-			new Account(Name = 'Ok'),
-			new Account(Name = 'Wrong'),
-			new Account(Name = 'Ok'),
-			new Account(Name = 'Wrong')
-		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), Copy.recordFields(new Account(AnnualRevenue = 100)));
+	// @IsTest
+	// public static void testMapSome() {
+	// 	List<Account> accounts = new List<Account>{
+	// 		new Account(Name = 'Ok'),
+	// 		new Account(Name = 'Wrong'),
+	// 		new Account(Name = 'Ok'),
+	// 		new Account(Name = 'Wrong')
+	// 	};
+	// 	Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), Copy.recordFields(new Account(AnnualRevenue = 100)));
 		
-		List<SObject> mapped = new List<SObject>();
-		while (iter.hasNext()) {
-			mapped.add(iter.next());
-		}
+	// 	List<SObject> mapped = new List<SObject>();
+	// 	while (iter.hasNext()) {
+	// 		mapped.add(iter.next());
+	// 	}
 		
-		System.assertEquals(4, mapped.size());
-		for (SObject record : mapped) {
-			Account a = (Account) record;
-			if (a.Name == 'Ok') {
-				System.assertEquals(100, a.AnnualRevenue);
-			} else {
-				System.assertEquals(null, a.AnnualRevenue);
-			}
-		}
-	}
+	// 	System.assertEquals(4, mapped.size());
+	// 	for (SObject record : mapped) {
+	// 		Account a = (Account) record;
+	// 		if (a.Name == 'Ok') {
+	// 			System.assertEquals(100, a.AnnualRevenue);
+	// 		} else {
+	// 			System.assertEquals(null, a.AnnualRevenue);
+	// 		}
+	// 	}
+	// }
 
 	@IsTest
 	public static void findFindsAnExistingRecord() {

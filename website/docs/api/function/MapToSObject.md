@@ -1,7 +1,6 @@
 # MapToSobject
 
-`MapToSObject` is an [`SObjectToSObjectFunction`](SObjectToSObject) with a fluent interface. It is meant to be used in `mapAll` and `mapSome` functions of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../collection/SObjectStream).
-
+Implements [`SObjectToSObjectFunction`](SObjectToSObject) and maps values from a source record to an output record. Mappings and values of the output record can be defined through a a fluent interface. It is meant to be used in `mapAll` and `mapSome` functions of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../collection/SObjectStream).
 
 ## MapToSObject
 
@@ -30,7 +29,7 @@ MapToSObject mapField(Schema.SObjectField targetField, Schema.SObjectField sourc
 **Example**
 ```apex
 //Opportunity opp = ...
-Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, Opportunity.Id).apply(opp);
+Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, Opportunity.Id).call(opp);
 System.assertEquals(oppId, task.WhatId);
 ```
 ## mapFields
@@ -60,9 +59,9 @@ MapToSObject setFields(Map<Schema.SObjectField, Object> fieldValues)
 MapToSObject setFields(SObject prototype)
 ```
 
-## apply
+## call
 ```apex
-SObject apply(SObject record)
+SObject call(SObject record)
 ```
 
 Create a new `SObject` of defined `type`, sets field values on it to defined ones, and then sets maps field values from source record to target record.

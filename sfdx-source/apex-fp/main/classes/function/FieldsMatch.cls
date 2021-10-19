@@ -35,7 +35,7 @@ public class FieldsMatch implements SObjectPredicate {
 		return new IncompleteFieldsMatch(this, fieldPath);
 	}
 
-	public Boolean apply(SObject record) {
+	public Boolean call(SObject record) {
 		for (FieldMatchCondition condition : matchConditions) {
 			if (!conditionSatisfied(condition, record)) {
 				return false;

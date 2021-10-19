@@ -1,3 +1,3 @@
 public interface DoublePredicate {
-	Boolean apply(Double d);
+	Boolean call(Double d);
 }

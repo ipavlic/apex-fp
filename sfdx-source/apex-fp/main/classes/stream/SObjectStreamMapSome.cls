@@ -15,6 +15,6 @@ public with sharing class SObjectStreamMapSome extends SObjectStream {
 
 	public virtual override SObject next() {
 		SObject next = recordsIterator.next();
-		return predicate.apply(next) ? fn.apply(next) : next;
+		return predicate.call(next) ? fn.call(next) : next;
 	}
 }

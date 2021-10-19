@@ -1,3 +1,3 @@
 public interface SObjectToSObjectFunction {
-	SObject apply(SObject record);
+	SObject call(SObject record);
 }

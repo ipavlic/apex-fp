@@ -6,7 +6,7 @@ public class DoubleCollection {
 		this.doubles = doubles;
 		nonNulls = new List<Double>();
 		for (Double d : doubles) {
-			if (ObjectPredicates.NotNull.apply(d)) {
+			if (ObjectPredicates.NotNull.call(d)) {
 				nonNulls.add(d);
 			}
 		}
@@ -44,7 +44,7 @@ public class DoubleCollection {
 	public DoubleCollection filter(DoublePredicate predicate) {
 		List<Double> filtered = new List<Double>();
 		for (Double d : doubles) {
-			if (predicate.apply(d)) {
+			if (predicate.call(d)) {
 				filtered.add(d);
 			}
 		}
@@ -54,7 +54,7 @@ public class DoubleCollection {
 	public DoubleCollection filter(ObjectPredicate predicate) {
 		List<Double> filtered = new List<Double>();
 		for (Double d : doubles) {
-			if (predicate.apply(d)) {
+			if (predicate.call(d)) {
 				filtered.add(d);
 			}
 		}

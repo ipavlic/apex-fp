@@ -305,7 +305,7 @@ SObjectCollection mapAll(SObjectToSObjectFunction fn)
 **Example**
 ```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
-    public SObject apply(SObject record) {
+    public SObject call(SObject record) {
         record.put('Amount', 2 * (Decimal) record.get('Amount'));
         return record;
     }
@@ -332,7 +332,7 @@ SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction f
 
 ```apex
 private class DoubleAmount implements SObjectToSObjectFunction {
-    public SObject apply(SObject record) {
+    public SObject call(SObject record) {
         record.put('Amount', 2 * (Decimal) record.get('Amount'));
         return record;
     }

@@ -1,3 +1,3 @@
 public interface SObjectPredicate {
-	Boolean apply(SObject record);
+	Boolean call(SObject record);
 }

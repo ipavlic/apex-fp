@@ -56,7 +56,7 @@ public with sharing class MapToSObject {
 		return this;
 	}
 
-	public SObject apply(SObject record) {
+	public SObject call(SObject record) {
 		SObject mapped = type.newSObject();
 		for (String fieldName : fieldValues.keySet()) {
 			mapped.put(fieldName, fieldValues.get(fieldName));

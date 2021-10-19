@@ -43,14 +43,14 @@ First, Apex FP defines a reasonable set of **functional interfaces** for functio
 
 ```apex title="apex-fp/main/classes/function/SObjectPredicate.cls"
 public interface SObjectPredicate {
-	Boolean apply(SObject record);
+	Boolean call(SObject record);
 }
 ```
 or "functions that take an `SObject` and return an `SObject`":
 
 ```apex title="apex-fp/main/classes/function/SObjectToSObjectFunction.cls"
 public interface SObjectToSObjectFunction {
-	SObject apply(SObject record);
+	SObject call(SObject record);
 }
 ```
 

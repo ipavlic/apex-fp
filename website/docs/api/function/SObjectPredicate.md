@@ -1,8 +1,8 @@
 # SObjectPredicate
 
-Interface for `SObject` to `Boolean` functions. Contains a single method, `apply`.
+Interface for `SObject` to `Boolean` functions. Contains a single method, `call`.
 
-## apply
+## call
 ```apex
-Boolean apply(SObject record)
+Boolean call(SObject record)
 ```

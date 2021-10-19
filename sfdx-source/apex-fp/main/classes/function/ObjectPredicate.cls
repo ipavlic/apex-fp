@@ -1,3 +1,3 @@
 public interface ObjectPredicate {
-	Boolean apply(Object obj);
+	Boolean call(Object obj);
 }

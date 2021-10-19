@@ -15,8 +15,8 @@ RecordFieldsMatch recordFields(SObject prototype)
 **Example**
 ```apex
 RecordFieldsMatch isMatch = Match.recordFields(new Account{Name = 'Foo'});
-isMatch.apply(new Account{Name = 'Foo', Description = 'Some description'}); // true
-isMatch.apply(new Account{Name = 'Bar'}); // false
+isMatch.call(new Account{Name = 'Foo', Description = 'Some description'}); // true
+isMatch.call(new Account{Name = 'Bar'}); // false
 ```
 
 ## field

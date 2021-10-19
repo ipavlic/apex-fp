@@ -22,7 +22,7 @@ public class DoubleCollectionTest {
 	}
 
 	private class IsGreaterThanTen implements DoublePredicate {
-		public Boolean apply(Double d) {
+		public Boolean call(Double d) {
 			return d != null && d > 10;
 		}
 	} 

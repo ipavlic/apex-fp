@@ -1,8 +1,8 @@
 # SObjectToSObjectFunction
 
-Interface for `SObject` to `SObject` functions. Contains a single method, `apply`.
+Interface for `SObject` to `SObject` functions. Contains a single method, `call`.
 
-## apply
+## call
 ```apex
-SObject apply(SObject record)
+SObject call(SObject record)
 ```

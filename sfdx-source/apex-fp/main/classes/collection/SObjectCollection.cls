@@ -13,6 +13,7 @@ public with sharing class SObjectCollection {
 
 	private SObjectCollection(Iterable<SObject> records) {
 		this.records = new List<SObject>();
+		this.fieldReader = new SObjectFieldReader();
 		Iterator<SObject> iter = records.iterator();
 		while (iter.hasNext()) {
 			this.records.add(iter.next());
@@ -77,7 +78,7 @@ public with sharing class SObjectCollection {
 	public SObjectCollection filter(SObjectPredicate predicate) {
 		List<SObject> filtered = new List<SObject>();
 		for (SObject record : records) {
-			if (predicate.apply(record)) {
+			if (predicate.call(record)) {
 				filtered.add(record);
 			}
 		}
@@ -87,7 +88,7 @@ public with sharing class SObjectCollection {
 	public SObjectCollection remove(SObjectPredicate predicate) {
 		List<SObject> remaining = new List<SObject>();
 		for (SObject record : records) {
-			if (!predicate.apply(record)) {
+			if (!predicate.call(record)) {
 				remaining.add(record);
 			}
 		}
@@ -377,7 +378,7 @@ public with sharing class SObjectCollection {
 	public SObjectCollection mapAll(SObjectToSObjectFunction fn) {
 		List<SObject> mapped = new List<SObject>();
 		for (SObject record : records) {
-			mapped.add(fn.apply(record));
+			mapped.add(fn.call(record));
 		}
 		return SObjectCollection.of(mapped);
 	}
@@ -385,8 +386,8 @@ public with sharing class SObjectCollection {
 	public SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
 		List<SObject> transformed = new List<SObject>();
 		for (SObject record : records) {
-			if (predicate.apply(record)) {
-				transformed.add(fn.apply(record));
+			if (predicate.call(record)) {
+				transformed.add(fn.call(record));
 			} else {
 				transformed.add(record);
 			}
@@ -420,10 +421,17 @@ public with sharing class SObjectCollection {
 
 	public OptionalSObject find(SObjectPredicate predicate) {
 		for (SObject record : records) {
-			if (predicate.apply(record)) {
+			if (predicate.call(record)) {
 				return OptionalSObject.of(record);
 			}
 		}
 		return OptionalSObject.empty();
+	}
+
+	public SObjectCollection forEach(SObjectFunction fn) {
+		for (SObject record : records) {
+			fn.call(record);
+		}
+		return this;
 	}
 }
