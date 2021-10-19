@@ -1,6 +1,6 @@
 # MapToSobject
 
-Implements [`SObjectToSObjectFunction`](SObjectToSObject) and maps values from a source record to an output record. Mappings and values of the output record can be defined through a a fluent interface. It is meant to be used in `mapAll` and `mapSome` functions of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../collection/SObjectStream).
+Implements [`SObjectToSObjectFunction`](SObjectToSObjectFunction) and maps values from a source record to an output record. Mappings and values of the output record can be defined through a a fluent interface. It is meant to be used in `mapAll` and `mapSome` functions of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../stream/SObjectStream).
 
 ## MapToSObject
 

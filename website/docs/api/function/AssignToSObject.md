@@ -1,6 +1,6 @@
 # AssignToSObject
 
-Implements [`SObjectFunction`](SObjectFunction), and assigns values to the record it is applied to. Field values can be defined through a fluent interface. It is meant to be used in `forEach` of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../collection/SObjectStream).
+Implements [`SObjectFunction`](SObjectFunction), and assigns values to the record it is applied to. Field values can be defined through a fluent interface. It is meant to be used in `forEach` of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../stream/SObjectStream).
 
 ## setField
 
