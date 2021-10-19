@@ -4,7 +4,7 @@
 
 Additional conditions can be defined with `also`, or its alias `field`, to create complex matching functions.
 
-## also` (alias `field)
+## also (alias field)
 
 Adds another field condition to the chain.
 

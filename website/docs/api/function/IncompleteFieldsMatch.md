@@ -2,7 +2,7 @@
 
 `IncompleteFieldsMatch` starts the fluent interface for building a `FieldsMatch`. Adding a condition through methods on the `IncompleteFieldsMatch` yields a `FieldsMatch`, which is an `SObjectPredicate`. The process can be continued to add more field conditions.
 
-## equals` (alias `eq)
+## equals (alias eq)
 
 Defines an equality comparison condition for the current field.
 
@@ -15,7 +15,7 @@ FieldsMatch equals(Object value)
 ```apex
 FieldsMatch eq(Object value)
 ```
-## notEquals` (alias `neq)
+## notEquals (alias neq)
 
 Defines an inequality comparison condition for the current field.
 
@@ -24,7 +24,7 @@ Defines an inequality comparison condition for the current field.
 FieldsMatch notEquals(Object value)
 ```
 
-## lessThan` (alias `lt)
+## lessThan (alias lt)
 
 Defines a less than comparison condition for the current field.
 
@@ -33,7 +33,7 @@ Defines a less than comparison condition for the current field.
 FieldsMatch lessThan(Object value)
 ```
 
-## lessThanOrEquals` (alias `leq)
+## lessThanOrEquals (alias leq)
 
 Defines a less than or equals condition for the current field.
 
@@ -42,7 +42,7 @@ Defines a less than or equals condition for the current field.
 FieldsMatch lessThanOrEquals(Object value)
 ```
 
-## greaterThan` (alias `gt)
+## greaterThan (alias gt)
 
 Defines a greater than condition for the current field.
 
@@ -51,7 +51,7 @@ Defines a greater than condition for the current field.
 FieldsMatch greaterThan(Object value)
 ```
 
-## greaterThanOrEquals` (alias `geq)
+## greaterThanOrEquals (alias geq)
 
 Defines a greater than or equals condition for the current field.
 
@@ -78,7 +78,7 @@ Defines a set membership condition for the current field. `value` has to be a `S
 FieldsMatch isIn(Object value)
 ```
 
-## isNotIn` (alias `notIn)
+## isNotIn (alias `ntIn)
 
 **Signature**
 ```apex
