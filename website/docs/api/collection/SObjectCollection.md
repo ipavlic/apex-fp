@@ -295,7 +295,7 @@ SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<Stri
 
 ## mapAll
 
-Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided `SObjectToSObjectFunction`-implementing function `fn`.
+Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided function `fn`.
 
 **Signature**
 ```
@@ -321,7 +321,7 @@ SObjectCollection.of(opps).mapAll(new DoubleAmount()); // amounts have been doub
 
 ## mapSome
 
-Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `SObjectPredicate`-implementing `predicate` with `SObjectToSObject`-implementing function `fn`, and keeping those that do not unchanged.
+Returns a new `SObjectCollection` view formed by mapping those view elements that satisfy `predicate` with function `fn`, and keeping those that do not unchanged.
 
 **Signature**
 ```
