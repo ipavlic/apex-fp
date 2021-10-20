@@ -36,7 +36,7 @@ jobs:
           ./sfdx-cli/install
           
       - name: Write the dev hub token into a file
-        run: 'echo ${{secrets.sfdx_test_url}} > dev-hub-token'
+        run: 'echo ${{secrets.dev_hub_url}} > dev-hub-token'
         
       - name: Authenticate with the dev hub
         run: sfdx force:auth:sfdxurl:store -f dev-hub-token --setalias DevHub --setdefaultdevhubusername' 
