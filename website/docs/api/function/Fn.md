@@ -49,4 +49,4 @@ Match.field('Parent.Id').equals(accountId);
 
 ## NotNull
 
-Returns a [`NotNull`](NotNull) predicate.
+Returns a `NotNull` predicate.
