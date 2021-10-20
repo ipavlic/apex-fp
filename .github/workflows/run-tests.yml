@@ -39,7 +39,7 @@ jobs:
         run: 'echo ${{secrets.SFDX_AUTH_URL}} > dev-hub-token'
         
       - name: Authenticate with the dev hub
-        run: sfdx force:auth:sfdxurl:store -f dev-hub-token --setalias DevHub --setdefaultdevhubusername' 
+        run: sfdx force:auth:sfdxurl:store -f dev-hub-token --setalias DevHub --setdefaultdevhubusername 
         
       - name: Create scratch org
         run: sfdx force:org:create -f config/project-scratch-def.json --setalias test-scratch
