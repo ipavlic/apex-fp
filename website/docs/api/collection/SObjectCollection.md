@@ -68,9 +68,9 @@ Two predicates are provided out of the box, `FieldsMatch` and `RecordMatch`. The
 SObjectCollection accountCollection = SObjectCollection.of(accounts);
 
 Account prototype = new Account(Name = 'Foo');
-SObjectCollection recordMatched = accountCollection.filter(Match.record(prototype));
+SObjectCollection recordMatched = accountCollection.filter(Fn.Match.record(prototype));
 
-SObjectCollection filtered = accountCollection.filter(Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
+SObjectCollection filtered = accountCollection.filter(Fn.Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000));
 ```
 
 ## remove

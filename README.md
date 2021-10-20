@@ -5,7 +5,13 @@ Apex FP provides functional constructs for `SObject` collections!
 Transform `SObjects` with a simple declarative API.
 
 ```apex
-List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(150000).also(Opportunity.AccountId).equals(accountId)).asList();
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Fn.Match.field(Opportunity.Amount).greaterThan(150000).also(Opportunity.AccountId).equals(accountId)).asList();
+```
+
+```apex
+List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
+	.filter(Fn.Match.recordFields(new Opportunity(Stage = 'Prospecting')))
+	.mapAll(Fn.MapTo(Task.SObjectType).setField(Task.Subject, 'Follow up').mapField(Task.WhatId, Opportunity.Id));
 ```
 
 ```apex

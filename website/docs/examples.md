@@ -10,13 +10,13 @@ sidebar_position: 2
 
 ```apex title="Find opportunities over 150,000"
 // List<Opportunity> opportunities = ...
-SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(150000));
+SObjectCollection.of(opportunities).filter(Fn.Match.field(Opportunity.Amount).greaterThan(150000));
 ```
 
 ```apex title="Find opportunities over 150,000 that belong to a specific account"
 // List<Opportunity> opportunities = ...
 // Id accountId = ...
-SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(150000).also(Opportunity.AccountId).equals(accountId));
+SObjectCollection.of(opportunities).filter(Fn.Match.field(Opportunity.Amount).greaterThan(150000).also(Opportunity.AccountId).equals(accountId));
 ```
 
 ## Grouping
@@ -33,8 +33,8 @@ Map<Id, List<Account>> accountsByParentId = SObjectCollection.of(accounts).group
 
 ```apex title="Create tasks for opportunities of specific stage in a trigger"
 List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
-	.filter(Match.recordFields(new Opportunity(Stage = 'Prospecting')))
-	.mapAll(new MapToSObject(Task.SObjectType).setField(Task.Subject, 'Follow up').mapField(Task.WhatId, Opportunity.Id));
+	.filter(Fn.Match.recordFields(new Opportunity(Stage = 'Prospecting')))
+	.mapAll(Fn.MapTo(Task.SObjectType).setField(Task.Subject, 'Follow up').mapField(Task.WhatId, Opportunity.Id));
 ```
 
 ```apex title="Find average opportunity value"

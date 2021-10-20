@@ -49,7 +49,7 @@ virtual SObject next()
 **Example**
 
 ```
-SObjectStream largeOpportunities = SObjectStream.of(Trigger.new).filter(Match.field(Opportunity.Amount).gt(100000));
+SObjectStream largeOpportunities = SObjectStream.of(Trigger.new).filter(Fn.Match.field(Opportunity.Amount).gt(100000));
 while (largeOpportunities.hasNext()) {
 	Opportunity opp = (Opportunity) largeOpportunities.next();
 }

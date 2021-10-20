@@ -29,7 +29,7 @@ for (Opportunity opp : opportunities) {
 
 ```apex title="Apex FP declarative style filtering"
 List<Opportunity> opportunities = [SELECT ...];
-List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000)).asList();
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Fn.Match.field(Opportunity.Amount).greaterThan(10000)).asList();
 ```
 
 To enable functional programming, Apex FP provides three things:
@@ -108,5 +108,5 @@ With `SObjectStream`, we iterate through the stream to check one opportunity at 
 With **functional interfaces**, **function factories** and a nice set of classes for working with `SObject` collections with **higher order functions** , we finally get to data transformation expressions like:
 
 ```
-List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000)).asList();
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Fn.Match.field(Opportunity.Amount).greaterThan(10000)).asList();
 ```
