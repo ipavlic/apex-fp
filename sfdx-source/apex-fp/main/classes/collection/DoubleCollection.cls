@@ -20,25 +20,25 @@ public class DoubleCollection {
 		return new Set<Double>(doubles);
 	}
 
-	public Double sum() {
+	public OptionalDouble sum() {
 		if (nonNulls.isEmpty()) {
-			return null;
+			return OptionalDouble.empty();
 		}
 		Double sum = 0;
 		for (Double d : nonNulls) {
 			sum += d;
 		}
-		return sum;
+		return OptionalDouble.of(sum);
 	}
 
-	public Double average() {
-		Double s = sum();
-		return s != null ? s / nonNulls.size() : null;
+	public OptionalDouble average() {
+		OptionalDouble s = sum();
+		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();
 	}
 
-	public Double average(Integer scale, System.RoundingMode roundingMode) {
-		Double s = sum();
-		return s != null ? s / nonNulls.size() : null;
+	public OptionalDouble average(Integer scale, System.RoundingMode roundingMode) {
+		OptionalDouble s = sum();
+		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();
 	}
 
 	public DoubleCollection filter(DoublePredicate predicate) {

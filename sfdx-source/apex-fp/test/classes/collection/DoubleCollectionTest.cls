@@ -3,13 +3,13 @@ private class DoubleCollectionTest {
 	@IsTest
 	private static void testSum() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{100, 150});
-		System.assertEquals(250, c.sum());
+		System.assertEquals(250, c.sum().get());
 	}
 
 	@IsTest
 	private static void testAverage() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{100, 150});
-		System.assertEquals(125, c.average());
+		System.assertEquals(125, c.average().get());
 	}
 
 	@IsTest

@@ -3,19 +3,19 @@ private class DecimalCollectionTest {
 	@IsTest
 	private static void testDecimalCollectionSum() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{100, 150});
-		System.assertEquals(250, c.sum());
+		System.assertEquals(250, c.sum().get());
 	}
 
 	@IsTest
 	private static void testDecimalCollectionAverage() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{100, 150});
-		System.assertEquals(125, c.average(0));
+		System.assertEquals(125, c.average(0).get());
 	}
 
 	@IsTest
 	private static void testDecimalCollectionAverageWithRoundingMode() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{1, 2});
-		System.assertEquals(1, c.average(0, System.RoundingMode.DOWN));
+		System.assertEquals(1, c.average(0, System.RoundingMode.DOWN).get());
 	}
 
 	@IsTest

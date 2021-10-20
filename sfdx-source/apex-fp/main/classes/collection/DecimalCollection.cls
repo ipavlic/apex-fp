@@ -20,25 +20,25 @@ public class DecimalCollection {
 		return new Set<Decimal>(decimals);
 	}
 
-	public Decimal sum() {
+	public OptionalDecimal sum() {
 		if (nonNulls.isEmpty()) {
-			return null;
+			return OptionalDecimal.empty();
 		}
 		Decimal sum = 0;
 		for (Decimal d : nonNulls) {
 			sum += d;
 		}
-		return sum;
+		return OptionalDecimal.of(sum);
 	}
 
-	public Decimal average(Integer scale) {
-		Decimal s = sum();
-		return s != null ? s.divide(nonNulls.size(), scale) : null;
+	public OptionalDecimal average(Integer scale) {
+		OptionalDecimal s = sum();
+		return s.isPresent() ? OptionalDecimal.of(s.get().divide(nonNulls.size(), scale)) : OptionalDecimal.empty();
 	}
 
-	public Decimal average(Integer scale, System.RoundingMode roundingMode) {
-		Decimal s = sum();
-		return s != null ? s.divide(nonNulls.size(), scale, roundingMode) : null;
+	public OptionalDecimal average(Integer scale, System.RoundingMode roundingMode) {
+		OptionalDecimal s = sum();
+		return s.isPresent() ? OptionalDecimal.of(s.get().divide(nonNulls.size(), scale, roundingMode)) : OptionalDecimal.empty();
 	}
 
 	public DecimalCollection filter(DecimalPredicate predicate) {

@@ -49,4 +49,14 @@ private class OptionalSObjectTest {
 			System.assertEquals('test', e.getMessage());
 		}
 	}
+
+	@IsTest
+	private static void emptyIsASingleton() {
+		System.assertEquals(OptionalSObject.empty(), OptionalSObject.empty());
+	}
+
+	@IsTest
+	private static void emptyIsNotPresent() {
+		System.assertEquals(false, OptionalSObject.empty().isPresent());
+	}
 }
