@@ -1,6 +1,6 @@
 # IncompleteFieldsMatch
 
-`IncompleteFieldsMatch` starts the fluent interface for building a `FieldsMatch`. Adding a condition through methods on the `IncompleteFieldsMatch` yields a `FieldsMatch`, which is an `SObjectPredicate`. The process can be continued to add more field conditions.
+`IncompleteFieldsMatch` starts the fluent interface for building a [`FieldsMatch`](FieldsMatch). Adding a condition through methods on the `IncompleteFieldsMatch` yields a `FieldsMatch`, which is an [`SObjectPredicate`](SObjectPredicate). The process can be continued to add more field conditions.
 
 ## equals (alias eq)
 

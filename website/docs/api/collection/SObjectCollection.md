@@ -303,7 +303,17 @@ SObjectCollection mapAll(SObjectToSObjectFunction fn)
 ```
 
 **Example**
+```apex title="Mapping with MapTo function factory"
+List<Task> followUpTasks = SObjectCollection.of(opps)
+    .mapAll(
+        MapTo.SObject(Task.SObjectType)
+            .mapField(Task.WhatId, Opportunity.Id)
+            .setField(Task.Subject, 'Follow up')
+            .setField(Task.ActivityDate, Date.today())
+    );
 ```
+
+```apex title="Custom mapping"
 private class DoubleAmount implements SObjectToSObjectFunction {
     public SObject call(SObject record) {
         record.put('Amount', 2 * (Decimal) record.get('Amount'));
