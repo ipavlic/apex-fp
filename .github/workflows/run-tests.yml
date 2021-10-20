@@ -1,0 +1,54 @@
+name: CI
+
+# Controls when the workflow will run
+on:
+  # Triggers the workflow on push or pull request events but only for the master branch
+  push:
+    branches: [ master ]
+    paths:
+      - 'sfdx-source/**'
+  pull_request:
+    branches: [ master ]
+    paths:
+      - 'sfdx-source/**'
+
+  # Allows you to run this workflow manually from the Actions tab
+  workflow_dispatch:
+
+# A workflow run is made up of one or more jobs that can run sequentially or in parallel
+jobs:
+  # This workflow contains a single job called "build"
+  build:
+    # The type of runner that the job will run on
+    runs-on: ubuntu-latest
+
+    # Steps represent a sequence of tasks that will be executed as part of the job
+    steps:
+      # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
+      - uses: actions/checkout@v2
+
+      # https://developer.salesforce.com/blogs/2020/01/using-salesforce-dx-with-github-actions
+      - name: Install Salesforce CLI from binary
+        run: |
+          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
+          mkdir sfdx-cli
+          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
+          ./sfdx-cli/install
+          
+      - name: Write the dev hub token into a file
+        run: 'echo ${{secrets.sfdx_test_url}} > dev-hub-token'
+        
+      - name: Authenticate with the dev hub
+        run: sfdx force:auth:sfdxurl:store -f dev-hub-token --setalias DevHub --setdefaultdevhubusername' 
+        
+      - name: Create scratch org
+        run: sfdx force:org:create -f config/project-scratch-def.json --setalias test-scratch
+        
+      - name: Push source
+        run: sfdx force:source:push --targetusername test-scratch
+          
+      - name: Run tests
+        run: sfdx force:apex:test:run --targetusername test-scratch --resultformat human
+        
+      - name: Delete scratch org
+        run: sfdx force:org:delete --targetusername test-scratch --noprompt  
