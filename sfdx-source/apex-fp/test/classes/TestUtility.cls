@@ -1,4 +1,3 @@
-@IsTest
 public class TestUtility {
 
 	static Integer counter = 1;

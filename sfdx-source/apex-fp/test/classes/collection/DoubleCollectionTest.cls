@@ -12,15 +12,6 @@ private class DoubleCollectionTest {
 		System.assertEquals(125, c.average().get());
 	}
 
-	@IsTest
-	private static void testFilterWithObjectPredicate() {
-		DoubleCollection c = new DoubleCollection(new List<Double>{null, 100, null, 150, null});
-		List<Double> filtered = c.filter(ObjectPredicates.NotNull).asList();
-		System.assertEquals(2, filtered.size());
-		System.assertEquals(100, filtered[0]);
-		System.assertEquals(150, filtered[1]);
-	}
-
 	private class IsGreaterThanTen implements DoublePredicate {
 		public Boolean call(Double d) {
 			return d != null && d > 10;

@@ -6,7 +6,7 @@ public class DecimalCollection {
 		this.decimals = decimals;
 		nonNulls = new List<Decimal>();
 		for (Decimal d : decimals) {
-			if (ObjectPredicates.NotNull.call(d)) {
+			if (d != null) {
 				nonNulls.add(d);
 			}
 		}
@@ -42,16 +42,6 @@ public class DecimalCollection {
 	}
 
 	public DecimalCollection filter(DecimalPredicate predicate) {
-		List<Decimal> filtered = new List<Decimal>();
-		for (Decimal d : decimals) {
-			if (predicate.call(d)) {
-				filtered.add(d);
-			}
-		}
-		return new DecimalCollection(filtered);
-	}
-
-	public DecimalCollection filter(ObjectPredicate predicate) {
 		List<Decimal> filtered = new List<Decimal>();
 		for (Decimal d : decimals) {
 			if (predicate.call(d)) {

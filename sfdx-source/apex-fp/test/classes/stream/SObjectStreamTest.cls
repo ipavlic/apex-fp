@@ -8,7 +8,7 @@ private class SObjectStreamTest {
 			new Account(Name = 'Ok', AnnualRevenue = 150),
 			new Account(Name = 'Wrong', AnnualRevenue = 150)
 		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).filter(Match.field(Account.Name).equals('Ok'));
+		Iterator<SObject> iter = SObjectStream.of(accounts).filter(Fn.Match.field(Account.Name).equals('Ok'));
 		
 		List<SObject> filtered = new List<SObject>();
 		while (iter.hasNext()) {
@@ -27,7 +27,7 @@ private class SObjectStreamTest {
 			new Account(Name = 'Ok', AnnualRevenue = 150),
 			new Account(Name = 'Wrong', AnnualRevenue = 150)
 		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).filter(Match.field(Account.Name).equals('Ok')).filter(Match.field(Account.AnnualRevenue).equals(150));
+		Iterator<SObject> iter = SObjectStream.of(accounts).filter(Fn.Match.field(Account.Name).equals('Ok')).filter(Fn.Match.field(Account.AnnualRevenue).equals(150));
 		
 		List<SObject> filtered = new List<SObject>();
 		while (iter.hasNext()) {
@@ -45,7 +45,7 @@ private class SObjectStreamTest {
 			new Account(Name = 'Ok', AnnualRevenue = 150),
 			new Account(Name = 'Wrong', AnnualRevenue = 150)
 		};
-		Iterator<SObject> iter = SObjectStream.of(accounts).remove(Match.field(Account.Name).equals('Wrong'));		
+		Iterator<SObject> iter = SObjectStream.of(accounts).remove(Fn.Match.field(Account.Name).equals('Wrong'));		
 		
 		List<SObject> filtered = new List<SObject>();
 		while (iter.hasNext()) {
@@ -113,7 +113,7 @@ private class SObjectStreamTest {
 			new Account(Name = 'Four')
 		};
 
-		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Three'));
+		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Fn.Match.field(Account.Name).equals('Three'));
 		System.assert(maybeAcc.isPresent());
 		System.assertEquals(accounts[2], maybeAcc.get());
 	}
@@ -127,7 +127,7 @@ private class SObjectStreamTest {
 			new Account(Name = 'Four')
 		};
 
-		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Match.field(Account.Name).equals('Five'));
+		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Fn.Match.field(Account.Name).equals('Five'));
 		System.assert(!maybeAcc.isPresent());
 	}
 }

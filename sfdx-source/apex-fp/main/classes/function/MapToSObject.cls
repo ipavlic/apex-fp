@@ -1,4 +1,4 @@
-public with sharing class MapToSObject {
+public with sharing class MapToSObject implements SObjectToSObjectFunction {
 	Schema.SObjectType type;
 	Map<String, Object> fieldValues;
 	Map<String, String> fieldMappings;

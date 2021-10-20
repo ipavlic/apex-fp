@@ -18,15 +18,6 @@ private class DecimalCollectionTest {
 		System.assertEquals(1, c.average(0, System.RoundingMode.DOWN).get());
 	}
 
-	@IsTest
-	private static void testFilterWithObjectPredicate() {
-		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, 100, null, 150, null});
-		List<Decimal> filtered = c.filter(ObjectPredicates.NotNull).asList();
-		System.assertEquals(2, filtered.size());
-		System.assertEquals(100, filtered[0]);
-		System.assertEquals(150, filtered[1]);
-	}
-
 	private class IsTen implements DecimalPredicate {
 		public Boolean call(Decimal d) {
 			return d != null && d == 10;

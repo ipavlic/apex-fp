@@ -11,8 +11,11 @@ public with sharing class SObjectFieldReader {
 	}
 
 	public Object read(SObject record, String relation) {
+		if (record == null) {
+			throw new IllegalArgumentException('Provided record is null');
+		}
 		if (String.isBlank(relation)) {
-			throw new LambdaException('Provided relation is blank');
+			throw new IllegalArgumentException('Provided relation is blank');
 		}
 		String[] pathParts = relationParts(relation);
 		SObject currentRecord = record;

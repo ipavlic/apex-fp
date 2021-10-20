@@ -1,8 +1,20 @@
-# Match
+# Fn
 
-`Match` is a matching predicate factory, designed to build functions for higher order functions of [`SObjectCollection`](../collection/SObjectCollection) and [`SObjectStream`](../stream/SObjectStream).
+`Fn` is a function factory for `SObject` functions and function factories.
 
-## recordFields
+## AssignTo
+
+Returns a new [`AssignToSObject`](AssignToSObject) function.
+
+## MapTo
+
+Returns a new [`MapToSObject`](MapToSObject) function. 
+
+## Match
+
+Returns a [`Match`] factory for building matching predicates.
+
+### recordFields
 
 **Signature**
 
@@ -19,7 +31,7 @@ isMatch.call(new Account{Name = 'Foo', Description = 'Some description'}); // tr
 isMatch.call(new Account{Name = 'Bar'}); // false
 ```
 
-## field
+### field
 
 Starts the construction of a field criteria matching function by defining a field. The field can be defined as an `Schema.SObjectField` or given as a `String` relation. Returns an [`IncompleteFieldsMatch`](IncompleteFieldsMatch) which can be completed into a [`FieldsMatch`](FieldsMatch) by invoking methods on it.
 
@@ -34,3 +46,7 @@ IncompleteFieldsMatch field(String fieldPath)
 Match.field(Opportunity.Amount).lessThan(10000)
 Match.field('Parent.Id').equals(accountId);
 ```
+
+## NotNull
+
+Returns a [`NotNull`](NotNull) predicate.

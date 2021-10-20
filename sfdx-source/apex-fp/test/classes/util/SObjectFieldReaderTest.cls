@@ -50,7 +50,7 @@ private class SObjectFieldReaderTest {
 
 		try {
 			new SObjectFieldReader().read(opp, '');
-		} catch (LambdaException e) {
+		} catch (IllegalArgumentException e) {
 			ex = e;
 		}
 		System.assert(ex != null);

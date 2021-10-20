@@ -29,6 +29,9 @@ public with sharing class AssignToSObject implements SObjectFunction {
 	}
 
 	public void call(SObject record) {
+		if (record == null) {
+			throw new LambdaException('Record is null');
+		}
 		for (String fieldName : fieldValues.keySet()) {
 			record.put(fieldName, fieldValues.get(fieldName));
 		}

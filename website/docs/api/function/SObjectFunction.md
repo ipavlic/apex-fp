@@ -1,4 +1,4 @@
-# SObjectPredicate
+# SObjectFunction
 
 Interface for `SObject` functions. Contains a single method, `call`.
 
