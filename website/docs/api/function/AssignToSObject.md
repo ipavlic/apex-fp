@@ -7,7 +7,7 @@ Implements [`SObjectFunction`](SObjectFunction), and assigns values to the recor
 Defines the value of a field. 
 
 **Signature**
-```apex
+```
 AssignToSObject setField(String targetFieldName, Object value)
 AssignToSObject setField(Schema.SObjectField field, Object value)
 ```
@@ -17,7 +17,7 @@ AssignToSObject setField(Schema.SObjectField field, Object value)
 Defines the value of multiple fields.
 
 **Signature**
-```apex
+```
 AssignToSObject setFields(Map<Schema.SObjectField, Object> fieldValues)
 AssignToSObject setFields(SObject prototype)
 ```
@@ -27,6 +27,6 @@ AssignToSObject setFields(SObject prototype)
 Assigns the defined values to `record`.
 
 **Signature**
-```apex
+```
 void call(SObject record)
 ```

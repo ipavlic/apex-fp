@@ -7,7 +7,7 @@ Implements [`SObjectPredicate`](SObjectPredicate).
 Constructs a `RecordFieldsMatch` for a given `prototype`.
 
 **Signature**
-```apex
+```
 public RecordFieldsMatch(sObject prototype)
 ```
 
@@ -17,6 +17,6 @@ Returns `true` when applied to a record which matches all fields defined on the 
 
 **Signature**
 
-```apex
+```
 Boolean call(SObject record)
 ```

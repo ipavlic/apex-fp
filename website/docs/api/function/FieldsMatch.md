@@ -10,13 +10,13 @@ Adds another field condition to the chain.
 
 **Signature**
 
-```apex
+```
 IncompleteFieldsMatch also(Schema.SObjectField field)
 IncompleteFieldsMatch also(String fieldPath)
 ```
 
 **Example**
 
-```apex
+```
 FieldsMatch m = Match.field(Account.Name).equals('Foo').also(Account.AnnualRevenue).greaterThan(100000);
 ```

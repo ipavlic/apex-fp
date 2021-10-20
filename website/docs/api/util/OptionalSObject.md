@@ -11,7 +11,7 @@ Builds an `OptionalSObject`.
 Returns `true` if a record is present.
 
 **Signature**
-```apex
+```
 Boolean isPresent()
 ```
 
@@ -20,7 +20,7 @@ Boolean isPresent()
 Returns the record when it is present. Throws a `System.NoSuchElementException` when it is not.
 
 **Signature**
-```apex
+```
 Boolean isPresent()
 ```
 
@@ -28,7 +28,7 @@ Boolean isPresent()
 
 Returns a record when it is present, or `other` when it is not.
 **Signature**
-```apex
+```
 SObject orElse(SObject other)
 ```
 
@@ -37,7 +37,7 @@ SObject orElse(SObject other)
 Returns a record when it is present, or throws `e` when it is not.
 
 **Signature**
-```apex
+```
 SObject orElseThrow(Exception e)
 ```
 

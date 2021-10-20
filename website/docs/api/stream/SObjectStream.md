@@ -12,13 +12,13 @@ Constructs an `SObjectStream` with the provided `Iterable<SObject>`.
 
 **Signature**
 
-```apex
+```
 static SObjectStream of(Iterable<SObject> records)
 ```
 
 **Example**
 
-```apex
+```
 // List<Accounts> accounts = [...]
 SObjectStream.of(accounts);
 SObjectStream.of(Trigger.old);
@@ -28,7 +28,7 @@ SObjectStream.of(Trigger.old);
 
 **Signature**
 
-```apex
+```
 virtual Boolean hasNext()
 ```
 **Example**
@@ -42,13 +42,13 @@ while (accountStream.hasNext()) {
 
 **Signature**
 
-```apex
+```
 virtual SObject next()
 ```
 
 **Example**
 
-```apex
+```
 SObjectStream largeOpportunities = SObjectStream.of(Trigger.new).filter(Match.field(Opportunity.Amount).gt(100000));
 while (largeOpportunities.hasNext()) {
 	Opportunity opp = (Opportunity) largeOpportunities.next();
@@ -61,7 +61,7 @@ Returns a stream consisting of the elements of this stream that match the given 
 
 **Signature**
 
-```apex
+```
 SObjectStream filter(SObjectPredicate predicate)
 ```
 
@@ -71,7 +71,7 @@ Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first recor
 
 **Signature**
 
-```apex
+```
 OptionalSObject find(SObjectPredicate predicate)
 ```
 
@@ -81,7 +81,7 @@ Iterates through the stream and invokes a function for each record. This consume
 
 **Signature**
 
-```apex
+```
 void forEach(SObjectFunction fn)
 ```
 
@@ -89,7 +89,7 @@ void forEach(SObjectFunction fn)
 
 **Signature**
 
-```apex
+```
 SObjectStream mapAll(SObjectToSObjectFunction fn)
 ```
 
@@ -97,7 +97,7 @@ SObjectStream mapAll(SObjectToSObjectFunction fn)
 
 **Signature**
 
-```apex
+```
 SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
 ```
 
@@ -107,7 +107,7 @@ Returns a stream consisting of the elements of this stream that do not match the
 
 **Signature**
 
-```apex
+```
 SObjectStream remove(SObjectPredicate predicate)
 ```
 **Example**
@@ -117,6 +117,6 @@ SObjectStream remove(SObjectPredicate predicate)
 Collects the stream into a `List`. This consumes the stream.
 
 **Signature**
-```apex
+```
 List<SObject> toList()
 ```

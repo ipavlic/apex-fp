@@ -3,8 +3,6 @@ sidebar_position: 1
 slug: '/'
 ---
 
-import GitHubButton from 'react-github-btn'
-
 # Getting started
 
 ## Installation
@@ -12,10 +10,6 @@ import GitHubButton from 'react-github-btn'
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
 	<img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png"></img>
 </a>
-
-<div>
-<GitHubButton href="https://github.com/ipavlic/apex-fp" data-icon="octicon-star" data-size="large" data-show-count="true" aria-label="Star ipavlic/apex-fp on GitHub">Star</GitHubButton>
-</div>
 
 ## Basic concepts
 
@@ -64,12 +58,12 @@ public interface SObjectToSObjectFunction {
 
 Second, because we cannot define anonymous classes or functions in Apex, Apex FP provides **function factories** that can create common functions which respect Apex FP’s functional interfaces. For example, `Match` can be used to build a function which tests if a record matches some criteria.
 
-```apex
+```
 SObjectPredicate isNameFoo = Match.field(Opportunity.Name).equals('Foo');
 ```
 `Copy` can be used to build mapping functions which copy defined values from a prototype record to all the records in a collection. 
 
-```apex
+```
 SObjectToSObjectFunction copyParentId = Copy.recordFields(new Account(ParentId = parentId));
 ```
 
@@ -113,6 +107,6 @@ With `SObjectStream`, we iterate through the stream to check one opportunity at 
 
 With **functional interfaces**, **function factories** and a nice set of classes for working with `SObject` collections with **higher order functions** , we finally get to data transformation expressions like:
 
-```apex
+```
 List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).filter(Match.field(Opportunity.Amount).greaterThan(10000)).asList();
 ```

@@ -59,6 +59,7 @@ const config = {
           // {to: '/blog', label: 'Blog', position: 'left'},
           {
             href: 'https://github.com/ipavlic/apex-fp',
+            className: 'header-github-link',
             label: 'GitHub',
             position: 'right',
           },
@@ -113,15 +114,12 @@ const config = {
         additionalLanguages: ['apex'],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
+        defaultLanguage: 'apex'
       },
       gtag: {
         trackingID: 'G-PNTCNPSG2Z',
         anonymizeIP: true
       }
-      // googleAnalytics: {
-      //   trackingID: '',
-      //   anonymizeIP: true
-      // }
     }),
 };
 

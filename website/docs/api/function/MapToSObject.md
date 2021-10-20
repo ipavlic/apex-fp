@@ -7,12 +7,12 @@ Implements [`SObjectToSObjectFunction`](SObjectToSObjectFunction) and maps value
 Constructor. `type` defines the type of the `SObject` the function will map to.
 
 **Signature**
-```apex
+```
 MapToSObject(Schema.SObjectType type)
 ```
 
 **Example**
-```apex
+```
 MapToSObject mapToTask = new MapToSObject(Task.SObjectType);
 ```
 
@@ -21,13 +21,13 @@ MapToSObject mapToTask = new MapToSObject(Task.SObjectType);
 Defines a `target field ← source field` mapping for the function. The value of target field is set to value of source field when source record is mapped to target.
 
 **Signature**
-```apex
+```
 MapToSObject mapField(String targetFieldName, String sourceFieldRelation)
 MapToSObject mapField(Schema.SObjectField targetField, String sourceFieldRelation)
 MapToSObject mapField(Schema.SObjectField targetField, Schema.SObjectField sourceField)
 ```
 **Example**
-```apex
+```
 //Opportunity opp = ...
 Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, Opportunity.Id).call(opp);
 System.assertEquals(oppId, task.WhatId);
@@ -35,7 +35,7 @@ System.assertEquals(oppId, task.WhatId);
 ## mapFields
 Defines `target field ← source field` mappings for the function. The values of target fields are set to values of source fields when source record is mapped to target.
 
-```apex
+```
 MapToSObject mapFields(Map<Schema.SObjectField, Schema.SObjectField> fieldMappings)
 ```
 
@@ -45,7 +45,7 @@ Define a field value on the target record.
 
 Defines field values for the target record.
 
-```apex
+```
 MapToSObject setField(String fieldName, Object value)
 MapToSObject setField(Schema.SObjectField field, Object value)
 ```
@@ -54,13 +54,13 @@ MapToSObject setField(Schema.SObjectField field, Object value)
 
 Defines field values on the target record either through a map, or through a `prototype` record.
 
-```apex
+```
 MapToSObject setFields(Map<Schema.SObjectField, Object> fieldValues)
 MapToSObject setFields(SObject prototype)
 ```
 
 ## call
-```apex
+```
 SObject call(SObject record)
 ```
 

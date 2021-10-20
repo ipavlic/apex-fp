@@ -7,14 +7,14 @@ sidebar_position: 3
 ## sum
 
 **Signature**
-```apex
+```
 Decimal sum()
 ```
 
 Sums non-null `Decimal` values if they exist. Returns an empty optional if no such values exist.
 
 **Example**
-```apex
+```
 Decimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
 ```
 
@@ -23,12 +23,12 @@ Decimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
 Averages non-null `Decimal` values if they exist. Returns an empty optional if no such values exist.
 
 **Signature**
-```apex
+```
 Decimal average()
 ```
 
 **Example**
-```apex
+```
 Decimal average = new DecimalCollection(new List<Decimal>){1, 2, 3}).average(); // 2
 ```
 
@@ -38,6 +38,6 @@ Filters all values satisfying the `predicate` into a new `DecimalCollection` vie
 
 **Signature**
 
-```apex
+```
 DecimalCollection filter(ObjectPredicate predicate)
 ```

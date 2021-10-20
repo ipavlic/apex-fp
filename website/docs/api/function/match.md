@@ -8,12 +8,12 @@
 
 Builds a [`RecordFieldMatch`](RecordFieldsMatch), a record matching predicate. The predicate returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality.
 
-```apex
+```
 RecordFieldsMatch recordFields(SObject prototype)
 ```
 
 **Example**
-```apex
+```
 RecordFieldsMatch isMatch = Match.recordFields(new Account{Name = 'Foo'});
 isMatch.call(new Account{Name = 'Foo', Description = 'Some description'}); // true
 isMatch.call(new Account{Name = 'Bar'}); // false
@@ -25,12 +25,12 @@ Starts the construction of a field criteria matching function by defining a fiel
 
 **Signature**
 
-```apex
+```
 IncompleteFieldsMatch field(Schema.SObjectField field)
 IncompleteFieldsMatch field(String fieldPath)
 ```
 **Example**
-```apex
+```
 Match.field(Opportunity.Amount).lessThan(10000)
 Match.field('Parent.Id').equals(accountId);
 ```

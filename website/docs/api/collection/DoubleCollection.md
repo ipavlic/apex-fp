@@ -7,14 +7,14 @@ sidebar_position: 2
 ## sum
 
 **Signature**
-```apex
+```
 Double sum()
 ```
 
 Sums non-null `Double` values if they exist. Returns an empty optional if no such values exist.
 
 **Example**
-```apex
+```
 Double total = new DoubleCollection(new List<Double>){1, 2, 3}).sum(); // 6
 ```
 
@@ -23,12 +23,12 @@ Double total = new DoubleCollection(new List<Double>){1, 2, 3}).sum(); // 6
 Averages non-null `Double` values if they exist. Returns an empty optional if no such values exist.
 
 **Signature**
-```apex
+```
 Double average()
 ```
 
 **Example**
-```apex
+```
 Double average = new DoubleCollection(new List<Double>){1, 2, 3}).average(); // 2
 ```
 
@@ -38,6 +38,6 @@ Filters all values satisfying the `predicate` into a new `DoubleCollection` view
 
 **Signature**
 
-```apex
+```
 DoubleCollection filter(ObjectPredicate predicate)
 ```
