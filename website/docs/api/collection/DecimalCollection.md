@@ -11,7 +11,7 @@ sidebar_position: 3
 Decimal sum()
 ```
 
-Sums non-null `Decimal` values. Returns `null` if no such values exist in the collection.
+Sums non-null `Decimal` values if they exist. Returns an empty optional if no such values exist.
 
 **Example**
 ```apex
@@ -20,7 +20,7 @@ Decimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
 
 ## average
 
-Averages non-null Decimal values. Returns `null` if no such values exist in the collection.
+Averages non-null `Decimal` values if they exist. Returns an empty optional if no such values exist.
 
 **Signature**
 ```apex

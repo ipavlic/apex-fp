@@ -11,7 +11,7 @@ sidebar_position: 2
 Double sum()
 ```
 
-Sums non-null `Double` values. Returns `null` if no such values exist in the collection.
+Sums non-null `Double` values if they exist. Returns an empty optional if no such values exist.
 
 **Example**
 ```apex
@@ -20,7 +20,7 @@ Double total = new DoubleCollection(new List<Double>){1, 2, 3}).sum(); // 6
 
 ## average
 
-Averages non-null Double values. Returns `null` if no such values exist in the collection.
+Averages non-null `Double` values if they exist. Returns an empty optional if no such values exist.
 
 **Signature**
 ```apex
