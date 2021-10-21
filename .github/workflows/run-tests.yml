@@ -48,7 +48,7 @@ jobs:
         run: sfdx force:source:push --targetusername test-scratch
           
       - name: Run tests
-        run: sfdx force:apex:test:run --targetusername test-scratch --resultformat human
+        run: sfdx force:apex:test:run --targetusername test-scratch --codecoverage --resultformat json
         
       - name: Delete scratch org
         run: sfdx force:org:delete --targetusername test-scratch --noprompt  
