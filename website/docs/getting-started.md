@@ -11,6 +11,11 @@ slug: '/'
 	<img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png"></img>
 </a>
 
+**Project status**
+
+![CI workflow](https://github.com/ipavlic/apex-fp/actions/workflows/ci.yml/badge.svg)
+[![codecov](https://codecov.io/gh/ipavlic/apex-fp/branch/master/graph/badge.svg)](https://codecov.io/gh/ipavlic/apex-fp)
+
 ## Basic concepts
 
 With Apex, we have to write imperative code in loops to transform data.
