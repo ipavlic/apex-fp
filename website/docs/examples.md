@@ -38,7 +38,7 @@ List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
 ```
 
 ```apex title="Find average opportunity value"
-Decimal averageOpportunityValue = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).average();
+OptionalDecimal averageOpportunityValue = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).average();
 ```
 
 ```apex title="Pluck opportunity values"
