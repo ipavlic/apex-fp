@@ -25,11 +25,27 @@ private class DecimalCollectionTest {
 	}
 
 	@IsTest
-	private static void testFilterWithDecimalPredicate() {
+	private static void decimalPredicateShouldFilterNumbers() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, 10, null, 20, null, 10});
 		List<Decimal> filtered = c.filter(new IsTen()).asList();
 		System.assertEquals(2, filtered.size());
 		System.assertEquals(10, filtered[0]);
 		System.assertEquals(10, filtered[1]);
+	}
+
+	@IsTest
+	private static void nullsShouldBeSummedToEmpty() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, null});
+		OptionalDecimal d = c.sum();
+		System.assertEquals(false, d.isPresent(), 'Result should be empty');
+	}
+
+	@IsTest
+	private static void asSetShouldReturnASetOfNonNulls() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, 1, 1, null, 2});
+		Set<Decimal> s = c.asSet();
+		System.assertEquals(2, s.size(), 'Set has more than 2 elements');
+		System.assert(s.contains(1));
+		System.assert(s.contains(2));
 	}
 }

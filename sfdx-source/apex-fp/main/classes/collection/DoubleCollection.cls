@@ -36,11 +36,6 @@ public class DoubleCollection {
 		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();
 	}
 
-	public OptionalDouble average(Integer scale, System.RoundingMode roundingMode) {
-		OptionalDouble s = sum();
-		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();
-	}
-
 	public DoubleCollection filter(DoublePredicate predicate) {
 		List<Double> filtered = new List<Double>();
 		for (Double d : doubles) {

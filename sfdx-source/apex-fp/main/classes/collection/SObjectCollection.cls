@@ -7,10 +7,6 @@ public with sharing class SObjectCollection {
 		return new SObjectCollection(records);
 	}
 
-	public static SObjectCollection of(Set<SObject> records) {
-		return new SObjectCollection(new List<SObject>(records));
-	}
-
 	private SObjectCollection(Iterable<SObject> records) {
 		this.records = new List<SObject>();
 		this.fieldReader = new SObjectFieldReader();
@@ -18,6 +14,10 @@ public with sharing class SObjectCollection {
 		while (iter.hasNext()) {
 			this.records.add(iter.next());
 		}
+	}
+
+	public Integer size() {
+		return records.size();
 	}
 
 	public List<SObject> asList() {

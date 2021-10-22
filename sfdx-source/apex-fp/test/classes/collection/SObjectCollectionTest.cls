@@ -14,6 +14,42 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
+	private static void collectionCanBeInstantiatedFromAList() {
+		SObjectCollection c = SObjectCollection.of(new List<Account>{new Account(Name = 'Foo'), new Account(Name = 'Bar')});
+	}
+
+	@IsTest
+	private static void sizeReturnsTheNumberOfRecordsInACollection() {
+		SObjectCollection c = SObjectCollection.of(new List<Account>{new Account(Name = 'Foo'), new Account(Name = 'Bar')});
+		System.assertEquals(2, c.size(), 'Size should be 2');
+
+		c = SObjectCollection.of(new List<Account>());
+		System.assertEquals(0, c.size(), 'Size should be 0');
+	}
+
+	@IsTest
+	private static void pluckIdsWithARelationReturnsIds() {
+		Account fooAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
+		Account barAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
+		List<Opportunity> opportunities = new List<Opportunity>{
+			new Opportunity(
+				Name = 'Foo',
+				Account = fooAccount
+			),
+			new Opportunity(
+				Name = 'Bar',
+				Account = barAccount
+			)
+		};
+		SObjectCollection c = SObjectCollection.of(opportunities);
+		List<Id> accountIds = c.pluckIds('Account.Id');
+
+		System.assertEquals(2, accountIds.size());
+		System.assertEquals(fooAccount.Id, accountIds[0]);
+		System.assertEquals(barAccount.Id, accountIds[1]);
+	}
+
+	@IsTest
 	private static void testAsMap() {
 		Map<Id, SObject> recordMap = SObjectCollection.of(testAccounts()).asMap();
 		System.assertEquals(4, recordMap.size());

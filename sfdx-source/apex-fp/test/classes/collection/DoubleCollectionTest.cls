@@ -19,11 +19,27 @@ private class DoubleCollectionTest {
 	} 
 
 	@IsTest
-	private static void testFilterWithDoublePredicate() {
+	private static void doublePredicateShouldFilterNumbers() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{null, 20, 5, 23});
 		List<Double> filtered = c.filter(new IsGreaterThanTen()).asList();
 		System.assertEquals(2, filtered.size());
 		System.assertEquals(20, filtered[0]);
 		System.assertEquals(23, filtered[1]);
+	}
+
+	@IsTest
+	private static void nullsShouldBeSummedToEmpty() {
+		DoubleCollection c = new DoubleCollection(new List<Double>{null, null});
+		OptionalDouble d = c.sum();
+		System.assertEquals(false, d.isPresent(), 'Result should be empty');
+	}
+
+	@IsTest
+	private static void asSetShouldReturnASetOfNonNulls() {
+		DoubleCollection c = new DoubleCollection(new List<Double>{null, 1, 1, null, 2});
+		Set<Double> s = c.asSet();
+		System.assertEquals(2, s.size(), 'Set has more than 2 elements');
+		System.assert(s.contains(1));
+		System.assert(s.contains(2));
 	}
 }

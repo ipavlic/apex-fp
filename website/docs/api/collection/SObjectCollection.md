@@ -8,13 +8,12 @@ sidebar_position: 1
 
 ## of
 
-Constructs an `SObjectCollection` with the provided `Iterable<SObject>` or `Set<SObject>`. 
+Constructs an `SObjectCollection` with the provided `Iterable<SObject>`. 
 
 **Signature**
 
 ```
 static SObjectCollection of(Iterable<SObject> records)
-static SObjectCollection of(Set<SObject> records)
 ```
 
 **Example**
