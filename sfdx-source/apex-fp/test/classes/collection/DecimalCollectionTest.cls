@@ -41,10 +41,10 @@ private class DecimalCollectionTest {
 	}
 
 	@IsTest
-	private static void asSetShouldReturnASetOfNonNulls() {
+	private static void asSetShouldReturnASet() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, 1, 1, null, 2});
 		Set<Decimal> s = c.asSet();
-		System.assertEquals(2, s.size(), 'Set has more than 2 elements');
+		System.assertEquals(3, s.size(), 'Set has more than 3 elements');
 		System.assert(s.contains(1));
 		System.assert(s.contains(2));
 	}

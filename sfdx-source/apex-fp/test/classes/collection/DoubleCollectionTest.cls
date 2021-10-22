@@ -35,10 +35,10 @@ private class DoubleCollectionTest {
 	}
 
 	@IsTest
-	private static void asSetShouldReturnASetOfNonNulls() {
+	private static void asSetShouldReturnASet() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{null, 1, 1, null, 2});
 		Set<Double> s = c.asSet();
-		System.assertEquals(2, s.size(), 'Set has more than 2 elements');
+		System.assertEquals(3, s.size(), 'Set has more than 3 elements');
 		System.assert(s.contains(1));
 		System.assert(s.contains(2));
 	}
