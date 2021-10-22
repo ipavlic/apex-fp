@@ -28,7 +28,7 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
-	private static void pluckIdsWithARelationReturnsIds() {
+	private static void pluckIdsWithRelationReturnsIds() {
 		Account fooAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
 		Account barAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
 		List<Opportunity> opportunities = new List<Opportunity>{
@@ -47,6 +47,38 @@ private class SObjectCollectionTest {
 		System.assertEquals(2, accountIds.size());
 		System.assertEquals(fooAccount.Id, accountIds[0]);
 		System.assertEquals(barAccount.Id, accountIds[1]);
+	}
+
+	@IsTest
+	private static void groupByDatesGroupsWithApiFieldName() {
+		Date today = Date.today();
+		SObjectCollection c = SObjectCollection.of(new List<Opportunity>{
+			new Opportunity(
+				CloseDate = today,
+				Name = 'Today'
+			),
+			new Opportunity(
+				CloseDate = today,
+				Name = 'Today'
+			),
+			new Opportunity(
+				CloseDate = today.addDays(1),
+				Name = 'Tomorrow'
+			)
+		});
+		Map<Date, List<Opportunity>> oppsByDate = c.groupByDates(Opportunity.CloseDate);
+		System.assertEquals(2, oppsByDate.size());
+		List<Opportunity> todaysOpps = oppsByDate.get(today);
+		System.assertEquals(2, todaysOpps.size());
+		for (Opportunity o : todaysOpps) {
+			System.assertEquals('Today', o.Name);
+		}
+
+		List<Opportunity> tomorrowsOpps = oppsByDate.get(today.addDays(1));
+		System.assertEquals(1, tomorrowsOpps.size());
+		for (Opportunity o : tomorrowsOpps) {
+			System.assertEquals('Tomorrow', o.Name);
+		}
 	}
 
 	@IsTest
