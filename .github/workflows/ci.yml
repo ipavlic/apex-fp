@@ -48,7 +48,12 @@ jobs:
         run: sfdx force:source:push --targetusername test-scratch
           
       - name: Run tests
-        run: sfdx force:apex:test:run --targetusername test-scratch --codecoverage --resultformat json
+        run: sfdx force:apex:test:run --targetusername test-scratch --codecoverage --resultformat human --outputdir ./tests/apex
         
       - name: Delete scratch org
-        run: sfdx force:org:delete --targetusername test-scratch --noprompt  
+        run: sfdx force:org:delete --targetusername test-scratch --noprompt
+
+      - name: Upload code coverage
+        uses: codecov/codecov-action@v2
+        with:
+          flags: Apex
