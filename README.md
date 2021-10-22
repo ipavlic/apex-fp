@@ -1,6 +1,10 @@
+# Apex FP
+
+[![codecov](https://codecov.io/gh/ipavlic/apex-fp/branch/master/graph/badge.svg)](https://codecov.io/gh/ipavlic/apex-fp)
+
 Apex FP provides functional constructs for `SObject` collections!
 
-# Examples
+## Examples
 
 Transform `SObjects` with a simple declarative API.
 
@@ -23,12 +27,12 @@ Decimal averageOpportunityValue = SObjectCollection.of(opportunities).mapToDecim
 ```
 Find more examples <a href="https://apexfp.org/examples">in the documentation</a>.
 
-# Deploy to Salesforce
+## Deploy to Salesforce
 
 <a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
   <img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
-# Read the documentation
+## Read the documentation
 
 <a href="https://www.apexfp.org">Apex FP documentation</a>
