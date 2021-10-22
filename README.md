@@ -1,5 +1,3 @@
-![Test status](https://github.com/ipavlic/apex-fp/actions/workflows/run-tests.yml/badge.svg)
-
 Apex FP provides functional constructs for `SObject` collections!
 
 # Examples
