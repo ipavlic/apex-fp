@@ -12,7 +12,7 @@ Returns a new [`MapToSObject`](MapToSObject) function.
 
 ## Match
 
-Returns a [`Match`] factory for building matching predicates.
+Returns a `Match` factory for building matching predicates.
 
 ### recordFields
 
