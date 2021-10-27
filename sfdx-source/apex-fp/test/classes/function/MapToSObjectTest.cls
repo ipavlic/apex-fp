@@ -3,7 +3,7 @@ public with sharing class MapToSObjectTest {
 	
 	@IsTest
 	private static void testFieldSetting() {
-		Id oppId = TestUtility.getTestId(Opportunity.SObjectType);
+		Id oppId = TestUtility.getFakeId(Opportunity.SObjectType);
 		Opportunity opp = new Opportunity(Id = oppId);
 		Task task = (Task) new MapToSObject(Task.SObjectType).setField(Task.Subject, 'Test').call(opp);
 		System.assertEquals('Test', task.Subject);
@@ -11,7 +11,7 @@ public with sharing class MapToSObjectTest {
 
 	@IsTest
 	private static void testFieldNameSetting() {
-		Id oppId = TestUtility.getTestId(Opportunity.SObjectType);
+		Id oppId = TestUtility.getFakeId(Opportunity.SObjectType);
 		Opportunity opp = new Opportunity(Id = oppId);
 		Task task = (Task) new MapToSObject(Task.SObjectType).setField('Subject', 'Test').call(opp);
 		System.assertEquals('Test', task.Subject);
@@ -19,7 +19,7 @@ public with sharing class MapToSObjectTest {
 
 	@IsTest
 	private static void testSimpleFieldMapping() {
-		Id oppId = TestUtility.getTestId(Opportunity.SObjectType);
+		Id oppId = TestUtility.getFakeId(Opportunity.SObjectType);
 		Opportunity opp = new Opportunity(Id = oppId);
 		Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, Opportunity.Id).call(opp);
 		System.assertEquals(oppId, task.WhatId);
@@ -27,7 +27,7 @@ public with sharing class MapToSObjectTest {
 
 	@IsTest
 	private static void testSimpleFieldNameMapping() {
-		Id oppId = TestUtility.getTestId(Opportunity.SObjectType);
+		Id oppId = TestUtility.getFakeId(Opportunity.SObjectType);
 		Opportunity opp = new Opportunity(Id = oppId);
 		Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, 'Id').call(opp);
 		System.assertEquals(oppId, task.WhatId);
@@ -35,7 +35,7 @@ public with sharing class MapToSObjectTest {
 
 	@IsTest
 	private static void testRelationMapping() {
-		Id accountId = TestUtility.getTestId(Account.SObjectType);
+		Id accountId = TestUtility.getFakeId(Account.SObjectType);
 		Opportunity opp = new Opportunity(Account = new Account(Id = accountId));
 		Task task = (Task) new MapToSObject(Task.SObjectType).mapField(Task.WhatId, 'Account.Id').call(opp);
 		System.assertEquals(accountId, task.WhatId);
