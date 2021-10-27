@@ -29,8 +29,8 @@ private class SObjectCollectionTest {
 
 	@IsTest
 	private static void pluckIdsWithRelationReturnsIds() {
-		Account fooAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
-		Account barAccount = new Account(Id = TestUtility.getTestId(Account.SObjectType));
+		Account fooAccount = new Account(Id = TestUtility.getFakeId(Account.SObjectType));
+		Account barAccount = new Account(Id = TestUtility.getFakeId(Account.SObjectType));
 		List<Opportunity> opportunities = new List<Opportunity>{
 			new Opportunity(
 				Name = 'Foo',
