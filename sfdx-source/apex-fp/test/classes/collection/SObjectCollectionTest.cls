@@ -1,15 +1,15 @@
 @IsTest(isParallel=true)
 private class SObjectCollectionTest {
 
-	static Id firstUserId = TestUtility.getTestId(User.SObjectType);
-	static Id secondUserId = TestUtility.getTestId(User.SObjectType);
+	static Id firstUserId = TestUtility.getFakeId(User.SObjectType);
+	static Id secondUserId = TestUtility.getFakeId(User.SObjectType);
 
 	static List<Account> testAccounts() {
 		return new List<Account>{
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150)
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150)
 		};
 	}
 
@@ -28,9 +28,9 @@ private class SObjectCollectionTest {
 
 	@IsTest
 	private static void testDifference() {
-		Id accountId1 = TestUtility.getTestId(Account.SObjectType);
-		Id accountId2 = TestUtility.getTestId(Account.SObjectType);
-		Id accountId3 = TestUtility.getTestId(Account.SObjectType);
+		Id accountId1 = TestUtility.getFakeId(Account.SObjectType);
+		Id accountId2 = TestUtility.getFakeId(Account.SObjectType);
+		Id accountId3 = TestUtility.getFakeId(Account.SObjectType);
 
 		SObjectCollection c1 = SObjectCollection.of(new List<Account>{
 			new Account(Id = accountId1, Name = 'Foo')
@@ -142,10 +142,10 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testFieldsMatchFilter() {
 		SObjectCollection c = SObjectCollection.of(new List<Account>{
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150),
-			new Account(Id = TestUtility.getTestId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150)
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = firstUserId, Name = 'Foo', AnnualRevenue = 100),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = firstUserId, Name = 'Bar', AnnualRevenue = 60),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = secondUserId, Name = 'Foo', AnnualRevenue = 150),
+			new Account(Id = TestUtility.getFakeId(Account.SObjectType), OwnerId = secondUserId, Name = 'Bar', AnnualRevenue = 150)
 		});
 
 		List<Account> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).eq(150)).asList();
