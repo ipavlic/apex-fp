@@ -120,7 +120,7 @@ const config = {
         appId: 'BH4D9OD16A',
         apiKey: '74336c94033d588be178a3757c5bc716',
         indexName: 'apexfp',
-        contextualSearch: true
+        contextualSearch: false
       },
       gtag: {
         trackingID: 'G-PNTCNPSG2Z',
