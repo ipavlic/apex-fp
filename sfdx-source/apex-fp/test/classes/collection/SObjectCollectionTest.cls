@@ -734,7 +734,7 @@ private class SObjectCollectionTest {
 			.mapAll(
 				Fn.MapTo(MappingTarget.class).mapField('name', Account.Name)
 			)
-			.asList();
+			.asList(List<MappingTarget>.class);
 		
 		System.assertEquals(2, result.size());
 		System.assertEquals('foo', result[0].name);

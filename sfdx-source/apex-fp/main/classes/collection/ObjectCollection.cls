@@ -5,11 +5,15 @@ public with sharing class ObjectCollection {
 		this.objects = objects;
 	}
 
-	public List<Object> asList() {
-		return new List<Object>(objects);
+	public List<Object> asList(Type listType) {
+		List<Object> typedObjects = (List<Object>) listType.newInstance();
+		typedObjects.addAll(objects);
+		return typedObjects;
 	}
 
-	public Set<Object> asSet() {
-		return new Set<Object>(objects);
+	public Set<Object> asSet(Type setType) {
+		Set<Object> typedObjects = (Set<Object>) setType.newInstance();
+		typedObjects.addAll(objects);
+		return typedObjects;
 	}
 }

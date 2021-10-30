@@ -320,7 +320,7 @@ List<OpportunityAction> actions = (List<OpportunityAction>) SObjectCollection.of
             .mapField('oppId', Opportunity.Id)
             .setField('action', 'follow up')
             .setField('createdAt', Datetime.now())
-    ).asList();
+    ).asList(List<OpportunityAction>.class);
 ```
 
 ## mapSome
