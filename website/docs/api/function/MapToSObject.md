@@ -40,8 +40,6 @@ Defines `target field ← source field` mappings for the function. The values of
 MapToSObject mapFields(Map<Schema.SObjectField, Schema.SObjectField> fieldMappings)
 ```
 
-Define a field value on the target record.
-
 ## setField
 
 Defines field values for the target record.

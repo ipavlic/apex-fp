@@ -8,8 +8,12 @@ public with sharing class Fn {
 
 	public static SObjectPredicate NotNull = new NotNull();
 
-	public static MapToSObject MapToSObject(Schema.SObjectType type) {
+	public static MapToSObject MapTo(Schema.SObjectType type) {
 		return new MapToSObject(type);
+	}
+
+	public static MapToObject MapTo(Type type) {
+		return new MapToObject(type);
 	}
 
 	public static Match Match = new Match();

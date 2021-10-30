@@ -383,6 +383,14 @@ public with sharing class SObjectCollection {
 		return SObjectCollection.of(mapped);
 	}
 
+	public ObjectCollection mapAll(SObjectToObjectFunction fn) {
+		List<Object> mapped = new List<Object>();
+		for (SObject record : records) {
+			mapped.add(fn.call(record));
+		}
+		return new ObjectCollection(mapped);
+	}
+
 	public SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
 		List<SObject> transformed = new List<SObject>();
 		for (SObject record : records) {

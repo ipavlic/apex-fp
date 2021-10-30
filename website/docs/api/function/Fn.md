@@ -8,7 +8,7 @@ Returns a new [`AssignToSObject`](AssignToSObject) function.
 
 ## MapTo
 
-Returns a new [`MapToSObject`](MapToSObject) function. 
+Returns a new [`MapToSObject`](MapToSObject) or a [`MapToObject`](MapToObject) function. 
 
 ## Match
 

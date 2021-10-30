@@ -723,4 +723,21 @@ private class SObjectCollectionTest {
 		OptionalSObject maybeBaz = accountCollection.find(Fn.Match.field(Account.Name).equals('Baz'));
 		System.assertEquals(false, maybeBaz.isPresent());
 	}
+
+	private class MappingTarget {
+		public String name;
+	}
+
+	@IsTest
+	private static void testMapAllToObjects() {
+		List<MappingTarget> result = (List<MappingTarget>) SObjectCollection.of(new List<Account>{new Account(Name = 'foo'), new Account(Name = 'bar')})
+			.mapAll(
+				Fn.MapTo(MappingTarget.class).mapField('name', Account.Name)
+			)
+			.asList();
+		
+		System.assertEquals(2, result.size());
+		System.assertEquals('foo', result[0].name);
+		System.assertEquals('bar', result[1].name);
+	}
 }

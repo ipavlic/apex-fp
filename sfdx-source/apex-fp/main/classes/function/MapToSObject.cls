@@ -34,6 +34,14 @@ public with sharing class MapToSObject implements SObjectToSObjectFunction {
 		return this;
 	}
 
+	public MapToSObject mapFields(Map<Schema.SObjectField, String> fieldMappings) {
+		for (Schema.SObjectField targetField : fieldMappings.keySet()) {
+			String sourceFieldRelation = fieldMappings.get(targetField);
+			mapField(targetField, sourceFieldRelation);
+		}
+		return this;
+	}
+
 	public MapToSObject setField(String fieldName, Object value) {
 		fieldValues.put(fieldName, value);
 		return this;

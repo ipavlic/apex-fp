@@ -294,38 +294,33 @@ SObjectCollection picked = SObjectCollection.of(opportunities).pick(new Set<Stri
 
 ## mapAll
 
-Maps all elements of `SObjectCollection` view into another `SObjectCollection` view with the provided function `fn`.
+Maps all elements of `SObjectCollection` view into another `SObjectCollection` or `ObjectCollection` view with the provided function `fn`.
 
 **Signature**
 ```
 SObjectCollection mapAll(SObjectToSObjectFunction fn)
+ObjectCollection mapAll(ObjectToSObjectFunction fn)
 ```
 
 **Example**
-```apex title="Mapping with MapTo function factory"
+```apex title="Mapping to records with MapTo function factory"
 List<Task> followUpTasks = SObjectCollection.of(opps)
     .mapAll(
-        MapTo.SObject(Task.SObjectType)
+        Fn.MapTo(Task.SObjectType)
             .mapField(Task.WhatId, Opportunity.Id)
             .setField(Task.Subject, 'Follow up')
             .setField(Task.ActivityDate, Date.today())
-    );
+    ).asList();
 ```
 
-```apex title="Custom mapping"
-private class DoubleAmount implements SObjectToSObjectFunction {
-    public SObject call(SObject record) {
-        record.put('Amount', 2 * (Decimal) record.get('Amount'));
-        return record;
-    }
-}
-
-List<Opportunity> opps = new List<Opportunity>{
-    new Opportunity(Amount = 100),
-    new Opportunity(Amount = 150)
-};
-
-SObjectCollection.of(opps).mapAll(new DoubleAmount()); // amounts have been doubled
+```apex title="Mapping to objects with MapTo function factory"
+List<OpportunityAction> actions = (List<OpportunityAction>) SObjectCollection.of(opps)
+    .mapAll(
+        Fn.MapTo(OpportunityAction.class)
+            .mapField('oppId', Opportunity.Id)
+            .setField('action', 'follow up')
+            .setField('createdAt', Datetime.now())
+    ).asList();
 ```
 
 ## mapSome
@@ -352,7 +347,7 @@ List<Opportunity> opps = new List<Opportunity>{
     new Opportunity(Amount = 150)
 };
 
-SObjectCollection.of(opps).mapSome(Match.field('Amount').gt(120), new DoubleAmount()); // 100 remains, but 150 has been doubled to 300
+SObjectCollection.of(opps).mapSome(Fn.Match.field('Amount').gt(120), new DoubleAmount()); // 100 remains, but 150 has been doubled to 300
 ```
 
 ## mapTo
