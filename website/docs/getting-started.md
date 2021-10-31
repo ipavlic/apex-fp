@@ -64,12 +64,7 @@ public interface SObjectToSObjectFunction {
 Second, because we cannot define anonymous classes or functions in Apex, Apex FP provides **function factories** that can create common functions which respect Apex FP’s functional interfaces. For example, `Match` can be used to build a function which tests if a record matches some criteria.
 
 ```
-SObjectPredicate isNameFoo = Match.field(Opportunity.Name).equals('Foo');
-```
-`Copy` can be used to build mapping functions which copy defined values from a prototype record to all the records in a collection. 
-
-```
-SObjectToSObjectFunction copyParentId = Copy.recordFields(new Account(ParentId = parentId));
+SObjectPredicate isNameFoo = Fn.Match.field(Opportunity.Name).equals('Foo');
 ```
 
 ### Higher order functions
@@ -94,8 +89,6 @@ public class SObjectCollection {
 ```
 
 You can use Apex FP’s function factories, write your own functions or mix and match.
-
-
 
 :::info
 
