@@ -8,7 +8,7 @@ sidebar_position: 1
 
 ## of
 
-Constructs an `SObjectCollection` with the provided `Iterable<SObject>`. 
+Constructs an `SObjectCollection` with the provided `Iterable<SObject>`.
 
 **Signature**
 
@@ -84,6 +84,20 @@ Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first recor
 
 ```
 OptionalSObject find(SObjectPredicate predicate)
+```
+
+## forEach
+
+Invokes provided `SObjectFunction` on each element of the collection and returns the current collection.
+
+**Signature**
+```
+SObjectCollection forEach(SObjectFunction fn)
+```
+
+**Example**
+```
+SObjectCollection.of(accounts).forEach(Fn.Debug);
 ```
 
 ## pluck
@@ -187,7 +201,7 @@ List<SObject> objects = fooAccounts;
 // since fooAccounts points to a returned list of SObjects, it can be anything!
 System.assert(objects instanceof List<Opportunity>);
 ```
-When `listType` is provided, map values are properly typed lists, and there are no unexpected results with `instanceof`. 
+When `listType` is provided, map values are properly typed lists, and there are no unexpected results with `instanceof`.
 ```apex title="Grouping with a listType provided"
 accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
 fooAccounts = accountsByName.get('Foo');
@@ -277,7 +291,7 @@ Returns a new `SObjectCollection` view of the collection which keeps just the sp
 **Signature**
 ```
 SObjectCollection pick(List<Schema.SObjectField> fields)
-SObjectCollection pick(Set<Schema.SObjectField> fields) 
+SObjectCollection pick(Set<Schema.SObjectField> fields)
 SObjectCollection pick(List<String> apiFieldNames)
 SObjectCollection pick(Set<String> apiFieldNames)
 ```

@@ -681,11 +681,11 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
-	private static void testForEachWithAssignTo() {
+	private static void testForEachWithModify() {
 		List<Opportunity> opportunities = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(Amount = 100),
 			new Opportunity(Amount = 150)
-		}).forEach(Fn.AssignTo.setFields(new Opportunity(Amount = 123))).asList();
+		}).forEach(Fn.Modify.setFields(new Opportunity(Amount = 123))).asList();
 		System.assertEquals(123, opportunities[0].Amount);
 		System.assertEquals(123, opportunities[1].Amount);
 	}
@@ -735,7 +735,7 @@ private class SObjectCollectionTest {
 				Fn.MapTo(MappingTarget.class).mapField('name', Account.Name)
 			)
 			.asList(List<MappingTarget>.class);
-		
+
 		System.assertEquals(2, result.size());
 		System.assertEquals('foo', result[0].name);
 		System.assertEquals('bar', result[1].name);

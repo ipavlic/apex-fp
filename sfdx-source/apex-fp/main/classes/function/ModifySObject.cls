@@ -1,29 +1,29 @@
-public with sharing class AssignToSObject implements SObjectFunction {
+public with sharing class ModifySObject implements SObjectFunction {
 
 	Map<String, Object> fieldValues;
 
-	public AssignToSObject() {
+	public ModifySObject() {
 		this.fieldValues = new Map<String, Object>();
 	}
 
-	public AssignToSObject setField(String targetFieldName, Object value) {
+	public ModifySObject setField(String targetFieldName, Object value) {
 		fieldValues.put(targetFieldName, value);
 		return this;
 	}
 
-	public AssignToSObject setField(Schema.SObjectField field, Object value) {
+	public ModifySObject setField(Schema.SObjectField field, Object value) {
 		fieldValues.put(field.getDescribe().getName(), value);
 		return this;
 	}
 
-	public AssignToSObject setFields(Map<Schema.SObjectField, Object> fieldValues) {
+	public ModifySObject setFields(Map<Schema.SObjectField, Object> fieldValues) {
 		for (Schema.SObjectField field : fieldValues.keySet()) {
 			this.fieldValues.put(field.getDescribe().getName(), fieldValues.get(field));
 		}
 		return this;
 	}
 
-	public AssignToSObject setFields(SObject prototype) {
+	public ModifySObject setFields(SObject prototype) {
 		this.fieldValues.putAll(prototype.getPopulatedFieldsAsMap());
 		return this;
 	}

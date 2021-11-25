@@ -1,12 +1,19 @@
 public with sharing class Fn {
 
-	public static AssignToSObject AssignTo {
+	public static SObjectNotNull NotNull = new SObjectNotNull();
+	public static MatchSObject Match = new MatchSObject();
+
+	public static ModifySObject Modify {
 		get {
-			return new AssignToSObject();
+			return new ModifySObject();
 		}
 	}
 
-	public static SObjectPredicate NotNull = new NotNull();
+	public static DebugSObject Debug {
+		get {
+			return new DebugSObject();
+		}
+	}
 
 	public static MapToSObject MapTo(Schema.SObjectType type) {
 		return new MapToSObject(type);
@@ -14,27 +21,5 @@ public with sharing class Fn {
 
 	public static MapToObject MapTo(Type type) {
 		return new MapToObject(type);
-	}
-
-	public static Match Match = new Match();
-
-	public class Match {
-		public RecordFieldsMatch recordFields(SObject prototype) {
-			return new RecordFieldsMatch(prototype);
-		}
-	
-		public IncompleteFieldsMatch field(Schema.SObjectField field) {
-			return new IncompleteFieldsMatch(new FieldsMatch(), field);
-		}
-	
-		public IncompleteFieldsMatch field(String fieldPath) {
-			return new IncompleteFieldsMatch(new FieldsMatch(), fieldPath);
-		}
-	}
-
-	public class NotNull implements SObjectPredicate {
-		public Boolean call(SObject record) {
-			return record != null;
-		}
 	}
 }
