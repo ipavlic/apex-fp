@@ -36,7 +36,7 @@ OptionalDecimal max = new DecimalCollection(new List<Decimal>){1, 2, 3}).max(); 
 
 **Signature**
 ```
-OptionalDecimal max()
+OptionalDecimal min()
 ```
 
 Returns smallest non-null `Decimal` value if it exists. Returns an empty optional if no such values exist.

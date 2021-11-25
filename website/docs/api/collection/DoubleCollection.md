@@ -36,7 +36,7 @@ OptionalDouble max = new DoubleCollection(new List<Double>){1, 2, 3}).max(); // 
 
 **Signature**
 ```
-OptionalDouble max()
+OptionalDouble min()
 ```
 
 Returns smallest non-null `Double` value if it exists. Returns an empty optional if no such values exist.
