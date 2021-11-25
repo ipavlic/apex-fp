@@ -7,6 +7,30 @@ private class DoubleCollectionTest {
 	}
 
 	@IsTest
+	private static void maxShouldReturnAMaxIfItExists() {
+		DoubleCollection c = new DoubleCollection(new List<Decimal>{100, 150, 120});
+		System.assertEquals(150, c.max().get());
+	}
+
+	@IsTest
+	private static void maxShouldReturnEmptyIfItDoesNotExist() {
+		DoubleCollection c = new DoubleCollection(new List<Decimal>{null, null, null});
+		System.assertEquals(OptionalDouble.empty(), c.max());
+	}
+
+	@IsTest
+	private static void minShouldReturnAMinIfItExists() {
+		DoubleCollection c = new DoubleCollection(new List<Decimal>{70, 80, 150, 120});
+		System.assertEquals(70, c.min().get());
+	}
+
+	@IsTest
+	private static void minShouldReturnEmptyIfItDoesNotExist() {
+		DoubleCollection c = new DoubleCollection(new List<Decimal>{null, null, null});
+		System.assertEquals(OptionalDouble.empty(), c.min());
+	}
+
+	@IsTest
 	private static void testAverage() {
 		DoubleCollection c = new DoubleCollection(new List<Double>{100, 150});
 		System.assertEquals(125, c.average().get());
@@ -16,7 +40,7 @@ private class DoubleCollectionTest {
 		public Boolean call(Double d) {
 			return d != null && d > 10;
 		}
-	} 
+	}
 
 	@IsTest
 	private static void doublePredicateShouldFilterNumbers() {

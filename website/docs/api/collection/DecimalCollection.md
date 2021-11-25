@@ -15,7 +15,35 @@ Sums non-null `Decimal` values if they exist. Returns an empty optional if no su
 
 **Example**
 ```
-Decimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
+OptionalDecimal total = new DecimalCollection(new List<Decimal>){1, 2, 3}).sum(); // 6
+```
+
+## max
+
+**Signature**
+```
+OptionalDecimal max()
+```
+
+Returns greatest non-null `Decimal` value if it exists. Returns an empty optional if no such values exist.
+
+**Example**
+```
+OptionalDecimal max = new DecimalCollection(new List<Decimal>){1, 2, 3}).max(); // 3
+```
+
+## min
+
+**Signature**
+```
+OptionalDecimal max()
+```
+
+Returns smallest non-null `Decimal` value if it exists. Returns an empty optional if no such values exist.
+
+**Example**
+```
+OptionalDecimal min = new DecimalCollection(new List<Decimal>){1, 2, 3}).min(); // 1
 ```
 
 ## average
@@ -24,12 +52,12 @@ Averages non-null `Decimal` values if they exist. Returns an empty optional if n
 
 **Signature**
 ```
-Decimal average()
+OptionalDecimal average()
 ```
 
 **Example**
 ```
-Decimal average = new DecimalCollection(new List<Decimal>){1, 2, 3}).average(); // 2
+OptionalDecimal average = new DecimalCollection(new List<Decimal>){1, 2, 3}).average(); // 2
 ```
 
 ## filter

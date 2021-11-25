@@ -31,6 +31,34 @@ public class DoubleCollection {
 		return OptionalDouble.of(sum);
 	}
 
+	public OptionalDouble max() {
+		if (nonNulls.isEmpty()) {
+			return OptionalDouble.empty();
+		}
+		Double max = nonNulls.get(0);
+		for (Integer i = 1; i < nonNulls.size(); i++) {
+			Double d = nonNulls[i];
+			if (d > max) {
+				max = d;
+			}
+		}
+		return OptionalDouble.of(max);
+	}
+
+	public OptionalDouble min() {
+		if (nonNulls.isEmpty()) {
+			return OptionalDouble.empty();
+		}
+		Double min = nonNulls.get(0);
+		for (Integer i = 1; i < nonNulls.size(); i++) {
+			Double d = nonNulls[i];
+			if (d < min) {
+				min = d;
+			}
+		}
+		return OptionalDouble.of(min);
+	}
+
 	public OptionalDouble average() {
 		OptionalDouble s = sum();
 		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();

@@ -7,6 +7,30 @@ private class DecimalCollectionTest {
 	}
 
 	@IsTest
+	private static void maxShouldReturnAMaxIfItExists() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{100, 150, 120});
+		System.assertEquals(150, c.max().get());
+	}
+
+	@IsTest
+	private static void maxShouldReturnEmptyIfItDoesNotExist() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, null, null});
+		System.assertEquals(OptionalDecimal.empty(), c.max());
+	}
+
+	@IsTest
+	private static void minShouldReturnAMinIfItExists() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{70, 80, 150, 120});
+		System.assertEquals(70, c.min().get());
+	}
+
+	@IsTest
+	private static void minShouldReturnEmptyIfItDoesNotExist() {
+		DecimalCollection c = new DecimalCollection(new List<Decimal>{null, null, null});
+		System.assertEquals(OptionalDecimal.empty(), c.min());
+	}
+
+	@IsTest
 	private static void testDecimalCollectionAverage() {
 		DecimalCollection c = new DecimalCollection(new List<Decimal>{100, 150});
 		System.assertEquals(125, c.average(0).get());

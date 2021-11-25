@@ -31,6 +31,34 @@ public class DecimalCollection {
 		return OptionalDecimal.of(sum);
 	}
 
+	public OptionalDecimal max() {
+		if (nonNulls.isEmpty()) {
+			return OptionalDecimal.empty();
+		}
+		Decimal max = nonNulls.get(0);
+		for (Integer i = 1; i < nonNulls.size(); i++) {
+			Decimal d = nonNulls[i];
+			if (d > max) {
+				max = d;
+			}
+		}
+		return OptionalDecimal.of(max);
+	}
+
+	public OptionalDecimal min() {
+		if (nonNulls.isEmpty()) {
+			return OptionalDecimal.empty();
+		}
+		Decimal min = nonNulls.get(0);
+		for (Integer i = 1; i < nonNulls.size(); i++) {
+			Decimal d = nonNulls[i];
+			if (d < min) {
+				min = d;
+			}
+		}
+		return OptionalDecimal.of(min);
+	}
+
 	public OptionalDecimal average(Integer scale) {
 		OptionalDecimal s = sum();
 		return s.isPresent() ? OptionalDecimal.of(s.get().divide(nonNulls.size(), scale)) : OptionalDecimal.empty();
