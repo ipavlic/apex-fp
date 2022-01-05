@@ -1,5 +1,5 @@
 public with sharing class OptionalDouble {
-	private Double value;
+	private final Double value;
 	private static final OptionalDouble EMPTY = new OptionalDouble();
 
 	public static OptionalDouble of(Double value) {
