@@ -25,7 +25,7 @@ SObjectCollection.of(Trigger.new);
 
 ## isEmpty
 
-Returns true is the collection contains no elements, false otherwise.
+Returns true if the collection contains no elements, false otherwise.
 
 **Signature**
 
