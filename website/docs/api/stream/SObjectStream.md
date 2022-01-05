@@ -67,7 +67,7 @@ SObjectStream filter(SObjectPredicate predicate)
 
 ## find
 
-Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if an element is not found. This consumes the stream.
+Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if no element is found. This consumes the stream.
 
 **Signature**
 
@@ -98,7 +98,7 @@ SObjectStream mapAll(SObjectToSObjectFunction fn)
 **Signature**
 
 ```
-SObjectStream mapAll(SObjectPredicate predicate, SObjectToSObjectFunction fn)
+SObjectStream mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn)
 ```
 
 ## remove

@@ -25,7 +25,7 @@ SObjectCollection.of(Trigger.new);
 
 ## isEmpty
 
-Returns true is the collection contains no elements, false otherwise.
+Returns true if the collection contains no elements, false otherwise.
 
 **Signature**
 
@@ -43,6 +43,8 @@ SObjectCollection.of(new List<Opportunity>{new Opportunity()}).isEmpty(); // fal
 ## difference
 
 Returns a collection view of those records that are not equal in the `other` collection, considering only `comparisonFields` in the comparison.
+
+The record's ID is used to find the counterpart in the `other` collection. Records without counterpart are included in the returned collection. An exception is thrown if there are multiple records with the same ID in the `other` collection.
 
 **Signature**
 
@@ -78,7 +80,7 @@ SObjectCollection filtered = accountCollection.filter(Fn.Match.field(Account.Nam
 
 ## find
 
-Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if an element is not found.
+Returns an [`OptionalSObject`](../util/OptionalSObject) wrapping the first record `predicate` returns `true` for, or an empty `OptionalSObject` if no element is found.
 
 **Signature**
 
@@ -174,7 +176,7 @@ List<String> pluckStrings(String relation)
 ```
 List<Opportunity> opportunities = new List<Opportunity>{
 	new Opportunity(Name = 'Opp1', Account = new Account(Name = 'Acc1')),
-	new Opportunity(Name = 'Opp2, Account = new Account(Name = 'Acc2'))
+	new Opportunity(Name = 'Opp2', Account = new Account(Name = 'Acc2'))
 };
 List<String> opportunityFieldNames = SObjectCollection.of(opportunities).pluckStrings(Opportunity.Name); // ['Opp1', 'Opp2']
 List<String> opportunityRelationNames = SObjectCollection.of(opportunities).pluckStrings('Name'); // ['Opp1' 'Opp2']
@@ -203,7 +205,7 @@ System.assert(objects instanceof List<Opportunity>);
 ```
 When `listType` is provided, map values are properly typed lists, and there are no unexpected results with `instanceof`.
 ```apex title="Grouping with a listType provided"
-accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
+accountsByName = c.groupByStrings(Account.Name, List<Account>.class);
 fooAccounts = accountsByName.get('Foo');
 objects = fooAccounts;
 // this time around, it works fine!

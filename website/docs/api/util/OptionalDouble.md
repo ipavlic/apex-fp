@@ -21,7 +21,7 @@ Returns the value when it is present. Throws a `System.NoSuchElementException` w
 
 **Signature**
 ```
-Boolean isPresent()
+Double get()
 ```
 
 ## orElse
@@ -29,7 +29,7 @@ Boolean isPresent()
 Returns a value when it is present, or `other` when it is not.
 **Signature**
 ```
-SObject orElse(SObject other)
+Double orElse(Double other)
 ```
 
 ## orElseThrow
@@ -38,7 +38,7 @@ Returns a value when it is present, or throws `e` when it is not.
 
 **Signature**
 ```
-SObject orElseThrow(Exception e)
+Double orElseThrow(Exception e)
 ```
 
 
