@@ -21,7 +21,7 @@ Returns the record when it is present. Throws a `System.NoSuchElementException` 
 
 **Signature**
 ```
-Boolean isPresent()
+SObject get()
 ```
 
 ## orElse
