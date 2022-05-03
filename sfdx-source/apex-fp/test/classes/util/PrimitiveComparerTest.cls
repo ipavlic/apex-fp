@@ -2,6 +2,14 @@
 private class PrimitiveComparerTest {
 
 	@IsTest
+	private static void nullValueCompariso() {
+		PrimitiveComparer comparer = new PrimitiveComparer();
+		System.assertEquals(0, comparer.compare(null, null));
+		System.assertEquals(1, comparer.compare(null, 1));
+		System.assertEquals(-1, comparer.compare(1, null));
+	}
+
+	@IsTest
 	private static void booleanComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(0, comparer.compareBooleans(true, true));

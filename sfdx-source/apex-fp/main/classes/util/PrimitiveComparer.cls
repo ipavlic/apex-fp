@@ -1,4 +1,15 @@
 public class PrimitiveComparer {
+
+	public Integer compareWithNull(Object a, Object b) {
+		if (a == null && b != null) {
+			return 1;
+		}
+		else if (a != null && b == null) {
+			return -1;
+		}
+		return 0;
+	}
+
 	public Integer compareBooleans(Boolean a, Boolean b) {
 		return (a == b) ? 0 : (a ? 1 : -1);
 	}
@@ -43,7 +54,10 @@ public class PrimitiveComparer {
 	 * A comparison for primitive data types
 	 */
 	public Integer compare(Object first, Object second) {
-		if (first instanceof Boolean && second instanceof Boolean) {
+		if (first == null || second == null) {
+			return compareWithNull(first, second);
+		}
+		else if (first instanceof Boolean && second instanceof Boolean) {
 			return this.compareBooleans((Boolean)first, (Boolean)second);
 		}
 		else if (first instanceof Date && second instanceof Date) {
