@@ -2,7 +2,7 @@
 private class PrimitiveComparerTest {
 
 	@IsTest
-	private static void nullValueCompariso() {
+	private static void nullValueComparison() {
 		PrimitiveComparer comparer = new PrimitiveComparer();
 		System.assertEquals(0, comparer.compare(null, null));
 		System.assertEquals(1, comparer.compare(null, 1));
