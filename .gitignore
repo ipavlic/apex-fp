@@ -6,3 +6,4 @@ salesforce.schema
 .idea/
 .sfdx/
 IlluminatedCloud/*
+.vscode/settings.json
