@@ -8,7 +8,7 @@ private class OptionalDecimalTest {
 	@IsTest
 	private static void nullIsNotPresent() {
 		OptionalDecimal optional = OptionalDecimal.of(null);
-		System.assertEquals(false, optional.isPresent());
+		System.Assert.isFalse(optional.isPresent());
 	}
 
 	@IsTest
@@ -16,9 +16,9 @@ private class OptionalDecimalTest {
 		OptionalDecimal optional = OptionalDecimal.of(null);
 		try {
 			Decimal value = optional.get();
-			System.assert(false, 'Exception was not thrown');
-		} catch (NoSuchElementException e) {
-			System.assert(true);
+			System.Assert.fail('Exception was not thrown');
+		} catch (Exception e) {
+			System.Assert.isInstanceOfType(e, NoSuchElementException.class);
 		}
 	}
 
@@ -27,7 +27,7 @@ private class OptionalDecimalTest {
 		Decimal d = 4.51;
 		OptionalDecimal optional = OptionalDecimal.of(d);
 		Decimal value = optional.get();
-		System.assertEquals(d, value);
+		System.Assert.areEqual(d, value);
 	}
 
 	@IsTest
@@ -35,7 +35,7 @@ private class OptionalDecimalTest {
 		OptionalDecimal optional = OptionalDecimal.of(null);
 		Decimal other = 1.19;
 		Decimal value = optional.orElse(other);
-		System.assertEquals(other, value);
+		System.Assert.areEqual(other, value);
 	}
 
 	@IsTest
@@ -44,9 +44,9 @@ private class OptionalDecimalTest {
 		Decimal other = 2.71;
 		try {
 			Decimal value = optional.orElseThrow(new IllegalOperationException('test'));
-			System.assert(false, 'Exception was not thrown');
+			System.Assert.fail('Exception was not thrown');
 		} catch (IllegalOperationException e) {
-			System.assertEquals('test', e.getMessage());
+			System.Assert.areEqual('test', e.getMessage());
 		}
 	}
 
@@ -56,19 +56,19 @@ private class OptionalDecimalTest {
 		OptionalDecimal optional = OptionalDecimal.of(d);
 		try {
 			Decimal value = optional.orElseThrow(new IllegalOperationException('test'));
-			System.assertEquals(d, value);
+			System.Assert.areEqual(d, value);
 		} catch (IllegalOperationException e) {
-			System.assert(false, 'Exception was thrown');
+			System.Assert.fail('Exception was thrown');
 		}
 	}
 
 	@IsTest
 	private static void emptyIsASingleton() {
-		System.assertEquals(OptionalDecimal.empty(), OptionalDecimal.empty());
+		System.Assert.areEqual(OptionalDecimal.empty(), OptionalDecimal.empty());
 	}
 
 	@IsTest
 	private static void emptyIsNotPresent() {
-		System.assertEquals(false, OptionalDecimal.empty().isPresent());
+		System.Assert.isFalse(OptionalDecimal.empty().isPresent());
 	}
 }
