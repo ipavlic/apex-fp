@@ -7,7 +7,7 @@ private class SObjectFieldReaderTest {
 		opp.Account = acc;
 
 		Object value = new SObjectFieldReader().read(opp, 'Account.Name');
-		System.assertEquals('Test', value);
+		System.Assert.areEqual('Test', value);
 	}
 
 	@IsTest
@@ -21,8 +21,8 @@ private class SObjectFieldReaderTest {
 		} catch (LambdaException e) {
 			ex = e;
 		}
-		System.assert(ex != null);
-		System.assert(ex.getMessage().contains('Cannot resolve'));
+		System.Assert.areNotEqual(null, ex);
+		System.Assert.isTrue(ex.getMessage().contains('Cannot resolve'));
 	}
 
 	@IsTest
@@ -38,8 +38,8 @@ private class SObjectFieldReaderTest {
 		} catch (LambdaException e) {
 			ex = e;
 		}
-		System.assert(ex != null);
-		System.assert(ex.getMessage().contains('Cannot resolve'));
+		System.Assert.areNotEqual(null, ex);
+		System.Assert.isTrue(ex.getMessage().contains('Cannot resolve'));
 	}
 
 	@IsTest
@@ -53,7 +53,7 @@ private class SObjectFieldReaderTest {
 		} catch (IllegalArgumentException e) {
 			ex = e;
 		}
-		System.assert(ex != null);
-		System.assert(ex.getMessage().contains('is blank'));
+		System.Assert.areNotEqual(null, ex);
+		System.Assert.isTrue(ex.getMessage().contains('is blank'));
 	}
 }

@@ -8,7 +8,7 @@ private class OptionalSObjectTest {
 	@IsTest
 	private static void nullIsNotPresent() {
 		OptionalSObject optional = OptionalSObject.of(null);
-		System.assertEquals(false, optional.isPresent());
+		System.Assert.isFalse(optional.isPresent());
 	}
 
 	@IsTest
@@ -16,9 +16,9 @@ private class OptionalSObjectTest {
 		OptionalSObject optional = OptionalSObject.of(null);
 		try {
 			SObject value = optional.get();
-			System.assert(false, 'Exception was not thrown');
+			System.Assert.fail('Exception was not thrown');
 		} catch (NoSuchElementException e) {
-			System.assert(true);
+			System.Assert.isInstanceOfType(e, NoSuchElementException.class);
 		}
 	}
 
@@ -27,7 +27,7 @@ private class OptionalSObjectTest {
 		Account account = new Account(Name = 'Foo');
 		OptionalSObject optional = OptionalSObject.of(account);
 		SObject record = optional.get();
-		System.assertEquals(account, record);
+		System.Assert.areEqual(account, record);
 	}
 
 	@IsTest
@@ -35,7 +35,7 @@ private class OptionalSObjectTest {
 		OptionalSObject optional = OptionalSObject.of(null);
 		SObject other = new Account(Name = 'Foo');
 		SObject value = optional.orElse(other);
-		System.assertEquals(other, value);
+		System.Assert.areEqual(other, value);
 	}
 
 	@IsTest
@@ -44,19 +44,19 @@ private class OptionalSObjectTest {
 		SObject other = new Account(Name = 'Foo');
 		try {
 			SObject value = optional.orElseThrow(new IllegalOperationException('test'));
-			System.assert(false, 'Exception was not thrown');
+			System.Assert.fail('Exception was not thrown');
 		} catch (IllegalOperationException e) {
-			System.assertEquals('test', e.getMessage());
+			System.Assert.areEqual('test', e.getMessage());
 		}
 	}
 
 	@IsTest
 	private static void emptyIsASingleton() {
-		System.assertEquals(OptionalSObject.empty(), OptionalSObject.empty());
+		System.Assert.areEqual(OptionalSObject.empty(), OptionalSObject.empty());
 	}
 
 	@IsTest
 	private static void emptyIsNotPresent() {
-		System.assertEquals(false, OptionalSObject.empty().isPresent());
+		System.Assert.isFalse(OptionalSObject.empty().isPresent());
 	}
 }

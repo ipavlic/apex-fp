@@ -14,9 +14,9 @@ private class SObjectStreamTest {
 		while (iter.hasNext()) {
 			filtered.add(iter.next());
 		}
-		System.assertEquals(2, filtered.size());
-		System.assertEquals(accounts[0], filtered[0]);
-		System.assertEquals(accounts[2], filtered[1]);
+		System.Assert.areEqual(2, filtered.size());
+		System.Assert.areEqual(accounts[0], filtered[0]);
+		System.Assert.areEqual(accounts[2], filtered[1]);
 	}
 
 	@IsTest
@@ -33,8 +33,8 @@ private class SObjectStreamTest {
 		while (iter.hasNext()) {
 			filtered.add(iter.next());
 		}
-		System.assertEquals(1, filtered.size());
-		System.assertEquals(accounts[2], filtered[0]);
+		System.Assert.areEqual(1, filtered.size());
+		System.Assert.areEqual(accounts[2], filtered[0]);
 	}
 
 	@IsTest
@@ -52,9 +52,9 @@ private class SObjectStreamTest {
 			filtered.add(iter.next());
 		}
 		
-		System.assertEquals(2, filtered.size());
-		System.assertEquals(accounts[0], filtered[0]);
-		System.assertEquals(accounts[2], filtered[1]);
+		System.Assert.areEqual(2, filtered.size());
+		System.Assert.areEqual(accounts[0], filtered[0]);
+		System.Assert.areEqual(accounts[2], filtered[1]);
 	}
 
 	// @IsTest
@@ -72,9 +72,9 @@ private class SObjectStreamTest {
 	// 		mapped.add(iter.next());
 	// 	}
 		
-	// 	System.assertEquals(4, mapped.size());
+	// 	System.Assert.areEqual(4, mapped.size());
 	// 	for (SObject record : mapped) {
-	// 		System.assertEquals(100, ((Account) record).AnnualRevenue);
+	// 		System.Assert.areEqual(100, ((Account) record).AnnualRevenue);
 	// 	}
 	// }
 
@@ -93,13 +93,13 @@ private class SObjectStreamTest {
 	// 		mapped.add(iter.next());
 	// 	}
 		
-	// 	System.assertEquals(4, mapped.size());
+	// 	System.Assert.areEqual(4, mapped.size());
 	// 	for (SObject record : mapped) {
 	// 		Account a = (Account) record;
 	// 		if (a.Name == 'Ok') {
-	// 			System.assertEquals(100, a.AnnualRevenue);
+	// 			System.Assert.areEqual(100, a.AnnualRevenue);
 	// 		} else {
-	// 			System.assertEquals(null, a.AnnualRevenue);
+	// 			System.Assert.areEqual(null, a.AnnualRevenue);
 	// 		}
 	// 	}
 	// }
@@ -114,8 +114,8 @@ private class SObjectStreamTest {
 		};
 
 		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Fn.Match.field(Account.Name).equals('Three'));
-		System.assert(maybeAcc.isPresent());
-		System.assertEquals(accounts[2], maybeAcc.get());
+		System.Assert.isTrue(maybeAcc.isPresent());
+		System.Assert.areEqual(accounts[2], maybeAcc.get());
 	}
 
 	@IsTest
@@ -128,6 +128,6 @@ private class SObjectStreamTest {
 		};
 
 		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Fn.Match.field(Account.Name).equals('Five'));
-		System.assert(!maybeAcc.isPresent());
+		System.Assert.isTrue(!maybeAcc.isPresent());
 	}
 }
