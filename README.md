@@ -1,3 +1,5 @@
+**I'm currently open for new opportunities: https://www.linkedin.com/in/ipavlic/**
+
 # Apex FP
 
 ![CI workflow](https://github.com/ipavlic/apex-fp/actions/workflows/ci.yml/badge.svg)
