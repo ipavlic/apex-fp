@@ -43,7 +43,16 @@ public class PrimitiveComparer {
 	 * A comparison for primitive data types
 	 */
 	public Integer compare(Object first, Object second) {
-		if (first instanceof Boolean && second instanceof Boolean) {
+		if (first == null && second != null) {
+			return -1;
+		}
+		else if (first != null && second == null) {
+			return 1;
+		}
+		else if (first == null && second == null) {
+			return 0;
+		}
+		else if (first instanceof Boolean && second instanceof Boolean) {
 			return this.compareBooleans((Boolean)first, (Boolean)second);
 		}
 		else if (first instanceof Date && second instanceof Date) {

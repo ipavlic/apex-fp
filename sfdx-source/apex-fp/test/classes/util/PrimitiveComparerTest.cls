@@ -1,5 +1,12 @@
 @IsTest(isParallel=true)
 private class PrimitiveComparerTest {
+	@IsTest
+	private static void nullComparison() {
+		PrimitiveComparer comparer = new PrimitiveComparer();
+		System.Assert.areEqual(-1, comparer.compare(null, 5));
+		System.Assert.areEqual(1, comparer.compare('foo', null));
+		System.Assert.areEqual(0, comparer.compare(null, null));
+	}
 
 	@IsTest
 	private static void booleanComparison() {
