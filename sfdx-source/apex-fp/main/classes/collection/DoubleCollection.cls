@@ -2,10 +2,17 @@ public class DoubleCollection {
 	private List<Double> doubles;
 	private List<Double> nonNulls;
 
-	public DoubleCollection(List<Double> doubles) {
-		this.doubles = doubles;
+	public static DoubleCollection of(Iterable<Double> doubles) {
+		return new DoubleCollection(doubles);
+	}
+
+	private DoubleCollection(Iterable<Double> doubles) {
+		this.doubles = new List<Double>();
 		nonNulls = new List<Double>();
-		for (Double d : doubles) {
+		Iterator<Double> iter = doubles.iterator();
+		while (iter.hasNext()) {
+			Double d = iter.next();
+			this.doubles.add(d);
 			if (d != null) {
 				nonNulls.add(d);
 			}

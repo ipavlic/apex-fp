@@ -2,10 +2,17 @@ public class DecimalCollection {
 	private List<Decimal> decimals;
 	private List<Decimal> nonNulls;
 
-	public DecimalCollection(List<Decimal> decimals) {
-		this.decimals = decimals;
+	public static DecimalCollection of(Iterable<Decimal> decimals) {
+		return new DecimalCollection(decimals);
+	}
+
+	private DecimalCollection(Iterable<Decimal> decimals) {
+		this.decimals = new List<Decimal>();
 		nonNulls = new List<Decimal>();
-		for (Decimal d : decimals) {
+		Iterator<Decimal> iter = decimals.iterator();
+		while (iter.hasNext()) {
+			Decimal d = iter.next();
+			this.decimals.add(d);
 			if (d != null) {
 				nonNulls.add(d);
 			}
