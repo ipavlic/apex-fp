@@ -43,7 +43,7 @@ jobs:
         run: sf project deploy start
           
       - name: Run tests
-        run: sf apex run test --code-coverage --result-format human --output-dir ./tests/apex
+        run: sf apex run test --synchronous --code-coverage --result-format human --output-dir ./tests/apex
 
       - name: Upload code coverage
         uses: codecov/codecov-action@v3
