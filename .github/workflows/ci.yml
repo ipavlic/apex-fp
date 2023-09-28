@@ -25,37 +25,31 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
-      # https://developer.salesforce.com/blogs/2020/01/using-salesforce-dx-with-github-actions
-      - name: Install Salesforce CLI from binary
-        run: |
-          wget https://developer.salesforce.com/media/salesforce-cli/sfdx-linux-amd64.tar.xz
-          mkdir sfdx-cli
-          tar xJf sfdx-linux-amd64.tar.xz -C sfdx-cli --strip-components 1
-          sudo ./sfdx-cli/install
+      - name: Install Salesforce CLI from NPM
+        run: npm install @salesforce/cli@2.10.2 --global
           
       - name: Write the dev hub token into a file
-        run: 'echo ${{secrets.SFDX_AUTH_URL}} > dev-hub-token'
+        run: 'echo ${{secrets.SFDX_AUTH_URL}} > sfdx-auth-url'
         
       - name: Authenticate with the dev hub
-        run: sfdx force:auth:sfdxurl:store -f dev-hub-token --setalias DevHub --setdefaultdevhubusername 
+        run: sf org login sfdx-url --sfdx-url-file sfdx-auth-url --alias dev-hub --set-default-dev-hub
         
       - name: Create scratch org
-        run: sfdx force:org:create -f config/project-scratch-def.json --setalias test-scratch
+        run: sf org create scratch --definition-file config/project-scratch-def.json --alias test-scratch --set-default
         
       - name: Push source
-        run: sfdx force:source:push --targetusername test-scratch
+        run: sf project deploy start
           
       - name: Run tests
-        run: sfdx force:apex:test:run --targetusername test-scratch --codecoverage --resultformat human --outputdir ./tests/apex
+        run: sf apex run test --code-coverage --result-format human --output-dir ./tests/apex
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v2
+        uses: codecov/codecov-action@v3
         with:
-          flags: Apex        
+          flags: Apex
 
       - name: Delete scratch org
         if: always()
-        run: sfdx force:org:delete --targetusername test-scratch --noprompt
-
+        run: sf org delete scratch --no-prompt
