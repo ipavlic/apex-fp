@@ -1,5 +1,5 @@
 public with sharing class OptionalDecimal {
-	private Decimal value;
+	private final Decimal value;
 	private static final OptionalDecimal EMPTY = new OptionalDecimal();
 
 	public static OptionalDecimal of(Decimal value) {

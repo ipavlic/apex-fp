@@ -1,5 +1,5 @@
 public with sharing class OptionalSObject {
-	private SObject value;
+	private final SObject value;
 	private static final OptionalSObject EMPTY = new OptionalSObject();
 
 	public static OptionalSObject of(SObject value) {
