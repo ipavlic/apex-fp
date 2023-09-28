@@ -388,7 +388,7 @@ public with sharing class SObjectCollection {
 		for (SObject record : records) {
 			mapped.add(fn.call(record));
 		}
-		return new ObjectCollection(mapped);
+		return ObjectCollection.of(mapped);
 	}
 
 	public SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
