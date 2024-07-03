@@ -1,5 +1,5 @@
 public with sharing class DebugSObject {
-	private LoggingLevel logLevel = LoggingLevel.DEBUG;
+	private System.LoggingLevel logLevel = System.LoggingLevel.DEBUG;
 
 	public DebugSObject logLevel(LoggingLevel logLevel) {
 		this.logLevel = logLevel;

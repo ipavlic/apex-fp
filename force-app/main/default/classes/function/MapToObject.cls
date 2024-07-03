@@ -1,14 +1,11 @@
 public with sharing class MapToObject implements SObjectToObjectFunction {
-	Type type;
-	Map<String, String> fieldMappings;
-	SObjectFieldReader fieldReader;
-	Map<String, Object> fieldValues = new Map<String, Object>(); 
-	
+	private final Type type;
+	private final Map<String, String> fieldMappings = new Map<String, String>();
+	private final SObjectFieldReader fieldReader = new SObjectFieldReader();
+	private final Map<String, Object> fieldValues = new Map<String, Object>();
+
 	public MapToObject(Type type) {
 		this.type = type;
-		this.fieldValues = new Map<String, Object>();
-		this.fieldMappings = new Map<String, String>();
-		this.fieldReader = new SObjectFieldReader();
 	}
 
 	private Object setField(Map<String, Object> objectData, String path, Object value) {
@@ -18,7 +15,7 @@ public with sharing class MapToObject implements SObjectToObjectFunction {
 		} else {
 			String childObject = path.substring(0, dotPos);
 			String remainingPath = path.substring(dotPos + 1, path.length());
-	
+
 			if (!objectData.containsKey(childObject)) {
 				objectData.put(childObject, new Map<String, Object>());
 			}
@@ -28,7 +25,7 @@ public with sharing class MapToObject implements SObjectToObjectFunction {
 	}
 
 	public MapToObject setField(String targetFieldPath, Object value) {
-		setField(fieldValues, targetFieldPath, value);
+		setField(this.fieldValues, targetFieldPath, value);
 		return this;
 	}
 
@@ -40,12 +37,12 @@ public with sharing class MapToObject implements SObjectToObjectFunction {
 	}
 
 	public MapToObject mapField(String targetFieldPath, String sourceFieldRelation) {
-		fieldMappings.put(targetFieldPath, sourceFieldRelation);
+		this.fieldMappings.put(targetFieldPath, sourceFieldRelation);
 		return this;
 	}
 
 	public MapToObject mapField(String targetFieldPath, Schema.SObjectField sourceField) {
-		fieldMappings.put(targetFieldPath, sourceField.getDescribe().getName());
+		this.fieldMappings.put(targetFieldPath, sourceField.getDescribe().getName());
 		return this;
 	}
 
@@ -66,10 +63,10 @@ public with sharing class MapToObject implements SObjectToObjectFunction {
 	}
 
 	public Object call(SObject record) {
-		for (String targetFieldPath : fieldMappings.keySet()) {
-			String sourceFieldRelation = fieldMappings.get(targetFieldPath);
-			setField(targetFieldPath, fieldReader.read(record, sourceFieldRelation));
+		for (String targetFieldPath : this.fieldMappings.keySet()) {
+			String sourceFieldRelation = this.fieldMappings.get(targetFieldPath);
+			setField(targetFieldPath, this.fieldReader.read(record, sourceFieldRelation));
 		}
-		return JSON.deserialize(JSON.serialize(fieldValues), type);		
+		return JSON.deserialize(JSON.serialize(fieldValues), this.type);
 	}
 }

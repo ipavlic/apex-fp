@@ -1,33 +1,36 @@
 public with sharing class OptionalDecimal {
+	private static final OptionalDecimal EMPTY {
+		get {
+			EMPTY = EMPTY ?? new OptionalDecimal(null);
+			return EMPTY;
+		}
+		set;
+	}
+
 	private final Decimal value;
-	private static final OptionalDecimal EMPTY = new OptionalDecimal();
 
 	public static OptionalDecimal of(Decimal value) {
-		return new OptionalDecimal(value);
+		return value == null ? EMPTY : new OptionalDecimal(value);
 	}
 
 	public static OptionalDecimal empty() {
 		return EMPTY;
 	}
 
-	private OptionalDecimal() {
-		this.value = null;
-	}
-	
 	private OptionalDecimal(Decimal value) {
 		this.value = value;
 	}
 
 	public Boolean isPresent() {
-		return value != null;
+		return this.value != null;
 	}
 
 	public Decimal orElse(Decimal other) {
-		return value != null ? value : other; 
+		return this.value ?? other;
 	}
 
 	public Decimal orElseThrow(Exception e) {
-		if (value != null) {
+		if (this.value != null) {
 			return value;
 		} else {
 			throw e;
@@ -35,9 +38,6 @@ public with sharing class OptionalDecimal {
 	}
 
 	public Decimal get() {
-		if (value == null) {
-			throw new NoSuchElementException('No value present');
-		}
-		return value;
+		return this.orElseThrow(new NoSuchElementException('No value present'));
 	}
 }

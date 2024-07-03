@@ -1,24 +1,19 @@
 public with sharing class ModifySObject implements SObjectFunction {
-
-	Map<String, Object> fieldValues;
-
-	public ModifySObject() {
-		this.fieldValues = new Map<String, Object>();
-	}
+	private final Map<String, Object> fieldValues = new Map<String, Object>();
 
 	public ModifySObject setField(String targetFieldName, Object value) {
-		fieldValues.put(targetFieldName, value);
+		this.fieldValues.put(targetFieldName, value);
 		return this;
 	}
 
 	public ModifySObject setField(Schema.SObjectField field, Object value) {
-		fieldValues.put(field.getDescribe().getName(), value);
+		this.fieldValues.put(field.getDescribe().getName(), value);
 		return this;
 	}
 
-	public ModifySObject setFields(Map<Schema.SObjectField, Object> fieldValues) {
-		for (Schema.SObjectField field : fieldValues.keySet()) {
-			this.fieldValues.put(field.getDescribe().getName(), fieldValues.get(field));
+	public ModifySObject setFields(Map<Schema.SObjectField, Object> newFieldValues) {
+		for (Schema.SObjectField field : newFieldValues.keySet()) {
+			this.fieldValues.put(field.getDescribe().getName(), newFieldValues.get(field));
 		}
 		return this;
 	}
@@ -32,8 +27,8 @@ public with sharing class ModifySObject implements SObjectFunction {
 		if (record == null) {
 			throw new LambdaException('Record is null');
 		}
-		for (String fieldName : fieldValues.keySet()) {
-			record.put(fieldName, fieldValues.get(fieldName));
+		for (String fieldName : this.fieldValues.keySet()) {
+			record.put(fieldName, this.fieldValues.get(fieldName));
 		}
 	}
 }

@@ -14,8 +14,8 @@ public class IncompleteFieldsMatch {
 
 	// helper for all other methods
 	private FieldsMatch filterWith(BinaryRelation relation, Object value) {
-		baseMatch.addCondition(new FieldMatchCondition(fieldPath, relation, value));
-		return baseMatch;
+		this.baseMatch.addCondition(new FieldMatchCondition(this.fieldPath, relation, value));
+		return this.baseMatch;
 	}
 
 	public FieldsMatch equals(Object value) {

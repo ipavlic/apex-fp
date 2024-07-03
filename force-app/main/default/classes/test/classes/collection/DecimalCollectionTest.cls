@@ -1,7 +1,7 @@
 @IsTest(isParallel=true)
 private class DecimalCollectionTest {
 	@IsTest
-	private static void testDecimalCollectionSum() {
+	private static void sumShouldReturnSumIfItExists() {
 		DecimalCollection c = DecimalCollection.of(new List<Decimal>{100, 150});
 		System.Assert.areEqual(250, c.sum().get());
 	}
@@ -31,20 +31,20 @@ private class DecimalCollectionTest {
 	}
 
 	@IsTest
-	private static void testDecimalCollectionAverage() {
+	private static void averageShouldReturnAverageIfExists() {
 		DecimalCollection c = DecimalCollection.of(new List<Decimal>{100, 150});
 		System.Assert.areEqual(125, c.average(0).get());
 	}
 
 	@IsTest
-	private static void testDecimalCollectionAverageWithRoundingMode() {
+	private static void averageShouldReturnAverageIfExistsWithRoundingMode() {
 		DecimalCollection c = DecimalCollection.of(new List<Decimal>{1, 2});
 		System.Assert.areEqual(1, c.average(0, System.RoundingMode.DOWN).get());
 	}
 
 	private class IsTen implements DecimalPredicate {
 		public Boolean call(Decimal d) {
-			return d != null && d == 10;
+			return d == 10;
 		}
 	}
 

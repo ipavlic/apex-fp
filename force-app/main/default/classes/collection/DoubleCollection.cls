@@ -1,6 +1,21 @@
 public class DoubleCollection {
-	private List<Double> doubles;
-	private List<Double> nonNulls;
+	private static final Double MAX_DOUBLE_VALUE {
+		get {
+			MAX_DOUBLE_VALUE = MAX_DOUBLE_VALUE ?? Math.pow(2, 63) - 1;
+			return MAX_DOUBLE_VALUE;
+		}
+		set;
+	}
+
+  private static final Double MIN_DOUBLE_VALUE {
+		get {
+			MIN_DOUBLE_VALUE = MIN_DOUBLE_VALUE ?? MAX_DOUBLE_VALUE * -1;
+			return MIN_DOUBLE_VALUE;
+		}
+		set;
+	}
+
+	private final List<Double> doubles;
 
 	public static DoubleCollection of(Iterable<Double> doubles) {
 		return new DoubleCollection(doubles);
@@ -8,44 +23,33 @@ public class DoubleCollection {
 
 	private DoubleCollection(Iterable<Double> doubles) {
 		this.doubles = new List<Double>();
-		nonNulls = new List<Double>();
-		Iterator<Double> iter = doubles.iterator();
-		while (iter.hasNext()) {
-			Double d = iter.next();
+		for (Double d : doubles) {
 			this.doubles.add(d);
-			if (d != null) {
-				nonNulls.add(d);
-			}
 		}
 	}
 
 	public List<Double> asList() {
-		return new List<Double>(doubles);
+		return new List<Double>(this.doubles);
 	}
 
 	public Set<Double> asSet() {
-		return new Set<Double>(doubles);
+		return new Set<Double>(this.doubles);
 	}
 
 	public OptionalDouble sum() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDouble.empty();
-		}
-		Double sum = 0;
-		for (Double d : nonNulls) {
-			sum += d;
+		Double sum;
+		for (Double d : this.doubles) {
+			if (d != null) {
+				sum = (sum ?? 0) + (d ?? 0);
+			}
 		}
 		return OptionalDouble.of(sum);
 	}
 
 	public OptionalDouble max() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDouble.empty();
-		}
-		Double max = nonNulls.get(0);
-		for (Integer i = 1; i < nonNulls.size(); i++) {
-			Double d = nonNulls[i];
-			if (d > max) {
+		Double max;
+		for (Double d : this.doubles) {
+			if ((d ?? MIN_DOUBLE_VALUE) > (max ?? MIN_DOUBLE_VALUE)) {
 				max = d;
 			}
 		}
@@ -53,13 +57,9 @@ public class DoubleCollection {
 	}
 
 	public OptionalDouble min() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDouble.empty();
-		}
-		Double min = nonNulls.get(0);
-		for (Integer i = 1; i < nonNulls.size(); i++) {
-			Double d = nonNulls[i];
-			if (d < min) {
+		Double min ;
+		for (Double d : this.doubles) {
+			if ((d ?? MAX_DOUBLE_VALUE) < (min ?? MAX_DOUBLE_VALUE)) {
 				min = d;
 			}
 		}
@@ -67,13 +67,13 @@ public class DoubleCollection {
 	}
 
 	public OptionalDouble average() {
-		OptionalDouble s = sum();
-		return s.isPresent() ? OptionalDouble.of(s.get() / nonNulls.size()) : OptionalDouble.empty();
+		OptionalDouble s = this.sum();
+		return s.isPresent() ? OptionalDouble.of(s.get() / this.doubles.size()) : s;
 	}
 
 	public DoubleCollection filter(DoublePredicate predicate) {
 		List<Double> filtered = new List<Double>();
-		for (Double d : doubles) {
+		for (Double d : this.doubles) {
 			if (predicate.call(d)) {
 				filtered.add(d);
 			}
