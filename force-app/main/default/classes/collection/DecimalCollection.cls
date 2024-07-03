@@ -1,6 +1,21 @@
 public class DecimalCollection {
-	private List<Decimal> decimals;
-	private List<Decimal> nonNulls;
+	private static final Decimal MAX_DECIMAL_VALUE {
+		get {
+			MAX_DECIMAL_VALUE = MAX_DECIMAL_VALUE ?? Math.pow(2, 63) - 1;
+			return MAX_DECIMAL_VALUE;
+		}
+		set;
+	}
+
+  private static final Decimal MIN_DECIMAL_VALUE {
+		get {
+			MIN_DECIMAL_VALUE = MIN_DECIMAL_VALUE ?? MAX_DECIMAL_VALUE * -1;
+			return MIN_DECIMAL_VALUE;
+		}
+		set;
+	}
+
+	private final List<Decimal> decimals;
 
 	public static DecimalCollection of(Iterable<Decimal> decimals) {
 		return new DecimalCollection(decimals);
@@ -8,44 +23,33 @@ public class DecimalCollection {
 
 	private DecimalCollection(Iterable<Decimal> decimals) {
 		this.decimals = new List<Decimal>();
-		nonNulls = new List<Decimal>();
-		Iterator<Decimal> iter = decimals.iterator();
-		while (iter.hasNext()) {
-			Decimal d = iter.next();
+		for (Decimal d : decimals) {
 			this.decimals.add(d);
-			if (d != null) {
-				nonNulls.add(d);
-			}
 		}
 	}
 
 	public List<Decimal> asList() {
-		return new List<Decimal>(decimals);
+		return new List<Decimal>(this.decimals);
 	}
 
 	public Set<Decimal> asSet() {
-		return new Set<Decimal>(decimals);
+		return new Set<Decimal>(this.decimals);
 	}
 
 	public OptionalDecimal sum() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDecimal.empty();
-		}
-		Decimal sum = 0;
-		for (Decimal d : nonNulls) {
-			sum += d;
+		Decimal sum;
+		for (Decimal d : this.decimals) {
+			if (d != null) {
+				sum = (sum ?? 0) + (d ?? 0);
+			}
 		}
 		return OptionalDecimal.of(sum);
 	}
 
 	public OptionalDecimal max() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDecimal.empty();
-		}
-		Decimal max = nonNulls.get(0);
-		for (Integer i = 1; i < nonNulls.size(); i++) {
-			Decimal d = nonNulls[i];
-			if (d > max) {
+		Decimal max;
+		for (Decimal d : this.decimals) {
+			if ((d ?? MIN_DECIMAL_VALUE) > (max ?? MIN_DECIMAL_VALUE)) {
 				max = d;
 			}
 		}
@@ -53,13 +57,9 @@ public class DecimalCollection {
 	}
 
 	public OptionalDecimal min() {
-		if (nonNulls.isEmpty()) {
-			return OptionalDecimal.empty();
-		}
-		Decimal min = nonNulls.get(0);
-		for (Integer i = 1; i < nonNulls.size(); i++) {
-			Decimal d = nonNulls[i];
-			if (d < min) {
+		Decimal min ;
+		for (Decimal d : this.decimals) {
+			if ((d ?? MAX_DECIMAL_VALUE) < (min ?? MAX_DECIMAL_VALUE)) {
 				min = d;
 			}
 		}
@@ -67,18 +67,17 @@ public class DecimalCollection {
 	}
 
 	public OptionalDecimal average(Integer scale) {
-		OptionalDecimal s = sum();
-		return s.isPresent() ? OptionalDecimal.of(s.get().divide(nonNulls.size(), scale)) : OptionalDecimal.empty();
+		return this.average(scale, System.RoundingMode.HALF_EVEN);
 	}
 
 	public OptionalDecimal average(Integer scale, System.RoundingMode roundingMode) {
-		OptionalDecimal s = sum();
-		return s.isPresent() ? OptionalDecimal.of(s.get().divide(nonNulls.size(), scale, roundingMode)) : OptionalDecimal.empty();
+		OptionalDecimal s = this.sum();
+		return s.isPresent() ? OptionalDecimal.of(s.get().divide(this.decimals.size(), scale, roundingMode)) : s;
 	}
 
 	public DecimalCollection filter(DecimalPredicate predicate) {
 		List<Decimal> filtered = new List<Decimal>();
-		for (Decimal d : decimals) {
+		for (Decimal d : this.decimals) {
 			if (predicate.call(d)) {
 				filtered.add(d);
 			}

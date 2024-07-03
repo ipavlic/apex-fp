@@ -1,8 +1,18 @@
 public with sharing class OptionalDouble {
+	private static final OptionalDouble EMPTY {
+		get {
+			EMPTY = EMPTY ?? new OptionalDouble(null);
+			return EMPTY;
+		}
+		set;
+	}
+
 	private final Double value;
-	private static final OptionalDouble EMPTY = new OptionalDouble();
 
 	public static OptionalDouble of(Double value) {
+		if (value == null) {
+			return EMPTY;
+		}
 		return new OptionalDouble(value);
 	}
 
@@ -10,24 +20,20 @@ public with sharing class OptionalDouble {
 		return EMPTY;
 	}
 
-	private OptionalDouble() {
-		this.value = null;
-	}
-	
 	private OptionalDouble(Double value) {
 		this.value = value;
 	}
 
 	public Boolean isPresent() {
-		return value != null;
+		return this.value != null;
 	}
 
 	public Double orElse(Double other) {
-		return value != null ? value : other; 
+		return this.value ?? other;
 	}
 
 	public Double orElseThrow(Exception e) {
-		if (value != null) {
+		if (this.value != null) {
 			return value;
 		} else {
 			throw e;
@@ -35,7 +41,7 @@ public with sharing class OptionalDouble {
 	}
 
 	public Double get() {
-		if (value == null) {
+		if (this.value == null) {
 			throw new NoSuchElementException('No value present');
 		}
 		return value;

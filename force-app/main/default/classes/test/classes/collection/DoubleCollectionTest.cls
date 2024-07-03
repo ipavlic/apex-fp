@@ -1,7 +1,7 @@
 @IsTest(isParallel=true)
 private class DoubleCollectionTest {
 	@IsTest
-	private static void testSum() {
+	private static void sumShouldReturnSumIfItExists() {
 		DoubleCollection c = DoubleCollection.of(new List<Double>{100, 150});
 		System.Assert.areEqual(250, c.sum().get());
 	}
@@ -31,7 +31,7 @@ private class DoubleCollectionTest {
 	}
 
 	@IsTest
-	private static void testAverage() {
+	private static void averageShouldReturnAverageIfItExists() {
 		DoubleCollection c = DoubleCollection.of(new List<Double>{100, 150});
 		System.Assert.areEqual(125, c.average().get());
 	}
