@@ -7,3 +7,4 @@ salesforce.schema
 .sfdx/
 .sf/
 IlluminatedCloud/*
+.vscode
