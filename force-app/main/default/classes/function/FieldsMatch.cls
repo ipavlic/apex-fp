@@ -1,14 +1,14 @@
 public class FieldsMatch implements SObjectPredicate {
 
-	private static PrimitiveComparer primitiveComparer = new PrimitiveComparer();
-	private static SObjectFieldReader fieldReader = new SObjectFieldReader();
+	private static final PrimitiveComparer primitiveComparer = new PrimitiveComparer();
+	private static final SObjectFieldReader fieldReader = new SObjectFieldReader();
 
-	private static Set<BinaryRelation> setComparisons = new Set<BinaryRelation>{
+	private static final Set<BinaryRelation> setComparisons = new Set<BinaryRelation>{
 		BinaryRelation.IS_IN,
 		BinaryRelation.NOT_IN
 	};
 
-	private List<FieldMatchCondition> matchConditions;
+	private final List<FieldMatchCondition> matchConditions;
 
 	public FieldsMatch() {
 		this.matchConditions = new List<FieldMatchCondition>();
@@ -45,7 +45,7 @@ public class FieldsMatch implements SObjectPredicate {
 	}
 
 	private Boolean conditionSatisfied(FieldMatchCondition condition, SObject record) {
-		Object fieldValue = this.fieldReader.read(record, condition.fieldPath);
+		Object fieldValue = fieldReader.read(record, condition.fieldPath);
 		if (setComparisons.contains(condition.relation)) {
 			return setConditionSatisfied(condition, fieldValue);
 		} else {
@@ -82,7 +82,7 @@ public class FieldsMatch implements SObjectPredicate {
 				}
 			}
 		}
-		Integer result = this.primitiveComparer.compare(fieldValue, condition.value);
+		Integer result = primitiveComparer.compare(fieldValue, condition.value);
 		switch on condition.relation {
 			when EQUALS {
 				return result == 0;
