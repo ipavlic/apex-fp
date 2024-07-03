@@ -10,43 +10,42 @@ public with sharing class SObjectCollection {
 	private SObjectCollection(Iterable<SObject> records) {
 		this.records = new List<SObject>();
 		this.fieldReader = new SObjectFieldReader();
-		Iterator<SObject> iter = records.iterator();
-		while (iter.hasNext()) {
-			this.records.add(iter.next());
+		for (SObject record : records) {
+			this.records.add(record);
 		}
 	}
 
 	public Integer size() {
-		return records.size();
+		return this.records.size();
 	}
 
 	public List<SObject> asList() {
-		return new List<SObject>(records);
+		return new List<SObject>(this.records);
 	}
 
 	public List<SObject> asList(Type listType) {
 		List<SObject> typedList = (List<SObject>) listType.newInstance();
-		typedList.addAll(records);
+		typedList.addAll(this.records);
 		return typedList;
 	}
 
 	public Set<SObject> asSet() {
-		return new Set<SObject>(records);
+		return new Set<SObject>(this.records);
 	}
 
 	public Set<SObject> asSet(Type setType) {
 		Set<SObject> typedSet = (Set<SObject>) setType.newInstance();
-		typedSet.addAll(records);
+		typedSet.addAll(this.records);
 		return typedSet;
 	}
 
 	public Map<Id, SObject> asMap() {
-		return new Map<Id, SObject>(records);
+		return new Map<Id, SObject>(this.records);
 	}
 
 	public Map<Id, SObject> asMap(Type mapType) {
 		Map<Id, SObject> typedMap = (Map<Id, SObject>) mapType.newInstance();
-		typedMap.putAll(records);
+		typedMap.putAll(this.records);
 		return typedMap;
 	}
 
@@ -54,7 +53,7 @@ public with sharing class SObjectCollection {
 		List<SObject> different = new List<SObject>();
 		if (other != null && !other.isEmpty() && !this.isEmpty()) {
 			Map<Id, SObject> otherMap = new Map<Id, SObject>(other.records);
-			for (SObject record : records) {
+			for (SObject record : this.records) {
 				SObject counterpart = otherMap.get(record.Id);
 				if (counterpart == null) {
 					different.add(record);
@@ -72,12 +71,12 @@ public with sharing class SObjectCollection {
 	}
 
 	public Boolean isEmpty() {
-		return records.isEmpty();
+		return this.records.isEmpty();
 	}
 
 	public SObjectCollection filter(SObjectPredicate predicate) {
 		List<SObject> filtered = new List<SObject>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			if (predicate.call(record)) {
 				filtered.add(record);
 			}
@@ -87,7 +86,7 @@ public with sharing class SObjectCollection {
 
 	public SObjectCollection remove(SObjectPredicate predicate) {
 		List<SObject> remaining = new List<SObject>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			if (!predicate.call(record)) {
 				remaining.add(record);
 			}
@@ -97,7 +96,7 @@ public with sharing class SObjectCollection {
 
 	public List<Boolean> pluckBooleans(Schema.SObjectField field) {
 		List<Boolean> results = new List<Boolean>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((Boolean) rec.get(field));
 		}
 		return results;
@@ -105,15 +104,15 @@ public with sharing class SObjectCollection {
 
 	public List<Boolean> pluckBooleans(String relation) {
 		List<Boolean> results = new List<Boolean>();
-		for (SObject rec : records) {
-			results.add((Boolean) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((Boolean) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public List<Date> pluckDates(Schema.SObjectField field) {
 		List<Date> results = new List<Date>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((Date) rec.get(field));
 		}
 		return results;
@@ -121,15 +120,15 @@ public with sharing class SObjectCollection {
 
 	public List<Date> pluckDates(String relation) {
 		List<Date> results = new List<Date>();
-		for (SObject rec : records) {
-			results.add((Date) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((Date) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public List<Datetime> pluckDatetimes(Schema.SObjectField field) {
 		List<Datetime> results = new List<Datetime>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((Datetime) rec.get(field));
 		}
 		return results;
@@ -137,15 +136,15 @@ public with sharing class SObjectCollection {
 
 	public List<Datetime> pluckDatetimes(String relation) {
 		List<Datetime> results = new List<Datetime>();
-		for (SObject rec : records) {
-			results.add((Datetime) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((Datetime) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public List<Decimal> pluckDecimals(Schema.SObjectField field) {
 		List<Decimal> results = new List<Decimal>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((Decimal) rec.get(field));
 		}
 		return results;
@@ -153,15 +152,15 @@ public with sharing class SObjectCollection {
 
 	public List<Decimal> pluckDecimals(String relation) {
 		List<Decimal> results = new List<Decimal>();
-		for (SObject rec : records) {
-			results.add((Decimal) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((Decimal) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public List<Id> pluckIds() {
 		List<Id> results = new List<Id>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add(rec.Id);
 		}
 		return results;
@@ -169,7 +168,7 @@ public with sharing class SObjectCollection {
 
 	public List<Id> pluckIds(Schema.SObjectField field) {
 		List<Id> results = new List<Id>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((Id) rec.get(field));
 		}
 		return results;
@@ -177,15 +176,15 @@ public with sharing class SObjectCollection {
 
 	public List<Id> pluckIds(String relation) {
 		List<Id> results = new List<Id>();
-		for (SObject rec : records) {
-			results.add((Id) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((Id) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public List<String> pluckStrings(Schema.SObjectField field) {
 		List<String> results = new List<String>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			results.add((String) rec.get(field));
 		}
 		return results;
@@ -193,15 +192,15 @@ public with sharing class SObjectCollection {
 
 	public List<String> pluckStrings(String relation) {
 		List<String> results = new List<String>();
-		for (SObject rec : records) {
-			results.add((String) fieldReader.read(rec, relation));
+		for (SObject rec : this.records) {
+			results.add((String) this.fieldReader.read(rec, relation));
 		}
 		return results;
 	}
 
 	public Map<Boolean, List<SObject>> groupByBooleans(String apiFieldName, Type listType) {
 		Map<Boolean, List<SObject>> grouped = new Map<Boolean, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			Boolean key = (Boolean) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -225,7 +224,7 @@ public with sharing class SObjectCollection {
 
 	public Map<Date, List<SObject>> groupByDates(String apiFieldName, Type listType) {
 		Map<Date, List<SObject>> grouped = new Map<Date, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			Date key = (Date) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -249,7 +248,7 @@ public with sharing class SObjectCollection {
 
 	public Map<Datetime, List<SObject>> groupByDatetimes(String apiFieldName, Type listType) {
 		Map<Datetime, List<SObject>> grouped = new Map<Datetime, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			Datetime key = (Datetime) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -273,7 +272,7 @@ public with sharing class SObjectCollection {
 
 	public Map<Decimal, List<SObject>> groupByDecimals(String apiFieldName, Type listType) {
 		Map<Decimal, List<SObject>> grouped = new Map<Decimal, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			Decimal key = (Decimal) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -297,7 +296,7 @@ public with sharing class SObjectCollection {
 
 	public Map<Id, List<SObject>> groupByIds(String apiFieldName, Type listType) {
 		Map<Id, List<SObject>> grouped = new Map<Id, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			Id key = (Id) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -321,7 +320,7 @@ public with sharing class SObjectCollection {
 
 	public Map<String, List<SObject>> groupByStrings(String apiFieldName, Type listType) {
 		Map<String, List<SObject>> grouped = new Map<String, List<SObject>>();
-		for (SObject rec : records) {
+		for (SObject rec : this.records) {
 			String key = (String) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
 				grouped.put(key, (List<SObject>) listType.newInstance());
@@ -358,7 +357,7 @@ public with sharing class SObjectCollection {
 
 	public SObjectCollection pick(Set<String> apiFieldNames) {
 		List<SObject> picked = new List<SObject>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			SObject result = record.getSObjectType().newSObject();
 			Map<String, Object> fieldMap = record.getPopulatedFieldsAsMap();
 			for (String fieldName : apiFieldNames) {
@@ -377,7 +376,7 @@ public with sharing class SObjectCollection {
 
 	public SObjectCollection mapAll(SObjectToSObjectFunction fn) {
 		List<SObject> mapped = new List<SObject>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			mapped.add(fn.call(record));
 		}
 		return SObjectCollection.of(mapped);
@@ -385,7 +384,7 @@ public with sharing class SObjectCollection {
 
 	public ObjectCollection mapAll(SObjectToObjectFunction fn) {
 		List<Object> mapped = new List<Object>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			mapped.add(fn.call(record));
 		}
 		return ObjectCollection.of(mapped);
@@ -393,7 +392,7 @@ public with sharing class SObjectCollection {
 
 	public SObjectCollection mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
 		List<SObject> transformed = new List<SObject>();
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			if (predicate.call(record)) {
 				transformed.add(fn.call(record));
 			} else {
@@ -409,8 +408,8 @@ public with sharing class SObjectCollection {
 
 	public DecimalCollection mapToDecimal(String relation) {
 		List<Decimal> decimals = new List<Decimal>();
-		for (SObject record : records) {
-			decimals.add((Decimal) fieldReader.read(record, relation));
+		for (SObject record : this.records) {
+			decimals.add((Decimal) this.fieldReader.read(record, relation));
 		}
 		return DecimalCollection.of(decimals);
 	}
@@ -421,14 +420,14 @@ public with sharing class SObjectCollection {
 
 	public DoubleCollection mapToDouble(String relation) {
 		List<Double> doubles = new List<Double>();
-		for (SObject record : records) {
-			doubles.add((Double) fieldReader.read(record, relation));
+		for (SObject record : this.records) {
+			doubles.add((Double) this.fieldReader.read(record, relation));
 		}
 		return DoubleCollection.of(doubles);
 	}
 
 	public OptionalSObject find(SObjectPredicate predicate) {
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			if (predicate.call(record)) {
 				return OptionalSObject.of(record);
 			}
@@ -437,7 +436,7 @@ public with sharing class SObjectCollection {
 	}
 
 	public SObjectCollection forEach(SObjectFunction fn) {
-		for (SObject record : records) {
+		for (SObject record : this.records) {
 			fn.call(record);
 		}
 		return this;

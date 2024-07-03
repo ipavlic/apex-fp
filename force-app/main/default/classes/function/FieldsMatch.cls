@@ -45,7 +45,7 @@ public class FieldsMatch implements SObjectPredicate {
 	}
 
 	private Boolean conditionSatisfied(FieldMatchCondition condition, SObject record) {
-		Object fieldValue = fieldReader.read(record, condition.fieldPath);
+		Object fieldValue = this.fieldReader.read(record, condition.fieldPath);
 		if (setComparisons.contains(condition.relation)) {
 			return setConditionSatisfied(condition, fieldValue);
 		} else {
@@ -82,7 +82,7 @@ public class FieldsMatch implements SObjectPredicate {
 				}
 			}
 		}
-		Integer result = primitiveComparer.compare(fieldValue, condition.value);
+		Integer result = this.primitiveComparer.compare(fieldValue, condition.value);
 		switch on condition.relation {
 			when EQUALS {
 				return result == 0;

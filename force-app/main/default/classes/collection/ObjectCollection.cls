@@ -15,13 +15,13 @@ public with sharing class ObjectCollection {
 
     public List<Object> asList(Type listType) {
         List<Object> typedObjects = (List<Object>) listType.newInstance();
-        typedObjects.addAll(objects);
+        typedObjects.addAll(this.objects);
         return typedObjects;
     }
 
     public Set<Object> asSet(Type setType) {
         Set<Object> typedObjects = (Set<Object>) setType.newInstance();
-        typedObjects.addAll(objects);
+        typedObjects.addAll(this.objects);
         return typedObjects;
     }
 }

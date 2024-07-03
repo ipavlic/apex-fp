@@ -1,6 +1,13 @@
 public with sharing class OptionalSObject {
 	private final SObject value;
-	private static final OptionalSObject EMPTY = new OptionalSObject();
+
+	private static final OptionalSObject EMPTY {
+		get {
+			EMPTY = EMPTY ?? new OptionalSObject();
+			return EMPTY;
+		}
+		set;
+	}
 
 	public static OptionalSObject of(SObject value) {
 		return new OptionalSObject(value);
@@ -11,33 +18,30 @@ public with sharing class OptionalSObject {
 	}
 
 	private OptionalSObject() {
-		this.value = null;
+		this(null);
 	}
-	
+
 	private OptionalSObject(SObject value) {
 		this.value = value;
 	}
 
 	public Boolean isPresent() {
-		return value != null;
+		return this.value != null;
 	}
 
 	public SObject orElse(SObject other) {
-		return value != null ? value : other; 
+		return this.value ?? other;
 	}
 
 	public SObject orElseThrow(Exception e) {
-		if (value != null) {
-			return value;
+		if (this.value != null) {
+			return this.value;
 		} else {
 			throw e;
 		}
 	}
 
 	public SObject get() {
-		if (value == null) {
-			throw new NoSuchElementException('No value present');
-		}
-		return value;
+		return this.orElseThrow(new NoSuchElementException('No value present'));
 	}
 }

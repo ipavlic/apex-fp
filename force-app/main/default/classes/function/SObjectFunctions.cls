@@ -39,15 +39,15 @@ public with sharing class SObjectFunctions {
 	}
 
 	public class Debug implements SObjectFunction {
-		private LoggingLevel logLevel = LoggingLevel.DEBUG;
+		private final DebugSObject debugSObject = new DebugSObject();
 
-		public Debug logLevel(LoggingLevel logLevel) {
-			this.logLevel = logLevel;
+		public Debug logLevel(System.LoggingLevel logLevel) {
+			this.debugSObject.logLevel(logLevel);
 			return this;
 		}
 
 		public void call(SObject record) {
-			System.debug(logLevel, record);
+			this.debugSObject.call(record);
 		}
 	}
 }

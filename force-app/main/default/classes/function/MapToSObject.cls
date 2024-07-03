@@ -1,28 +1,25 @@
 public with sharing class MapToSObject implements SObjectToSObjectFunction {
-	Schema.SObjectType type;
-	Map<String, Object> fieldValues;
-	Map<String, String> fieldMappings;
-	SObjectFieldReader fieldReader;
-	
+	private final Schema.SObjectType type;
+	private final Map<String, Object> fieldValues = new Map<String, Object>();
+	private final Map<String, String> fieldMappings = new Map<String, String>();
+	private final SObjectFieldReader fieldReader = new SObjectFieldReader();
+
 	public MapToSObject(Schema.SObjectType type) {
 		this.type = type;
-		this.fieldValues = new Map<String, Object>();
-		this.fieldMappings = new Map<String, String>();
-		this.fieldReader = new SObjectFieldReader();
 	}
 
 	public MapToSObject mapField(String targetFieldName, String sourceFieldRelation) {
-		fieldMappings.put(targetFieldName, sourceFieldRelation);
+		this.fieldMappings.put(targetFieldName, sourceFieldRelation);
 		return this;
 	}
 
 	public MapToSObject mapField(Schema.SObjectField targetField, String sourceFieldRelation) {
-		fieldMappings.put(targetField.getDescribe().getName(), sourceFieldRelation);
+		this.fieldMappings.put(targetField.getDescribe().getName(), sourceFieldRelation);
 		return this;
 	}
 
 	public MapToSObject mapField(Schema.SObjectField targetField, Schema.SObjectField sourceField) {
-		fieldMappings.put(targetField.getDescribe().getName(), sourceField.getDescribe().getName());
+		this.fieldMappings.put(targetField.getDescribe().getName(), sourceField.getDescribe().getName());
 		return this;
 	}
 
@@ -43,12 +40,12 @@ public with sharing class MapToSObject implements SObjectToSObjectFunction {
 	}
 
 	public MapToSObject setField(String fieldName, Object value) {
-		fieldValues.put(fieldName, value);
+		this.fieldValues.put(fieldName, value);
 		return this;
 	}
 
 	public MapToSObject setField(Schema.SObjectField field, Object value) {
-		fieldValues.put(field.getDescribe().getName(), value);
+		this.fieldValues.put(field.getDescribe().getName(), value);
 		return this;
 	}
 
@@ -65,13 +62,13 @@ public with sharing class MapToSObject implements SObjectToSObjectFunction {
 	}
 
 	public SObject call(SObject record) {
-		SObject mapped = type.newSObject();
-		for (String fieldName : fieldValues.keySet()) {
-			mapped.put(fieldName, fieldValues.get(fieldName));
+		SObject mapped = this.type.newSObject();
+		for (String fieldName : this.fieldValues.keySet()) {
+			mapped.put(fieldName, this.fieldValues.get(fieldName));
 		}
-		for (String targetFieldName : fieldMappings.keySet()) {
-			String sourceFieldRelation = fieldMappings.get(targetFieldName);
-			mapped.put(targetFieldName, fieldReader.read(record, sourceFieldRelation));
+		for (String targetFieldName : this.fieldMappings.keySet()) {
+			String sourceFieldRelation = this.fieldMappings.get(targetFieldName);
+			mapped.put(targetFieldName, this.fieldReader.read(record, sourceFieldRelation));
 		}
 		return mapped;
 	}

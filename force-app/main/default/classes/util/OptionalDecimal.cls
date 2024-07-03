@@ -38,9 +38,6 @@ public with sharing class OptionalDecimal {
 	}
 
 	public Decimal get() {
-		if (this.value == null) {
-			throw new NoSuchElementException('No value present');
-		}
-		return value;
+		return this.orElseThrow(new NoSuchElementException('No value present'));
 	}
 }
