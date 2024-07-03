@@ -28,7 +28,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Install Salesforce CLI from NPM
-        run: npm install @salesforce/cli@2.10.2 --global
+        run: npm install @salesforce/cli@2.47.6 --global
           
       - name: Write the dev hub token into a file
         run: 'echo ${{secrets.SFDX_AUTH_URL}} > sfdx-auth-url'
