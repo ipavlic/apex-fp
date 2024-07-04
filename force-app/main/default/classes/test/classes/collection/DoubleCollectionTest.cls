@@ -19,6 +19,14 @@ private class DoubleCollectionTest {
 	}
 
 	@IsTest
+	private static void maxSupportsNumbersOutsideDocumentedRange() {
+		// https://salesforce.stackexchange.com/questions/9320/what-is-max-and-min-range-for-double-valueof
+		Double outsideDocumentedRange = Double.valueOf('-9.9E102');
+		DoubleCollection c = DoubleCollection.of(new List<Double>{outsideDocumentedRange});
+		System.Assert.areEqual(outsideDocumentedRange, c.max().get());
+	}
+
+	@IsTest
 	private static void minShouldReturnAMinIfItExists() {
 		DoubleCollection c = DoubleCollection.of(new List<Double>{70, 80, 150, 120});
 		System.Assert.areEqual(70, c.min().get());
@@ -28,6 +36,14 @@ private class DoubleCollectionTest {
 	private static void minShouldReturnEmptyIfItDoesNotExist() {
 		DoubleCollection c = DoubleCollection.of(new List<Double>{null, null, null});
 		System.Assert.areEqual(OptionalDouble.empty(), c.min());
+	}
+
+	@IsTest
+	private static void minSupportsNumbersOutsideDocumentedRange() {
+		// https://salesforce.stackexchange.com/questions/9320/what-is-max-and-min-range-for-double-valueof
+		Double outsideDocumentedRange = Double.valueOf('9.9E102');
+		DoubleCollection c = DoubleCollection.of(new List<Double>{outsideDocumentedRange});
+		System.Assert.areEqual(outsideDocumentedRange, c.min().get());
 	}
 
 	@IsTest

@@ -1,20 +1,4 @@
 public class DecimalCollection {
-	private static final Decimal MAX_DECIMAL_VALUE {
-		get {
-			MAX_DECIMAL_VALUE = MAX_DECIMAL_VALUE ?? Math.pow(2, 63) - 1;
-			return MAX_DECIMAL_VALUE;
-		}
-		set;
-	}
-
-  private static final Decimal MIN_DECIMAL_VALUE {
-		get {
-			MIN_DECIMAL_VALUE = MIN_DECIMAL_VALUE ?? MAX_DECIMAL_VALUE * -1;
-			return MIN_DECIMAL_VALUE;
-		}
-		set;
-	}
-
 	private final List<Decimal> decimals;
 
 	public static DecimalCollection of(Iterable<Decimal> decimals) {
@@ -49,18 +33,26 @@ public class DecimalCollection {
 	public OptionalDecimal max() {
 		Decimal max;
 		for (Decimal d : this.decimals) {
-			if ((d ?? MIN_DECIMAL_VALUE) > (max ?? MIN_DECIMAL_VALUE)) {
-				max = d;
+			if (d != null) {
+				if (max == null) {
+					max = d;
+				} else {
+					max = d > max ? d : max;
+				}
 			}
 		}
 		return OptionalDecimal.of(max);
 	}
 
 	public OptionalDecimal min() {
-		Decimal min ;
-		for (Decimal d : this.decimals) {
-			if ((d ?? MAX_DECIMAL_VALUE) < (min ?? MAX_DECIMAL_VALUE)) {
-				min = d;
+		Double min;
+		for (Double d : this.decimals) {
+			if (d != null) {
+				if (min == null) {
+					min = d;
+				} else {
+					min = d < min ? d : min;
+				}
 			}
 		}
 		return OptionalDecimal.of(min);

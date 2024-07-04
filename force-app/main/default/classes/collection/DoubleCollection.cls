@@ -1,20 +1,4 @@
 public class DoubleCollection {
-	private static final Double MAX_DOUBLE_VALUE {
-		get {
-			MAX_DOUBLE_VALUE = MAX_DOUBLE_VALUE ?? Math.pow(2, 63) - 1;
-			return MAX_DOUBLE_VALUE;
-		}
-		set;
-	}
-
-  private static final Double MIN_DOUBLE_VALUE {
-		get {
-			MIN_DOUBLE_VALUE = MIN_DOUBLE_VALUE ?? MAX_DOUBLE_VALUE * -1;
-			return MIN_DOUBLE_VALUE;
-		}
-		set;
-	}
-
 	private final List<Double> doubles;
 
 	public static DoubleCollection of(Iterable<Double> doubles) {
@@ -40,7 +24,7 @@ public class DoubleCollection {
 		Double sum;
 		for (Double d : this.doubles) {
 			if (d != null) {
-				sum = (sum ?? 0) + (d ?? 0);
+				sum = (sum ?? 0) + d;
 			}
 		}
 		return OptionalDouble.of(sum);
@@ -49,18 +33,26 @@ public class DoubleCollection {
 	public OptionalDouble max() {
 		Double max;
 		for (Double d : this.doubles) {
-			if ((d ?? MIN_DOUBLE_VALUE) > (max ?? MIN_DOUBLE_VALUE)) {
-				max = d;
+			if (d != null) {
+				if (max == null) {
+					max = d;
+				} else {
+					max = d > max ? d : max;
+				}
 			}
 		}
 		return OptionalDouble.of(max);
 	}
 
 	public OptionalDouble min() {
-		Double min ;
+		Double min;
 		for (Double d : this.doubles) {
-			if ((d ?? MAX_DOUBLE_VALUE) < (min ?? MAX_DOUBLE_VALUE)) {
-				min = d;
+			if (d != null) {
+				if (min == null) {
+					min = d;
+				} else {
+					min = d < min ? d : min;
+				}
 			}
 		}
 		return OptionalDouble.of(min);
