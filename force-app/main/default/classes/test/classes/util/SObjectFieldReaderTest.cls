@@ -1,4 +1,4 @@
-@IsTest(IsParallel=true)
+@IsTest(isParallel=true)
 private class SObjectFieldReaderTest {
 	@IsTest
 	private static void testResolving() {

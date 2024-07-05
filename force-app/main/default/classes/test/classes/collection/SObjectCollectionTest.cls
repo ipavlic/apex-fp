@@ -1,4 +1,4 @@
-@IsTest(IsParallel=true)
+@IsTest(isParallel=true)
 private class SObjectCollectionTest {
 
 	static Id firstUserId = TestUtility.getFakeId(User.SObjectType);

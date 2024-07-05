@@ -1,4 +1,4 @@
-@IsTest(IsParallel=true)
+@IsTest(isParallel=true)
 private class OptionalSObjectTest {
 	@IsTest
 	private static void optionalCanBeNull() {

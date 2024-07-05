@@ -1,4 +1,4 @@
-@IsTest(IsParallel=true)
+@IsTest(isParallel=true)
 private class DoubleCollectionTest {
 	@IsTest
 	private static void sumShouldReturnSumIfItExists() {

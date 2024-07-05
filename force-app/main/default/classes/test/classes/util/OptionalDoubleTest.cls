@@ -1,4 +1,4 @@
-@IsTest(IsParallel=true)
+@IsTest(isParallel=true)
 private class OptionalDoubleTest {
 	@IsTest
 	private static void optionalCanBeNull() {
