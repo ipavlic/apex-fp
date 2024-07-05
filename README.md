@@ -7,8 +7,6 @@ Apex FP provides functional constructs for `SObject` collections!
 
 ## Examples
 
-`SObjectCollection` and `SObjectStream` wrap regular collections to offer functional constructs.  
-
 ### Filter
 
 ```apex
