@@ -16,6 +16,7 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void collectionCanBeInstantiatedFromAList() {
 		SObjectCollection c = SObjectCollection.of(new List<Account>{new Account(Name = 'Foo'), new Account(Name = 'Bar')});
+		System.Assert.isNotNull(c);
 	}
 
 	@IsTest

@@ -29,16 +29,6 @@ public with sharing class SObjectCollection {
 		return typedList;
 	}
 
-	public Set<SObject> asSet() {
-		return new Set<SObject>(this.records);
-	}
-
-	public Set<SObject> asSet(Type setType) {
-		Set<SObject> typedSet = (Set<SObject>) setType.newInstance();
-		typedSet.addAll(this.records);
-		return typedSet;
-	}
-
 	public Map<Id, SObject> asMap() {
 		return new Map<Id, SObject>(this.records);
 	}
