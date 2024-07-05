@@ -7,7 +7,7 @@ Apex FP provides functional constructs for `SObject` collections!
 
 ## Examples
 
-Transform `SObjects` with a simple declarative API.
+### Filter
 
 ```apex
 List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities)
@@ -16,6 +16,8 @@ List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities)
 		.also(Opportunity.AccountId).equals(accountId))
 	.asList();
 ```
+
+### Map
 
 ```apex
 List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
@@ -26,13 +28,77 @@ List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
 	.asList();
 ```
 
+### Modify
+
+```apex
+List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities)
+	.forEach(Fn.Modify
+		.setField(Opportunity.Rank__c, 'Excellent')
+	)
+	.asList();
+```
+
+### Debug
+
+```apex
+SObjectCollection.of(opportunities).forEach(Fn.Debug);
+```
+
+### Group
+
 ```apex
 Map<Id, List<Account>> accountsByParentId = SObjectCollection.of(accounts).groupByIds(Account.ParentId);
 ```
 
+### Pick
+
 ```apex
-Decimal averageOpportunityValue = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).average();
+List<Opportunity> idAndAmountOpportunities = SObjectCollection.of(opportunities)
+	.pick(new Set<Schema.SObjectField>{Opportunity.Id, Opportunity.Amount})
+	.asList();
 ```
+
+### Pluck
+
+```apex
+List<Decimal> amounts = SObjectCollection.of(opportunities).pluckDecimals(Opportunity.Amount);
+``` 
+
+### Average
+
+```apex
+OptionalDecimal average = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).average();
+```
+
+### Sum
+
+```apex
+OptionalDecimal sum = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).sum();
+```
+
+### Min
+
+```apex
+OptionalDecimal min = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).min();
+```
+
+### Max
+
+```apex
+OptionalDecimal max = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).max();
+```
+
+### Stream
+
+```apex
+Iterator<SObject> iter = SObjectStream.of(opportunities).filter(Fn.Match.field(Opportunity.Id).equals(accountId));
+		
+List<SObject> filtered = new List<SObject>();
+while (iter.hasNext()) {
+	filtered.add(iter.next());
+}
+```
+
 Find more examples <a href="https://apexfp.org/examples">in the documentation</a>.
 
 ## Deploy to Salesforce
