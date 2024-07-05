@@ -46,9 +46,10 @@ jobs:
         run: sf apex run test --synchronous --code-coverage --result-format human --output-dir ./tests/apex
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v3
+        uses: codecov/codecov-action@v4
         with:
           flags: Apex
+          token: ${{ secrets.CODECOV_TOKEN }}
 
       - name: Delete scratch org
         if: always()
