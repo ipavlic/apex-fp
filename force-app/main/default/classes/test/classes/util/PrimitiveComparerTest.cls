@@ -1,4 +1,4 @@
-@IsTest(isParallel=true)
+@IsTest(IsParallel=true)
 private class PrimitiveComparerTest {
 	@IsTest
 	private static void nullComparison() {

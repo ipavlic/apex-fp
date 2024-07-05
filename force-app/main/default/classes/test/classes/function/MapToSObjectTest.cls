@@ -1,4 +1,4 @@
-@IsTest(isParallel=true)
+@IsTest(IsParallel=true)
 public with sharing class MapToSObjectTest {
 	
 	@IsTest

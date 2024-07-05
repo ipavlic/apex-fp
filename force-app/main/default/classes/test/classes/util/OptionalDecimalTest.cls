@@ -1,4 +1,4 @@
-@IsTest(isParallel=true)
+@IsTest(IsParallel=true)
 private class OptionalDecimalTest {
 	@IsTest
 	private static void optionalCanBeNull() {
