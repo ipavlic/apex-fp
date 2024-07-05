@@ -7,6 +7,8 @@ Apex FP provides functional constructs for `SObject` collections!
 
 ## Examples
 
+`SObjectCollection` and `SObjectStream` wrap regular collections to offer functional constructs.  
+
 ### Filter
 
 ```apex
@@ -20,11 +22,23 @@ List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities)
 ### Map
 
 ```apex
-List<Task> prospectingTasks = SObjectCollection.of(Trigger.new)
+List<Task> prospectingOpportunityTasks = SObjectCollection.of(Trigger.new)
 	.filter(Fn.Match.recordFields(new Opportunity(Stage = 'Prospecting')))
 	.mapAll(Fn.MapTo(Task.SObjectType)
 		.setField(Task.Subject, 'Follow up')
 		.mapField(Task.WhatId, Opportunity.Id))
+	.asList();
+```
+
+```apex
+List<Task> largeProspectingOpportunityFollowUpTasks = SObjectCollection.of(Trigger.new)
+	.filter(Fn.Match.recordFields(new Opportunity(Stage = 'Prospecting')))
+	.mapSome(
+		Fn.Match.field(Opportunity.Amount).greaterThan(100000),
+		Fn.MapTo(Task.SObjectType)
+			.setField(Task.Subject, 'Follow up')
+			.mapField(Task.WhatId, Opportunity.Id)
+	)
 	.asList();
 ```
 
@@ -86,17 +100,6 @@ OptionalDecimal min = SObjectCollection.of(opportunities).mapToDecimal(Opportuni
 
 ```apex
 OptionalDecimal max = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).max();
-```
-
-### Stream
-
-```apex
-Iterator<SObject> iter = SObjectStream.of(opportunities).filter(Fn.Match.field(Opportunity.Id).equals(accountId));
-		
-List<SObject> filtered = new List<SObject>();
-while (iter.hasNext()) {
-	filtered.add(iter.next());
-}
 ```
 
 Find more examples <a href="https://apexfp.org/examples">in the documentation</a>.
