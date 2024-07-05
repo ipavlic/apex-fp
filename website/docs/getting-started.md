@@ -14,7 +14,7 @@ slug: '/'
 **Project status**
 
 ![CI workflow](https://github.com/ipavlic/apex-fp/actions/workflows/ci.yml/badge.svg)
-[![codecov](https://codecov.io/gh/ipavlic/apex-fp/branch/master/graph/badge.svg)](https://codecov.io/gh/ipavlic/apex-fp)
+[![codecov](https://codecov.io/gh/ipavlic/apex-fp/branch/main/graph/badge.svg)](https://codecov.io/gh/ipavlic/apex-fp)
 
 ## Basic concepts
 

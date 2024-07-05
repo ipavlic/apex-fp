@@ -444,8 +444,8 @@ System.debug(objects instanceof List<Account>); // true
 System.debug(objects instanceof List<Opportunity>); // true
 ```
 
-`asList()` and `asSet()` on `SObjectCollection` return a raw `List<SObject>` and `Set<SObject>`. This is more convenient because the type does not need to be provided, and a cast is  not required in either case, but `instanceof` can provide unexpected results.
-A concrete type of the list can be passed in as well. When this is done, the returned `List` or `Set` are of the correct concrete type instead of generic `SObject` collection type:
+`asList()` on `SObjectCollection` returns a raw `List<SObject>`. This is more convenient because the type does not need to be provided, and a cast is not required in either case, but `instanceof` can provide unexpected results.
+A concrete type of the list can be passed in as well. When this is done, the returned `List` is of the correct concrete type instead of generic `SObject` collection type:
 
 ```
 List<Account> filteredAccounts = accountCollection.asList();
@@ -467,20 +467,6 @@ List<SObject> asList(Type listType)
 List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).asList(); // works, but instanceof can provide unexpected results
 List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities).asList(List<Opportunity>.class); // always works
 ```
-
-## asSet
-
-Returns a `Set` of records in the collection, either as a raw `Set<SObject>`, or as a `Set<T>` where `T` is a “subclass“ of `SObject`.
-
-**Signature**
-```
-List<SObject> asSet()
-List<SObject> asSet(Type listType)
-```
-
-:::caution
-Refer to [asList](#asList) for potential issues with `instanceof`.
-:::
 
 ## asMap
 
