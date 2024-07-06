@@ -33,10 +33,12 @@ virtual Boolean hasNext()
 ```
 **Example**
 
+```
 SObjectStream accountStream = SObjectStream.of(Trigger.new);
 while (accountStream.hasNext()) {
 	Account acc = (Account) accountStream.next();
 }
+```
 
 ## next
 
