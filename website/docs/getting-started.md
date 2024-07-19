@@ -7,8 +7,9 @@ slug: '/'
 
 ## Installation
 
-<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=master">
-	<img alt="Deploy to Salesforce" src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png"></img>
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=main">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
 
 **Project status**
