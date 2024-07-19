@@ -104,7 +104,7 @@ Find more examples <a href="https://apexfp.org/examples">in the documentation</a
 
 ## Deploy to Salesforce
 
-<a href="https://githubsfdeploy.herokuapp.com">
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=main">
   <img alt="Deploy to Salesforce"
        src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
 </a>
