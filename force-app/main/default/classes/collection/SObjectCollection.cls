@@ -1,7 +1,7 @@
 public with sharing class SObjectCollection {
 
-	private List<SObject> records;
-	private SObjectFieldReader fieldReader;
+	private final List<SObject> records;
+	private final SObjectFieldReader fieldReader;
 
 	public static SObjectCollection of(Iterable<SObject> records) {
 		return new SObjectCollection(records);

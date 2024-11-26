@@ -1,4 +1,4 @@
-@IsTest(isParallel=true)
+@IsTest(IsParallel=true)
 private class SObjectStreamTest {
 	@IsTest
 	private static void testFilter() {

@@ -1,7 +1,7 @@
-public class RecordFieldsMatch implements SObjectPredicate {
+public class MatchRecordFields implements SObjectPredicate {
 	private final SObject prototype;
 
-	public RecordFieldsMatch(sObject prototype) {
+	public MatchRecordFields(sObject prototype) {
 		this.prototype = prototype;
 	}
 

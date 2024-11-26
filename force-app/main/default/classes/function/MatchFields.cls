@@ -1,4 +1,4 @@
-public class FieldsMatch implements SObjectPredicate {
+public class MatchFields implements SObjectPredicate {
 
 	private static final PrimitiveComparer primitiveComparer = new PrimitiveComparer();
 	private static final SObjectFieldReader fieldReader = new SObjectFieldReader();
@@ -8,35 +8,35 @@ public class FieldsMatch implements SObjectPredicate {
 		BinaryRelation.NOT_IN
 	};
 
-	private final List<FieldMatchCondition> matchConditions;
+	private final List<MatchFieldCondition> matchConditions;
 
-	public FieldsMatch() {
-		this.matchConditions = new List<FieldMatchCondition>();
+	public MatchFields() {
+		this.matchConditions = new List<MatchFieldCondition>();
 	}
 
-	public FieldsMatch addCondition(FieldMatchCondition condition) {
+	public MatchFields addCondition(MatchFieldCondition condition) {
 		matchConditions.add(condition);
 		return this;
 	}
 
-	public IncompleteFieldsMatch also(Schema.SObjectField field) {
+	public IncompleteMatchFields also(Schema.SObjectField field) {
 		return field(field);
 	}
 
-	public IncompleteFieldsMatch also(String fieldPath) {
+	public IncompleteMatchFields also(String fieldPath) {
 		return field(fieldPath);
 	}
 
-	public IncompleteFieldsMatch field(Schema.SObjectField field) {
-		return new IncompleteFieldsMatch(this, field);
+	public IncompleteMatchFields field(Schema.SObjectField field) {
+		return new IncompleteMatchFields(this, field);
 	}
 
-	public IncompleteFieldsMatch field(String fieldPath) {
-		return new IncompleteFieldsMatch(this, fieldPath);
+	public IncompleteMatchFields field(String fieldPath) {
+		return new IncompleteMatchFields(this, fieldPath);
 	}
 
 	public Boolean call(SObject record) {
-		for (FieldMatchCondition condition : matchConditions) {
+		for (MatchFieldCondition condition : matchConditions) {
 			if (!conditionSatisfied(condition, record)) {
 				return false;
 			}
@@ -44,7 +44,7 @@ public class FieldsMatch implements SObjectPredicate {
 		return true;
 	}
 
-	private Boolean conditionSatisfied(FieldMatchCondition condition, SObject record) {
+	private Boolean conditionSatisfied(MatchFieldCondition condition, SObject record) {
 		Object fieldValue = fieldReader.read(record, condition.fieldPath);
 		if (setComparisons.contains(condition.relation)) {
 			return setConditionSatisfied(condition, fieldValue);
@@ -53,7 +53,7 @@ public class FieldsMatch implements SObjectPredicate {
 		}
 	}
 
-	private Boolean setConditionSatisfied(FieldMatchCondition condition, Object fieldValue) {
+	private Boolean setConditionSatisfied(MatchFieldCondition condition, Object fieldValue) {
 		Boolean isValueContained = contains(condition.value, fieldValue);
 		switch on condition.relation {
 			when IS_IN {
@@ -68,7 +68,7 @@ public class FieldsMatch implements SObjectPredicate {
 		}
 	}
 
-	private Boolean comparisonConditionSatisfied(FieldMatchCondition condition, Object fieldValue) {
+	private Boolean comparisonConditionSatisfied(MatchFieldCondition condition, Object fieldValue) {
 		if (condition.value == null) {
 			switch on condition.relation {
 				when EQUALS {

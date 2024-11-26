@@ -1,5 +1,5 @@
 @IsTest(IsParallel=true)
-public with sharing class MapToSObjectTest {
+private class MapToSObjectTest {
 	
 	@IsTest
 	private static void testSetFieldWithFieldValue() {

@@ -1,4 +1,4 @@
-public with sharing class DebugSObject {
+public with sharing class DebugSObject implements SObjectFunction {
 	private System.LoggingLevel logLevel = System.LoggingLevel.DEBUG;
 
 	public DebugSObject logLevel(LoggingLevel logLevel) {

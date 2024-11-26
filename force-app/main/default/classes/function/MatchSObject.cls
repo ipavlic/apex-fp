@@ -1,13 +1,13 @@
 public with sharing class MatchSObject {
-	public RecordFieldsMatch recordFields(SObject prototype) {
-		return new RecordFieldsMatch(prototype);
+	public MatchRecordFields recordFields(SObject prototype) {
+		return new MatchRecordFields(prototype);
 	}
 
-	public IncompleteFieldsMatch field(Schema.SObjectField field) {
-		return new IncompleteFieldsMatch(new FieldsMatch(), field);
+	public IncompleteMatchFields field(Schema.SObjectField field) {
+		return new IncompleteMatchFields(new MatchFields(), field);
 	}
 
-	public IncompleteFieldsMatch field(String fieldPath) {
-		return new IncompleteFieldsMatch(new FieldsMatch(), fieldPath);
+	public IncompleteMatchFields field(String fieldPath) {
+		return new IncompleteMatchFields(new MatchFields(), fieldPath);
 	}
 }

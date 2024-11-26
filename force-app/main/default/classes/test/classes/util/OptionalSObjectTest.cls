@@ -1,8 +1,9 @@
-@IsTest(isParallel=true)
+@IsTest(IsParallel=true)
 private class OptionalSObjectTest {
 	@IsTest
-	private static void optionalCanBeNull() {
+	private static void optionalCanHoldNull() {
 		OptionalSObject optional = OptionalSObject.of(null);
+		System.Assert.isNotNull(optional);
 	}
 
 	@IsTest
@@ -15,7 +16,7 @@ private class OptionalSObjectTest {
 	private static void getThrowsNoSuchElementExceptionWhenValueIsNotPresent() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		try {
-			SObject value = optional.get();
+			optional.get();
 			System.Assert.fail('Exception was not thrown');
 		} catch (NoSuchElementException e) {
 			System.Assert.isInstanceOfType(e, NoSuchElementException.class);
@@ -41,9 +42,8 @@ private class OptionalSObjectTest {
 	@IsTest
 	private static void orElseThrowThrowsWhenValueIsNotPreset() {
 		OptionalSObject optional = OptionalSObject.of(null);
-		SObject other = new Account(Name = 'Foo');
 		try {
-			SObject value = optional.orElseThrow(new IllegalOperationException('test'));
+			optional.orElseThrow(new IllegalOperationException('test'));
 			System.Assert.fail('Exception was not thrown');
 		} catch (IllegalOperationException e) {
 			System.Assert.areEqual('test', e.getMessage());
