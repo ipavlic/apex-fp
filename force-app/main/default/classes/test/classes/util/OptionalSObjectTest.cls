@@ -43,9 +43,9 @@ private class OptionalSObjectTest {
 	private static void orElseThrowThrowsWhenValueIsNotPreset() {
 		OptionalSObject optional = OptionalSObject.of(null);
 		try {
-			optional.orElseThrow(new IllegalOperationException('test'));
+			optional.orElseThrow(new IllegalArgumentException('test'));
 			System.Assert.fail('Exception was not thrown');
-		} catch (IllegalOperationException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.areEqual('test', e.getMessage());
 		}
 	}

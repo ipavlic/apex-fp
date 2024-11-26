@@ -18,7 +18,7 @@ private class SObjectFieldReaderTest {
 
 		try {
 			new SObjectFieldReader().read(opp, 'ObjectThatShouldNotExist.Name');
-		} catch (LambdaException e) {
+		} catch (IllegalArgumentException e) {
 			ex = e;
 		}
 		System.Assert.areNotEqual(null, ex);
@@ -35,7 +35,7 @@ private class SObjectFieldReaderTest {
 
 		try {
 		new SObjectFieldReader().read(opp, 'Account.FieldThatShouldNotExist');
-		} catch (LambdaException e) {
+		} catch (IllegalArgumentException e) {
 			ex = e;
 		}
 		System.Assert.areNotEqual(null, ex);

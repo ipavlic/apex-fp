@@ -43,9 +43,9 @@ private class OptionalDoubleTest {
 		OptionalDouble optional = OptionalDouble.of(null);
 		Double other = 2.71;
 		try {
-			Double value = optional.orElseThrow(new IllegalOperationException('test'));
+			Double value = optional.orElseThrow(new IllegalArgumentException('test'));
 			System.Assert.fail('Exception was not thrown');
-		} catch (IllegalOperationException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.areEqual('test', e.getMessage());
 		}
 	}
@@ -55,9 +55,9 @@ private class OptionalDoubleTest {
 		Double d = 1.3;
 		OptionalDouble optional = OptionalDouble.of(d);
 		try {
-			Double value = optional.orElseThrow(new IllegalOperationException('test'));
+			Double value = optional.orElseThrow(new IllegalArgumentException('test'));
 			System.Assert.areEqual(d, value);
-		} catch (IllegalOperationException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.fail('Exception was thrown');
 		}
 	}

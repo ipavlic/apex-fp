@@ -25,7 +25,7 @@ public with sharing class ModifySObject implements SObjectFunction {
 
 	public void call(SObject record) {
 		if (record == null) {
-			throw new LambdaException('Record is null');
+			throw new IllegalArgumentException('Record is null');
 		}
 		for (String fieldName : this.fieldValues.keySet()) {
 			record.put(fieldName, this.fieldValues.get(fieldName));

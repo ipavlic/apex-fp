@@ -43,9 +43,9 @@ private class OptionalDecimalTest {
 		OptionalDecimal optional = OptionalDecimal.of(null);
 		Decimal other = 2.71;
 		try {
-			Decimal value = optional.orElseThrow(new IllegalOperationException('test'));
+			Decimal value = optional.orElseThrow(new IllegalArgumentException('test'));
 			System.Assert.fail('Exception was not thrown');
-		} catch (IllegalOperationException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.areEqual('test', e.getMessage());
 		}
 	}
@@ -55,9 +55,9 @@ private class OptionalDecimalTest {
 		Decimal d = 1.3;
 		OptionalDecimal optional = OptionalDecimal.of(d);
 		try {
-			Decimal value = optional.orElseThrow(new IllegalOperationException('test'));
+			Decimal value = optional.orElseThrow(new IllegalArgumentException('test'));
 			System.Assert.areEqual(d, value);
-		} catch (IllegalOperationException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.fail('Exception was thrown');
 		}
 	}

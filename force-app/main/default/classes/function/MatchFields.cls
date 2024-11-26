@@ -63,7 +63,7 @@ public class MatchFields implements SObjectPredicate {
 				return isValueContained == false;
 			}
 			when else {
-				throw new LambdaException('Relation not recognized: ' + condition.relation);
+				throw new IllegalArgumentException('Relation not recognized: ' + condition.relation);
 			}
 		}
 	}
@@ -103,7 +103,7 @@ public class MatchFields implements SObjectPredicate {
 				return result >= 0;
 			}
 			when else {
-				throw new LambdaException('Relation not recognized: ' + condition.relation);
+				throw new IllegalArgumentException('Relation not recognized: ' + condition.relation);
 			}
 		}
 	}
@@ -137,6 +137,6 @@ public class MatchFields implements SObjectPredicate {
 			Set<String> validValues = (Set<String>) valueSet;
 			return validValues.contains((String) value);
 		}
-		throw new LambdaException('Provided set type is not supported by the filter');
+		throw new IllegalArgumentException('Provided set type is not supported by the filter');
 	}
 }

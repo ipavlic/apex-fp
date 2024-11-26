@@ -82,6 +82,6 @@ public class PrimitiveComparer {
 		else if (first instanceof Time && second instanceof Time) {
 			return this.compareTimes((Time)first, (Time)second);
 		}
-		throw new LambdaException('Comparison for provided types is not supported');
+		throw new IllegalArgumentException('Comparison for provided types is not supported');
 	}
 }

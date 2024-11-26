@@ -515,7 +515,7 @@ private class SObjectCollectionTest {
 		try {
 			List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals(TimeZone.getTimeZone('CET'))).asList();
 			System.Assert.fail();
-		} catch (LambdaException e) {
+		} catch (IllegalArgumentException e) {
 			System.Assert.isTrue(e.getMessage().contains('not supported'));
 		}
 	}

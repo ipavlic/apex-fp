@@ -24,13 +24,13 @@ public with sharing class SObjectFieldReader {
 			try {
 				SObject nextRecord = currentRecord.getSObject(relationPart);
 				if (nextRecord == null) {
-					throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
+					throw new IllegalArgumentException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
 							relationPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 					}));
 				}
 				currentRecord = currentRecord.getSObject(relationPart);
 			} catch (SObjectException e) {
-				throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
+				throw new IllegalArgumentException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
 						relationPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 				}));
 			}
@@ -40,7 +40,7 @@ public with sharing class SObjectFieldReader {
 		try {
 			fieldValue = currentRecord.get(lastPart);
 		} catch (SObjectException e) {
-			throw new LambdaException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
+			throw new IllegalArgumentException(String.format('Cannot resolve "{0}" ({1}) on {2} object', new String[]{
 					lastPart, relation, currentRecord.getSObjectType().getDescribe().getName()
 			}));
 		}
