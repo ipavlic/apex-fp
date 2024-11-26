@@ -50,3 +50,7 @@ Match.field('Parent.Id').equals(accountId);
 ## NotNull
 
 Returns a `NotNull` predicate.
+
+## Debug
+
+Returns a `DebugSObject` function.
