@@ -130,9 +130,6 @@ public class MatchFields implements SObjectPredicate {
 		} else if (valueSet instanceof Set<Integer>) {
 			Set<Integer> validValues = (Set<Integer>) valueSet;
 			return validValues.contains((Integer) value);
-		} else if (valueSet instanceof Set<Long>) {
-			Set<Long> validValues = (Set<Long>) valueSet;
-			return validValues.contains((Long) value);
 		} else if (valueSet instanceof Set<String>) {
 			Set<String> validValues = (Set<String>) valueSet;
 			return validValues.contains((String) value);

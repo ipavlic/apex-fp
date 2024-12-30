@@ -40,4 +40,14 @@ private class ModifySObjectTest {
 		new ModifySObject().setFields(new Opportunity(Amount = 2000)).call(opp);
 		System.Assert.areEqual(2000, opp.Amount);
 	}
+
+	@IsTest
+	private static void exceptionIsThrownForNull() {
+		try {
+			new ModifySObject().setField(Opportunity.Amount, 100).call(null);
+			System.Assert.fail();
+		} catch (IllegalArgumentException e) {
+			System.Assert.areEqual('Record is null', e.getMessage());
+		}
+	}
 }
