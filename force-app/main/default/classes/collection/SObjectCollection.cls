@@ -188,144 +188,96 @@ public with sharing class SObjectCollection {
 		return results;
 	}
 
-	public Map<Boolean, List<SObject>> groupByBooleans(String apiFieldName, Type listType) {
+	public Map<Boolean, List<SObject>> groupByBooleans(String apiFieldName) {
 		Map<Boolean, List<SObject>> grouped = new Map<Boolean, List<SObject>>();
 		for (SObject rec : this.records) {
 			Boolean key = (Boolean) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<Boolean, List<SObject>> groupByBooleans(String apiFieldName) {
-		return groupByBooleans(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field, Type listType) {
-		return groupByBooleans(field.getDescribe().getName(), listType);
 	}
 
 	public Map<Boolean, List<SObject>> groupByBooleans(Schema.SObjectField field) {
 		return groupByBooleans(field.getDescribe().getName());
 	}
 
-	public Map<Date, List<SObject>> groupByDates(String apiFieldName, Type listType) {
+	public Map<Date, List<SObject>> groupByDates(String apiFieldName) {
 		Map<Date, List<SObject>> grouped = new Map<Date, List<SObject>>();
 		for (SObject rec : this.records) {
 			Date key = (Date) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<Date, List<SObject>> groupByDates(String apiFieldName) {
-		return groupByDates(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<Date, List<SObject>> groupByDates(Schema.SObjectField field, Type listType) {
-		return groupByDates(field.getDescribe().getName(), listType);
 	}
 
 	public Map<Date, List<SObject>> groupByDates(Schema.SObjectField field) {
 		return groupByDates(field.getDescribe().getName());
 	}
 
-	public Map<Datetime, List<SObject>> groupByDatetimes(String apiFieldName, Type listType) {
+	public Map<Datetime, List<SObject>> groupByDatetimes(String apiFieldName) {
 		Map<Datetime, List<SObject>> grouped = new Map<Datetime, List<SObject>>();
 		for (SObject rec : this.records) {
 			Datetime key = (Datetime) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<Datetime, List<SObject>> groupByDatetimes(String apiFieldName) {
-		return groupByDatetimes(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field, Type listType) {
-		return groupByDatetimes(field.getDescribe().getName(), listType);
 	}
 
 	public Map<Datetime, List<SObject>> groupByDatetimes(Schema.SObjectField field) {
 		return groupByDatetimes(field.getDescribe().getName());
 	}
 
-	public Map<Decimal, List<SObject>> groupByDecimals(String apiFieldName, Type listType) {
+	public Map<Decimal, List<SObject>> groupByDecimals(String apiFieldName) {
 		Map<Decimal, List<SObject>> grouped = new Map<Decimal, List<SObject>>();
 		for (SObject rec : this.records) {
 			Decimal key = (Decimal) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<Decimal, List<SObject>> groupByDecimals(String apiFieldName) {
-		return groupByDecimals(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field, Type listType) {
-		return groupByDecimals(field.getDescribe().getName(), listType);
 	}
 
 	public Map<Decimal, List<SObject>> groupByDecimals(Schema.SObjectField field) {
 		return groupByDecimals(field.getDescribe().getName());
 	}
 
-	public Map<Id, List<SObject>> groupByIds(String apiFieldName, Type listType) {
+	public Map<Id, List<SObject>> groupByIds(String apiFieldName) {
 		Map<Id, List<SObject>> grouped = new Map<Id, List<SObject>>();
 		for (SObject rec : this.records) {
 			Id key = (Id) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<Id, List<SObject>> groupByIds(String apiFieldName) {
-		return groupByIds(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<Id, List<SObject>> groupByIds(Schema.SObjectField field, Type listType) {
-		return groupByIds(field.getDescribe().getName(), listType);
 	}
 
 	public Map<Id, List<SObject>> groupByIds(Schema.SObjectField field) {
 		return groupByIds(field.getDescribe().getName());
 	}
 
-	public Map<String, List<SObject>> groupByStrings(String apiFieldName, Type listType) {
+	public Map<String, List<SObject>> groupByStrings(String apiFieldName) {
 		Map<String, List<SObject>> grouped = new Map<String, List<SObject>>();
 		for (SObject rec : this.records) {
 			String key = (String) rec.get(apiFieldName);
 			if (!grouped.containsKey(key)) {
-				grouped.put(key, (List<SObject>) listType.newInstance());
+				grouped.put(key, new List<SObject>());
 			}
 			grouped.get(key).add(rec);
 		}
 		return grouped;
-	}
-
-	public Map<String, List<SObject>> groupByStrings(String apiFieldName) {
-		return groupByStrings(apiFieldName, List<SObject>.class);
-	}
-
-	public Map<String, List<SObject>> groupByStrings(Schema.SObjectField field, Type listType) {
-		return groupByStrings(field.getDescribe().getName(), listType);
 	}
 
 	public Map<String, List<SObject>> groupByStrings(Schema.SObjectField field) {

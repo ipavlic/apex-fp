@@ -51,7 +51,7 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
-	private static void groupByDatesGroupsWithApiFieldName() {
+	private static void groupByDates() {
 		Date today = Date.today();
 		SObjectCollection c = SObjectCollection.of(new List<Opportunity>{
 			new Opportunity(
@@ -83,7 +83,7 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
-	private static void groupByDatetimesGroupsWithApiFieldName() {
+	private static void groupByDatetimes() {
 		Datetime now = Datetime.now();
 		SObjectCollection c = SObjectCollection.of(new List<Event>{
 				new Event(
@@ -380,40 +380,6 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
-	private static void testGroupByStringTyping() {
-		SObjectCollection c = SObjectCollection.of(testAccounts());
-		Map<String, List<Account>> accountsByName = c.groupByStrings(Account.Name);
-		List<Account> fooAccounts = accountsByName.get('Foo');
-		List<SObject> objects = fooAccounts;
-		// since fooAccounts points to a returned list of SObjects, it can be anything!
-		System.Assert.isInstanceOfType(objects, List<Opportunity>.class);
-
-		accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
-		fooAccounts = accountsByName.get('Foo');
-		objects = fooAccounts;
-		// this time around, it works fine!
-		System.Assert.isNotInstanceOfType(objects, List<Opportunity>.class);
-		System.Assert.isInstanceOfType(objects, List<Account>.class);
-	}
-
-	@IsTest
-	private static void testGroupByStringTypingApiFieldName() {
-		SObjectCollection c = SObjectCollection.of(testAccounts());
-		Map<String, List<Account>> accountsByName = c.groupByStrings('Name');
-		List<Account> fooAccounts = accountsByName.get('Foo');
-		List<SObject> objects = fooAccounts;
-		// since fooAccounts points to a returned list of SObjects, it can be anything!
-		System.Assert.isInstanceOfType(objects, List<Opportunity>.class);
-
-		accountsByName = c.groupBystrings(Account.Name, List<Account>.class);
-		fooAccounts = accountsByName.get('Foo');
-		objects = fooAccounts;
-		// this time around, it works fine!
-		System.Assert.isNotInstanceOfType(objects, List<Opportunity>.class);
-		System.Assert.isInstanceOfType(objects, List<Account>.class);
-	}
-
-	@IsTest
 	private static void testGroupByDecimals() {
 		SObjectCollection c = SObjectCollection.of(testAccounts());
 		Map<Decimal, List<Account>> accountsByRevenue = c.groupByDecimals(Account.AnnualRevenue);
@@ -551,8 +517,8 @@ private class SObjectCollectionTest {
 			new Opportunity(Name = 'Test1', Description = 'Test description')
 		});
 		List<SObject> picked = c.pick(new List<String>{'Name'}).asList();
-		System.Assert.areEqual(Account.sObjectType, picked[0].getSObjectType(), 'First picked element should be an Account.');
-		System.Assert.areEqual(Opportunity.sObjectType, picked[1].getSObjectType(), 'Second picked element should be an Opportunity.');
+		System.Assert.areEqual(Account.SObjectType, picked[0].getSObjectType(), 'First picked element should be an Account.');
+		System.Assert.areEqual(Opportunity.SObjectType, picked[1].getSObjectType(), 'Second picked element should be an Opportunity.');
 	}
 
 	private static void verifyNamePick(SObjectCollection picked) {
@@ -592,7 +558,7 @@ private class SObjectCollectionTest {
 			)
 		};
 		SObjectCollection c = SObjectCollection.of(opps);
-		List<Opportunity> filtered = (List<Opportunity>) c.filter(Fn.Match.field('Account.AnnualRevenue').greaterThan(70)).asList();
+		List<Opportunity> filtered = c.filter(Fn.Match.field('Account.AnnualRevenue').greaterThan(70)).asList();
 		System.Assert.areEqual(1, filtered.size());
 		System.Assert.areEqual('First', filtered[0].Name);
 	}
@@ -600,10 +566,10 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testHasValue() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.BillingCountry).hasValue()).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.BillingCountry).hasValue()).asList();
 		System.Assert.areEqual(0, filtered.size());
 
-		filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).hasValue()).asList();
+		filtered = c.filter(Fn.Match.field(Account.Name).hasValue()).asList();
 		System.Assert.areEqual(4, filtered.size());
 
 	}
@@ -611,7 +577,7 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testIsIn() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150})).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).isIn(new Set<Decimal>{60, 150})).asList();
 		System.Assert.areEqual(3, filtered.size());
 		for (Account acc : filtered) {
 			System.Assert.isTrue(acc.AnnualRevenue == 60 || acc.AnnualRevenue == 150);
@@ -621,7 +587,7 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testIsNotIn() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60})).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).notIn(new Set<Decimal>{60})).asList();
 		System.Assert.areEqual(3, filtered.size());
 		for (Account acc : filtered) {
 			System.Assert.isTrue(acc.AnnualRevenue == 100 || acc.AnnualRevenue == 150);
@@ -633,7 +599,7 @@ private class SObjectCollectionTest {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
 		try {
-			List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals(TimeZone.getTimeZone('CET'))).asList();
+			c.filter(Fn.Match.field(Account.Name).equals(TimeZone.getTimeZone('CET'))).asList();
 			System.Assert.fail();
 		} catch (IllegalArgumentException e) {
 			System.Assert.isTrue(e.getMessage().contains('not supported'));
@@ -644,14 +610,14 @@ private class SObjectCollectionTest {
 	private static void testFieldEqualsOkFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals('Ok')).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.Name).equals('Ok')).asList();
 
 		System.Assert.areEqual(2, filtered.size());
 		for (Account acc : filtered) {
 			System.Assert.areEqual('Ok', acc.Name);
 		}
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.Name).equals('Ok')).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.Name).equals('Ok')).asList();
 
 		System.Assert.areEqual(2, remaining.size());
 		for (Account acc : remaining) {
@@ -662,7 +628,7 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testMultipleFieldFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
 
 		System.Assert.areEqual(1, filtered.size());
 		for (Account acc : filtered) {
@@ -670,7 +636,7 @@ private class SObjectCollectionTest {
 			System.Assert.isTrue(acc.AnnualRevenue > 100);
 		}
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).gt(100)).asList();
 
 		System.Assert.areEqual(3, remaining.size());
 		for (Account acc : remaining) {
@@ -682,10 +648,10 @@ private class SObjectCollectionTest {
 	private static void testSameFieldTokenExclusionCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.Assert.areEqual(0, filtered.size());
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.Assert.areEqual(4, remaining.size());
 	}
 
@@ -693,10 +659,10 @@ private class SObjectCollectionTest {
 	private static void testSameFieldExclusionCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.Assert.areEqual(0, filtered.size());
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.Name).neq('Ok')).asList();
 		System.Assert.areEqual(4, remaining.size());
 	}
 
@@ -704,10 +670,10 @@ private class SObjectCollectionTest {
 	private static void testLongChaining() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
 		System.Assert.areEqual(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.Name).equals('Ok').also(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).geq(100)).asList();
 		System.Assert.areEqual(3, remaining.size());
 	}
 
@@ -715,10 +681,10 @@ private class SObjectCollectionTest {
 	private static void testSameFieldSandwichCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.Assert.areEqual(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.Assert.areEqual(3, remaining.size());
 	}
 
@@ -726,10 +692,10 @@ private class SObjectCollectionTest {
 	private static void testSameTokenSandwichCriteria() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.Assert.areEqual(1, filtered.size());
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
+		List<Account> remaining = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150).also(Account.AnnualRevenue).gt(60)).asList();
 		System.Assert.areEqual(3, remaining.size());
 	}
 
@@ -737,13 +703,13 @@ private class SObjectCollectionTest {
 	private static void testComparisonFilter() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
 
-		List<Account> filtered = (List<Account>) c.filter(Fn.Match.recordFields(new Account(AnnualRevenue = 150))).asList();
+		List<Account> filtered = c.filter(Fn.Match.recordFields(new Account(AnnualRevenue = 150))).asList();
 		System.Assert.areEqual(2, filtered.size());
 		for (Account acc : filtered) {
 			System.Assert.areEqual(150, acc.AnnualRevenue);
 		}
 
-		List<Account> remaining = (List<Account>) c.remove(Fn.Match.recordFields(new Account(AnnualRevenue = 150))).asList();
+		List<Account> remaining = c.remove(Fn.Match.recordFields(new Account(AnnualRevenue = 150))).asList();
 		System.Assert.areEqual(2, remaining.size());
 		for (Account acc : remaining) {
 			System.Assert.areNotEqual(150, acc.AnnualRevenue);
@@ -753,20 +719,20 @@ private class SObjectCollectionTest {
 	@IsTest
 	private static void testListTyping() {
 		SObjectCollection c = SObjectCollection.of(testFilterAccounts());
-		List<sObject> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
+		List<SObject> filtered = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
 		System.Assert.isInstanceOfType(filtered, List<Account>.class);
 		System.Assert.isNotInstanceOfType(filtered, List<Opportunity>.class);
 
-		List<sObject> filteredWithoutType = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList();
+		List<SObject> filteredWithoutType = c.filter(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList();
 		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
 		System.Assert.isInstanceOfType(filteredWithoutType, List<Account>.class);
 		System.Assert.isInstanceOfType(filteredWithoutType, List<Opportunity>.class);
 
-		List<sObject> remaining = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
+		List<SObject> remaining = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList(List<Account>.class);
 		System.Assert.isInstanceOfType(remaining, List<Account>.class);
 		System.Assert.isNotInstanceOfType(remaining, List<Opportunity>.class);
 
-		List<sObject> remainingWithoutType = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList();
+		List<SObject> remainingWithoutType = c.remove(Fn.Match.field(Account.AnnualRevenue).lt(150)).asList();
 		// when no type is provided, the returned list is a list of sObjects which can be a list of anything!
 		System.Assert.isInstanceOfType(remainingWithoutType, List<Account>.class);
 		System.Assert.isInstanceOfType(remainingWithoutType, List<Opportunity>.class);
