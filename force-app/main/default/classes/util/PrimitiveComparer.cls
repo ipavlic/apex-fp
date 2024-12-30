@@ -19,15 +19,7 @@ public class PrimitiveComparer {
 		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
-	public Integer compareDoubles(Double a, Double b) {
-		return (a == b) ? 0 : (a > b ? 1 : -1);
-	}
-
 	public Integer compareIds(Id a, Id b) {
-		return (a == b) ? 0 : (a > b ? 1 : -1);
-	}
-
-	public Integer compareIntegers(Integer a, Integer b) {
 		return (a == b) ? 0 : (a > b ? 1 : -1);
 	}
 
@@ -61,20 +53,14 @@ public class PrimitiveComparer {
 		else if (first instanceof Datetime && second instanceof Datetime) {
 			return this.compareDatetimes((Datetime)first, (Datetime)second);
 		}
-		else if (first instanceof Decimal && second instanceof Decimal) {
-			return this.compareDecimals((Decimal)first, (Decimal)second);
-		}
-		else if (first instanceof Double && second instanceof Double) {
-			return this.compareDoubles((Double)first, (Double)second);
-		}
 		else if (first instanceof Id && second instanceof Id) {
 			return this.compareIds((Id)first, (Id)second);
 		}
-		else if (first instanceof Integer && second instanceof Integer) {
-			return this.compareIntegers((Integer)first, (Integer)second);
-		}
 		else if (first instanceof Long && second instanceof Long) {
 			return this.compareLongs((Long)first, (Long)second);
+		}
+		else if (first instanceof Decimal && second instanceof Decimal) {
+			return this.compareDecimals((Decimal)first, (Decimal)second);
 		}
 		else if (first instanceof String && second instanceof String) {
 			return this.compareStrings((String)first, (String)second);

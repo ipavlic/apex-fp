@@ -16,6 +16,11 @@ private class MatchFieldsTest {
 	}
 
 	@IsTest
+	static void containsLong() {
+		System.Assert.isTrue(new MatchFields().field(Account.NumberOfEmployees).isIn(new Set<Long>{10L}).call(new Account(NumberOfEmployees = 10)));
+	}
+
+	@IsTest
 	static void containsBoolean() {
 		System.Assert.isTrue(new MatchFields().field(Contact.DoNotCall).isIn(new Set<Boolean>{false}).call(new Contact(DoNotCall = false)));
 		System.Assert.isFalse(new MatchFields().field(Contact.DoNotCall).isIn(new Set<Boolean>{true}).call(new Contact(DoNotCall = false)));
