@@ -44,16 +44,21 @@ private class SObjectFieldReaderTest {
 
 	@IsTest
 	private static void testBlankRelationException() {
-		Opportunity opp = new Opportunity(Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
-
-		Exception ex;
-
 		try {
-			new SObjectFieldReader().read(opp, '');
+			new SObjectFieldReader().read(new Opportunity(), '');
+			System.Assert.fail();
 		} catch (IllegalArgumentException e) {
-			ex = e;
+			System.Assert.isTrue(e.getMessage().contains('is blank'));
 		}
-		System.Assert.areNotEqual(null, ex);
-		System.Assert.isTrue(ex.getMessage().contains('is blank'));
+	}
+
+	@IsTest
+	private static void invalidRelationThrowsAnException() {
+		try {
+			new SObjectFieldReader().read(new Opportunity(), '!');
+			System.Assert.fail();
+		} catch (IllegalArgumentException e) {
+			System.Assert.isTrue(e.getMessage().startsWith('Cannot resolve'));
+		}
 	}
 }
