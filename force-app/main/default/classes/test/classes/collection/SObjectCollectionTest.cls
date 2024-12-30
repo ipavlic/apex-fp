@@ -83,6 +83,35 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
+	private static void groupByDatetimesGroupsWithApiFieldName() {
+		Datetime now = Datetime.now();
+		SObjectCollection c = SObjectCollection.of(new List<Event>{
+				new Event(
+						ActivityDateTime = now
+				),
+				new Event(
+						ActivityDateTime = now
+				),
+				new Event(
+						ActivityDateTime = now.addHours(1)
+				)
+		});
+		Map<Datetime, List<Event>> eventsByDatetimes = c.groupByDatetimes(Event.ActivityDateTime);
+		System.Assert.areEqual(2, eventsByDatetimes.size());
+		List<Event> nowEvents = eventsByDatetimes.get(now);
+		System.Assert.areEqual(2, nowEvents.size());
+		for (Event e : nowEvents) {
+			System.Assert.areEqual(now, e.ActivityDateTime);
+		}
+
+		List<Event> nextHourEvents = eventsByDatetimes.get(now.addHours(1));
+		System.Assert.areEqual(1, nextHourEvents.size());
+		for (Event e : nextHourEvents) {
+			System.Assert.areEqual(now.addHours(1), e.ActivityDateTime);
+		}
+	}
+
+	@IsTest
 	private static void testAsMap() {
 		Map<Id, SObject> recordMap = SObjectCollection.of(testAccounts()).asMap();
 		System.Assert.areEqual(4, recordMap.size());
@@ -152,8 +181,28 @@ private class SObjectCollectionTest {
 	}
 
 	@IsTest
+	private static void testPluckDecimalsWithRelation() {
+		List<Decimal> revenues = SObjectCollection.of(testAccounts()).pluckDecimals('AnnualRevenue');
+		System.Assert.areEqual(4, revenues.size());
+		System.Assert.areEqual(100.0, revenues[0]);
+		System.Assert.areEqual(60.0, revenues[1]);
+		System.Assert.areEqual(150.0, revenues[2]);
+		System.Assert.areEqual(150.0, revenues[3]);
+	}
+
+	@IsTest
 	private static void testPluckStrings() {
 		List<String> names = SObjectCollection.of(testAccounts()).pluckStrings(Account.Name);
+		System.Assert.areEqual(4, names.size());
+		System.Assert.areEqual('Foo', names[0]);
+		System.Assert.areEqual('Bar', names[1]);
+		System.Assert.areEqual('Foo', names[2]);
+		System.Assert.areEqual('Bar', names[3]);
+	}
+
+	@IsTest
+	private static void testPluckStringsWithRelation() {
+		List<String> names = SObjectCollection.of(testAccounts()).pluckStrings('Name');
 		System.Assert.areEqual(4, names.size());
 		System.Assert.areEqual('Foo', names[0]);
 		System.Assert.areEqual('Bar', names[1]);
@@ -206,6 +255,77 @@ private class SObjectCollectionTest {
 		System.Assert.isTrue(active[0]);
 		System.Assert.isTrue(active[1]);
 		System.Assert.isFalse(active[2]);
+	}
+
+	@IsTest
+	private static void testPluckBooleansWithRelation() {
+		List<User> users = new List<User>{
+				new User(Title = 'Foo', IsActive = true),
+				new User(Title = 'Bar', IsActive = true),
+				new User(Title = 'Baz', IsActive = false)
+		};
+		List<Boolean> active = SObjectCollection.of(users).pluckBooleans('IsActive');
+		System.Assert.areEqual(3, active.size());
+		System.Assert.isTrue(active[0]);
+		System.Assert.isTrue(active[1]);
+		System.Assert.isFalse(active[2]);
+	}
+
+	@IsTest
+	private static void testPluckDates() {
+		Date today = Date.today();
+		List<Opportunity> opps = new List<Opportunity>{
+				new Opportunity(CloseDate = today),
+				new Opportunity(CloseDate = today.addDays(1)),
+				new Opportunity(CloseDate = today.addDays(2))
+		};
+		List<Date> closeDates = SObjectCollection.of(opps).pluckDates(Opportunity.CloseDate);
+		System.Assert.areEqual(3, closeDates.size());
+		System.Assert.areEqual(today, closeDates[0]);
+		System.Assert.areEqual(today.addDays(1), closeDates[1]);
+		System.Assert.areEqual(today.addDays(2), closeDates[2]);
+	}
+
+	@IsTest
+	private static void testPluckDatesWithRelation() {
+		Date today = Date.today();
+		List<Opportunity> opps = new List<Opportunity>{
+				new Opportunity(CloseDate = today),
+				new Opportunity(CloseDate = today.addDays(1)),
+				new Opportunity(CloseDate = today.addDays(2))
+		};
+		List<Date> closeDates = SObjectCollection.of(opps).pluckDates('CloseDate');
+		System.Assert.areEqual(3, closeDates.size());
+		System.Assert.areEqual(today, closeDates[0]);
+		System.Assert.areEqual(today.addDays(1), closeDates[1]);
+		System.Assert.areEqual(today.addDays(2), closeDates[2]);
+	}
+
+	@IsTest
+	private static void testPluckDatetimes() {
+		Datetime now = Datetime.now();
+		List<Event> events = new List<Event>{
+				new Event(ActivityDateTime = now),
+				new Event(ActivityDateTime = now.addHours(1))
+		};
+		List<Datetime> completedDatetimes = SObjectCollection.of(events).pluckDatetimes(Event.ActivityDateTime);
+		System.Assert.areEqual(2, completedDatetimes.size());
+		System.Assert.areEqual(now, completedDatetimes[0]);
+		System.Assert.areEqual(now.addHours(1), completedDatetimes[1]);
+	}
+
+
+	@IsTest
+	private static void testPluckDatetimesWithRelation() {
+		Datetime now = Datetime.now();
+		List<Event> events = new List<Event>{
+				new Event(ActivityDateTime = now),
+				new Event(ActivityDateTime = now.addHours(1))
+		};
+		List<Datetime> completedDatetimes = SObjectCollection.of(events).pluckDatetimes('ActivityDateTime');
+		System.Assert.areEqual(2, completedDatetimes.size());
+		System.Assert.areEqual(now, completedDatetimes[0]);
+		System.Assert.areEqual(now.addHours(1), completedDatetimes[1]);
 	}
 
 	@IsTest
