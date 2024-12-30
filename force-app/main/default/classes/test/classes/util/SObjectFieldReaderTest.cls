@@ -11,38 +11,6 @@ private class SObjectFieldReaderTest {
 	}
 
 	@IsTest
-	private static void testInvalidObjectRelationException() {
-		Opportunity opp = new Opportunity(Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
-
-		Exception ex;
-
-		try {
-			new SObjectFieldReader().read(opp, 'ObjectThatShouldNotExist.Name');
-		} catch (IllegalArgumentException e) {
-			ex = e;
-		}
-		System.Assert.areNotEqual(null, ex);
-		System.Assert.isTrue(ex.getMessage().contains('Cannot resolve'));
-	}
-
-	@IsTest
-	private static void testInvalidFieldRelationException() {
-		Account acc = new Account(Name = 'Test');
-		Opportunity opp = new Opportunity(AccountId = acc.Id, Name = 'Opportunity', StageName = 'Prospecting', CloseDate = Date.today().addDays(7));
-		opp.Account = acc;
-
-		Exception ex;
-
-		try {
-		new SObjectFieldReader().read(opp, 'Account.FieldThatShouldNotExist');
-		} catch (IllegalArgumentException e) {
-			ex = e;
-		}
-		System.Assert.areNotEqual(null, ex);
-		System.Assert.isTrue(ex.getMessage().contains('Cannot resolve'));
-	}
-
-	@IsTest
 	private static void testBlankRelationException() {
 		try {
 			new SObjectFieldReader().read(new Opportunity(), '');
@@ -53,12 +21,46 @@ private class SObjectFieldReaderTest {
 	}
 
 	@IsTest
-	private static void invalidRelationThrowsAnException() {
+	private static void invalidFieldThrowsAnException() {
 		try {
 			new SObjectFieldReader().read(new Opportunity(), '!');
 			System.Assert.fail();
 		} catch (IllegalArgumentException e) {
 			System.Assert.isTrue(e.getMessage().startsWith('Cannot resolve'));
+		}
+	}
+
+	@IsTest
+	private static void nullRelatedRecordThrowsAnException() {
+		Account a = null;
+		Opportunity opp = new Opportunity();
+		opp.Account = a;
+		try {
+			new SObjectFieldReader().read(opp, 'Account.Name');
+			System.Assert.fail();
+		} catch (IllegalArgumentException e) {
+			System.Assert.isTrue(e.getMessage().startsWith('Cannot resolve'));
+		}
+	}
+
+	@IsTest
+	private static void invalidObjectThrowsAnException() {
+		Opportunity opp = new Opportunity();
+		try {
+			new SObjectFieldReader().read(opp, '!.Amount');
+			System.Assert.fail();
+		} catch (IllegalArgumentException e) {
+			System.Assert.isTrue(e.getMessage().startsWith('Cannot resolve'));
+		}
+	}
+
+	@IsTest
+	private static void nullRecordThrowsAnException() {
+		try {
+			new SObjectFieldReader().read(null, 'Amount');
+			System.Assert.fail();
+		} catch (IllegalArgumentException e) {
+			System.Assert.areEqual('Provided record is null', e.getMessage());
 		}
 	}
 }
