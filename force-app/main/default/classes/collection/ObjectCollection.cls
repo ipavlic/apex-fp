@@ -18,10 +18,4 @@ public with sharing class ObjectCollection {
 		typedObjects.addAll(this.objects);
 		return typedObjects;
 	}
-
-	public Set<Object> asSet(Type setType) {
-		Set<Object> typedObjects = (Set<Object>) setType.newInstance();
-		typedObjects.addAll(this.objects);
-		return typedObjects;
-	}
 }

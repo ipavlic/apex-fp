@@ -8,3 +8,12 @@ salesforce.schema
 .sf/
 IlluminatedCloud/*
 .vscode
+
+# Added by Illuminated Cloud
+.localdev/
+/out/
+target/
+node_modules/
+/.illuminatedCloud/
+**/tsconfig*.json
+**/*.tsbuildinfo

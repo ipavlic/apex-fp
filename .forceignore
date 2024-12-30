@@ -12,3 +12,10 @@ force-app/main/default/profiles/**
 
 # LWC Jest
 **/__tests__/**
+
+# Added by Illuminated Cloud
+/.illuminatedCloud/
+**/*.ts
+**/tsconfig*.json
+**/*.tsbuildinfo
+**/eslint.config.mjs
