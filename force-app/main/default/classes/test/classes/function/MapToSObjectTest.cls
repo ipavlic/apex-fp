@@ -47,6 +47,14 @@ private class MapToSObjectTest {
 	}
 
 	@IsTest
+	private static void testMapFieldNameWithRelation() {
+		Id accountId = TestUtility.getFakeId(Account.SObjectType);
+		Opportunity opp = new Opportunity(Account = new Account(Id = accountId));
+		Task task = (Task) new MapToSObject(Task.SObjectType).mapField('WhatId', 'Account.Id').call(opp);
+		System.Assert.areEqual(accountId, task.WhatId);
+	}
+
+	@IsTest
 	private static void testMapFieldsWithFields() {
 		Opportunity opp = new Opportunity(Description = 'Test', Amount = 500);
 		Account account = (Account) new MapToSObject(Account.SObjectType).mapFields(new Map<Schema.SObjectfield, Schema.SObjectField>{

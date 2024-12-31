@@ -9,12 +9,6 @@ public with sharing class Fn {
 		}
 	}
 
-	public static DebugSObject Debug {
-		get {
-			return new DebugSObject();
-		}
-	}
-
 	public static MapToSObject MapTo(Schema.SObjectType type) {
 		return new MapToSObject(type);
 	}

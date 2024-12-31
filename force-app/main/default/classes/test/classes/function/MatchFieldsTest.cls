@@ -50,4 +50,10 @@ private class MatchFieldsTest {
 		System.Assert.isTrue(new MatchFields().field(Opportunity.Name).isIn(new Set<String>{'foo'}).call(new Opportunity(Name = 'foo')));
 		System.Assert.isFalse(new MatchFields().field(Opportunity.Name).isIn(new Set<String>{'foo'}).call(new Opportunity(Name = 'bar')));
 	}
+
+	@IsTest
+	static void containsString() {
+		System.Assert.isTrue(new MatchFields().field(Opportunity.Name).isIn(new Set<String>{'foo'}).call(new Opportunity(Name = 'foo')));
+		System.Assert.isFalse(new MatchFields().field(Opportunity.Name).isIn(new Set<String>{'foo'}).call(new Opportunity(Name = 'bar')));
+	}
 }
