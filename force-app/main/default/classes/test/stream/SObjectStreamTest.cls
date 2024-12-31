@@ -57,53 +57,6 @@ private class SObjectStreamTest {
 		System.Assert.areEqual(accounts[2], filtered[1]);
 	}
 
-	// @IsTest
-	// public static void testMapAll() {
-	// 	List<Account> accounts = new List<Account>{
-	// 		new Account(Name = 'Ok'),
-	// 		new Account(Name = 'Wrong'),
-	// 		new Account(Name = 'Ok'),
-	// 		new Account(Name = 'Wrong')
-	// 	};
-	// 	Iterator<SObject> iter = SObjectStream.of(accounts).mapAll(Copy.recordFields(new Account(AnnualRevenue = 100)));		
-		
-	// 	List<SObject> mapped = new List<SObject>();
-	// 	while (iter.hasNext()) {
-	// 		mapped.add(iter.next());
-	// 	}
-		
-	// 	System.Assert.areEqual(4, mapped.size());
-	// 	for (SObject record : mapped) {
-	// 		System.Assert.areEqual(100, ((Account) record).AnnualRevenue);
-	// 	}
-	// }
-
-	// @IsTest
-	// public static void testMapSome() {
-	// 	List<Account> accounts = new List<Account>{
-	// 		new Account(Name = 'Ok'),
-	// 		new Account(Name = 'Wrong'),
-	// 		new Account(Name = 'Ok'),
-	// 		new Account(Name = 'Wrong')
-	// 	};
-	// 	Iterator<SObject> iter = SObjectStream.of(accounts).mapSome(Match.field(Account.Name).equals('Ok'), Copy.recordFields(new Account(AnnualRevenue = 100)));
-		
-	// 	List<SObject> mapped = new List<SObject>();
-	// 	while (iter.hasNext()) {
-	// 		mapped.add(iter.next());
-	// 	}
-		
-	// 	System.Assert.areEqual(4, mapped.size());
-	// 	for (SObject record : mapped) {
-	// 		Account a = (Account) record;
-	// 		if (a.Name == 'Ok') {
-	// 			System.Assert.areEqual(100, a.AnnualRevenue);
-	// 		} else {
-	// 			System.Assert.areEqual(null, a.AnnualRevenue);
-	// 		}
-	// 	}
-	// }
-
 	@IsTest
 	private static void findFindsAnExistingRecord() {
 		List<Account> accounts = new List<Account>{
@@ -129,5 +82,91 @@ private class SObjectStreamTest {
 
 		OptionalSObject maybeAcc = SObjectStream.of(accounts).find(Fn.Match.field(Account.Name).equals('Five'));
 		System.Assert.isTrue(!maybeAcc.isPresent());
+	}
+
+	@IsTest
+	private static void mapAll() {
+		List<Account> accounts = new List<Account>{
+				new Account(Name = '1'),
+				new Account(Name = '2')
+		};
+
+		SObjectStream stream = SObjectStream.of(accounts).mapAll(
+				Fn.MapTo(Opportunity.SObjectType)
+						.mapField(Opportunity.Name, Account.Name)
+		);
+		System.Assert.isTrue(stream.hasNext());
+		Opportunity opp1 = (Opportunity) stream.next();
+		System.Assert.areEqual('1', opp1.Name);
+
+		System.Assert.isTrue(stream.hasNext());
+		Opportunity opp2 = (Opportunity) stream.next();
+		System.Assert.areEqual('2', opp2.Name);
+
+		System.Assert.isFalse(stream.hasNext());
+	}
+
+	@IsTest
+	private static void mapSome() {
+		List<Account> accounts = new List<Account>{
+			new Account(Name = 'Ok', Description = '1'),
+			new Account(Name = 'Wrong', Description = '2'),
+			new Account(Name = 'Ok', Description = '3')
+		};
+
+		SObjectStream stream = SObjectStream.of(accounts).mapSome(
+				Fn.Match.field(Account.Name).eq('Ok'),
+				Fn.MapTo(Opportunity.SObjectType)
+					.mapField(Opportunity.Name, Account.Name)
+					.mapField(Opportunity.Description, Account.Description)
+		);
+		System.Assert.isTrue(stream.hasNext());
+		Opportunity opp1 = (Opportunity) stream.next();
+		System.Assert.areEqual('1', opp1.Description);
+
+		System.Assert.isTrue(stream.hasNext());
+		Account acc2 = (Account) stream.next();
+		System.Assert.areEqual('2', acc2.Description);
+
+		System.Assert.isTrue(stream.hasNext());
+		Opportunity opp2 = (Opportunity) stream.next();
+		System.Assert.areEqual('3', opp2.Description);
+
+		System.Assert.isFalse(stream.hasNext());
+	}
+
+	@IsTest
+	private static void toList() {
+		List<Account> accounts = new List<Account>{
+				new Account(Name = '1'),
+				new Account(Name = '2')
+		};
+
+		List<Account> streamedAccounts = SObjectStream.of(accounts).toList();
+		System.Assert.areEqual(2, streamedAccounts.size());
+		System.Assert.areEqual('1', streamedAccounts[0].Name);
+		System.Assert.areEqual('2', streamedAccounts[1].Name);
+	}
+
+	private class Counter implements SObjectFunction {
+		private Integer total = 0;
+		public void call(SObject record) {
+			total++;
+		}
+		public Integer total() {
+			return total;
+		}
+	}
+
+	@IsTest
+	private static void forEach() {
+		List<Account> accounts = new List<Account>{
+				new Account(),
+				new Account(),
+				new Account()
+		};
+		Counter counter = new Counter();
+		SObjectStream.of(accounts).forEach(counter);
+		System.Assert.areEqual(3, counter.total());
 	}
 }
