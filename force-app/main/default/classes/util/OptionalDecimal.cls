@@ -1,12 +1,5 @@
 public with sharing class OptionalDecimal {
-	private static final OptionalDecimal EMPTY {
-		get {
-			EMPTY = EMPTY ?? new OptionalDecimal(null);
-			return EMPTY;
-		}
-		set;
-	}
-
+	private static final OptionalDecimal EMPTY = new OptionalDecimal(null);
 	private final Decimal value;
 
 	public static OptionalDecimal of(Decimal value) {

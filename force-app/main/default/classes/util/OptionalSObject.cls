@@ -1,24 +1,13 @@
 public with sharing class OptionalSObject {
+	private static final OptionalSObject EMPTY = new OptionalSObject(null);
 	private final SObject value;
 
-	private static final OptionalSObject EMPTY {
-		get {
-			EMPTY = EMPTY ?? new OptionalSObject();
-			return EMPTY;
-		}
-		set;
-	}
-
 	public static OptionalSObject of(SObject value) {
-		return new OptionalSObject(value);
+		return value == null ? EMPTY : new OptionalSObject(value);
 	}
 
 	public static OptionalSObject empty() {
 		return EMPTY;
-	}
-
-	private OptionalSObject() {
-		this(null);
 	}
 
 	private OptionalSObject(SObject value) {

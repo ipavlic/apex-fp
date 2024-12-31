@@ -1,19 +1,9 @@
 public with sharing class OptionalDouble {
-	private static final OptionalDouble EMPTY {
-		get {
-			EMPTY = EMPTY ?? new OptionalDouble(null);
-			return EMPTY;
-		}
-		set;
-	}
-
+	private static final OptionalDouble EMPTY = new OptionalDouble(null);
 	private final Double value;
 
 	public static OptionalDouble of(Double value) {
-		if (value == null) {
-			return EMPTY;
-		}
-		return new OptionalDouble(value);
+		return value == null ? EMPTY : new OptionalDouble(value);
 	}
 
 	public static OptionalDouble empty() {
