@@ -3,9 +3,9 @@ public class MatchFields implements SObjectPredicate {
 	private static final PrimitiveComparer primitiveComparer = new PrimitiveComparer();
 	private static final SObjectFieldReader fieldReader = new SObjectFieldReader();
 
-	private static final Set<BinaryRelation> setComparisons = new Set<BinaryRelation>{
-		BinaryRelation.IS_IN,
-		BinaryRelation.NOT_IN
+	private static final Set<BinaryOperation> setComparisons = new Set<BinaryOperation>{
+		BinaryOperation.IS_IN,
+		BinaryOperation.NOT_IN
 	};
 
 	private final List<MatchFieldCondition> matchConditions;
