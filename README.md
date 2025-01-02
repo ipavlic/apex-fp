@@ -50,12 +50,6 @@ List<Opportunity> largeOpportunities = SObjectCollection.of(opportunities)
 	.asList();
 ```
 
-### Debug
-
-```apex
-SObjectCollection.of(opportunities).forEach(Fn.Debug);
-```
-
 ### Group
 
 ```apex

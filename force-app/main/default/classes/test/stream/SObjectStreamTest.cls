@@ -20,6 +20,36 @@ private class SObjectStreamTest {
 	}
 
 	@IsTest
+	private static void filterThrowsExceptionWhenNextIsCalledAndHasNextIsFalse() {
+		List<Account> accounts = new List<Account>{
+				new Account(Name = 'Wrong', AnnualRevenue = 100)
+		};
+		Iterator<SObject> iter = SObjectStream.of(accounts).filter(Fn.Match.field(Account.Name).equals('Ok'));
+
+		try {
+			iter.next();
+			System.Assert.fail();
+		} catch (NoSuchElementException e) {
+			System.Assert.isTrue(true);
+		}
+	}
+
+	@IsTest
+	private static void removeThrowsExceptionWhenNextIsCalledAndHasNextIsFalse() {
+		List<Account> accounts = new List<Account>{
+				new Account(Name = 'Ok', AnnualRevenue = 100)
+		};
+		Iterator<SObject> iter = SObjectStream.of(accounts).remove(Fn.Match.field(Account.Name).equals('Ok'));
+
+		try {
+			iter.next();
+			System.Assert.fail();
+		} catch (NoSuchElementException e) {
+			System.Assert.isTrue(true);
+		}
+	}
+
+	@IsTest
 	private static void testFilterChaining() {
 		List<Account> accounts = new List<Account>{
 			new Account(Name = 'Ok', AnnualRevenue = 100),

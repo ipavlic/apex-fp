@@ -14,7 +14,6 @@ public with sharing class SObjectStreamRemove extends SObjectStream {
 			SObject nextRecord = recordsIterator.next();
 			if (!predicate.call(nextRecord)) {
 				next = nextRecord;
-				hasNext = true;
 				return true;
 			}
 		}
@@ -30,7 +29,7 @@ public with sharing class SObjectStreamRemove extends SObjectStream {
 
 	public virtual override SObject next() {
 		if (hasNext == null) {
-			tryAdvance();
+			hasNext = tryAdvance();
 		}
 		if (hasNext) {
 			SObject nextRecord = next;
