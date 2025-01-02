@@ -19,11 +19,7 @@ public with sharing virtual class SObjectStream implements Iterator<SObject> {
 	}
 
 	public SObjectStream mapAll(SObjectToSObjectFunction fn) {
-		return new SObjectStreamMapAll(this, fn);
-	}
-
-	public SObjectStream mapSome(SObjectPredicate predicate, SObjectToSObjectFunction fn) {
-		return new SObjectStreamMapSome(this, predicate, fn);
+		return new SObjectStreamMap(this, fn);
 	}
 
 	public OptionalSObject find(SObjectPredicate predicate) {
