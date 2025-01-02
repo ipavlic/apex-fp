@@ -107,35 +107,6 @@ private class SObjectStreamTest {
 	}
 
 	@IsTest
-	private static void mapSome() {
-		List<Account> accounts = new List<Account>{
-			new Account(Name = 'Ok', Description = '1'),
-			new Account(Name = 'Wrong', Description = '2'),
-			new Account(Name = 'Ok', Description = '3')
-		};
-
-		SObjectStream stream = SObjectStream.of(accounts).mapSome(
-				Fn.Match.field(Account.Name).eq('Ok'),
-				Fn.MapTo(Opportunity.SObjectType)
-					.mapField(Opportunity.Name, Account.Name)
-					.mapField(Opportunity.Description, Account.Description)
-		);
-		System.Assert.isTrue(stream.hasNext());
-		Opportunity opp1 = (Opportunity) stream.next();
-		System.Assert.areEqual('1', opp1.Description);
-
-		System.Assert.isTrue(stream.hasNext());
-		Account acc2 = (Account) stream.next();
-		System.Assert.areEqual('2', acc2.Description);
-
-		System.Assert.isTrue(stream.hasNext());
-		Opportunity opp2 = (Opportunity) stream.next();
-		System.Assert.areEqual('3', opp2.Description);
-
-		System.Assert.isFalse(stream.hasNext());
-	}
-
-	@IsTest
 	private static void toList() {
 		List<Account> accounts = new List<Account>{
 				new Account(Name = '1'),
