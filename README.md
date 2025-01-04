@@ -5,6 +5,17 @@
 
 Apex FP provides functional constructs for `SObject` collections!
 
+## Read the documentation
+
+<a href="https://www.apexfp.org">Apex FP documentation</a>
+
+## Deploy to Salesforce
+
+<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=main">
+  <img alt="Deploy to Salesforce"
+       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
+</a>
+
 ## Examples
 
 ### Filter
@@ -93,16 +104,3 @@ OptionalDecimal min = SObjectCollection.of(opportunities).mapToDecimal(Opportuni
 ```apex
 OptionalDecimal max = SObjectCollection.of(opportunities).mapToDecimal(Opportunity.Amount).max();
 ```
-
-Find more examples <a href="https://apexfp.org/examples">in the documentation</a>.
-
-## Deploy to Salesforce
-
-<a href="https://githubsfdeploy.herokuapp.com?owner=ipavlic&repo=apex-fp&ref=main">
-  <img alt="Deploy to Salesforce"
-       src="https://raw.githubusercontent.com/afawcett/githubsfdeploy/master/deploy.png">
-</a>
-
-## Read the documentation
-
-<a href="https://www.apexfp.org">Apex FP documentation</a>

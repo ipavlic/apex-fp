@@ -1,14 +1,14 @@
-# RecordFieldsMatch
+# MatchRecordFields
 
 Implements [`SObjectPredicate`](SObjectPredicate).
 
-## RecordFieldsMatch
+## MatchRecordFields
 
-Constructs a `RecordFieldsMatch` for a given `prototype`.
+Constructs a `MatchRecordFields` for a given `prototype`.
 
 **Signature**
 ```
-public RecordFieldsMatch(sObject prototype)
+public MatchRecordFields(sObject prototype)
 ```
 
 ## call
