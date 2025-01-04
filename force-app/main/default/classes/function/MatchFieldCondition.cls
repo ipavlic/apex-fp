@@ -13,8 +13,6 @@ public class MatchFieldCondition {
 		this.value = value;
 	}
 
-	private class SetComparison()
-
 	public Boolean isSatisfied(SObject record) {
 		Object fieldValue = fieldReader.read(record, fieldPath);
 		switch on relation {
