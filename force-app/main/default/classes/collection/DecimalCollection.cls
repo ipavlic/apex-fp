@@ -45,8 +45,8 @@ public class DecimalCollection {
 	}
 
 	public OptionalDecimal min() {
-		Double min;
-		for (Double d : this.decimals) {
+		Decimal min;
+		for (Decimal d : this.decimals) {
 			if (d != null) {
 				if (min == null) {
 					min = d;
