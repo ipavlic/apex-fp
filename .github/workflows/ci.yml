@@ -25,10 +25,10 @@ jobs:
     # Steps represent a sequence of tasks that will be executed as part of the job
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v5
 
       - name: Install Salesforce CLI from NPM
-        run: npm install @salesforce/cli@2.67.7 --global
+        run: npm install @salesforce/cli@2.108.6 --global
           
       - name: Write the dev hub token into a file
         run: 'echo ${{secrets.SFDX_AUTH_URL}} > sfdx-auth-url'
@@ -46,7 +46,7 @@ jobs:
         run: sf apex run test --synchronous --code-coverage --result-format human --output-dir ./tests/apex
 
       - name: Upload code coverage
-        uses: codecov/codecov-action@v4
+        uses: codecov/codecov-action@v5
         with:
           flags: Apex
           token: ${{ secrets.CODECOV_TOKEN }}
