@@ -5,13 +5,13 @@ on:
     branches:
       - main
     paths:
-      - 'website/**'
+      - 'docs/**'
       - '.github/workflows/website.yml'
   pull_request:
     branches:
       - main
     paths:
-      - 'website/**'
+      - 'docs/**'
   workflow_dispatch:
 
 permissions:
@@ -28,7 +28,7 @@ jobs:
     runs-on: ubuntu-latest
     defaults:
       run:
-        working-directory: website
+        working-directory: docs
     steps:
       - name: Checkout
         uses: actions/checkout@v4
@@ -38,7 +38,7 @@ jobs:
         with:
           node-version: 20
           cache: npm
-          cache-dependency-path: website/package-lock.json
+          cache-dependency-path: docs/package-lock.json
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
@@ -52,7 +52,7 @@ jobs:
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v3
         with:
-          path: website/build
+          path: docs/build
 
   deploy:
     environment:
