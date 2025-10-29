@@ -19,13 +19,13 @@ IncompleteMatchFields field(String fieldPath)
 **Example**
 ```apex
 // Chain multiple field conditions
-MatchFields matcher = Fn.Match.field(Account.Name).equals('Acme')
+MatchFields isHighValueTech = Fn.Match.field(Account.Name).equals('Acme')
     .also(Account.AnnualRevenue).greaterThan(100000)
     .field(Account.Industry).equals('Technology');
 
 // Use in filtering
-SObjectCollection filtered = accounts.filter(matcher);
+SObjectCollection filtered = accounts.filter(isHighValueTech);
 
 // Use with call() from SObjectPredicate interface
-Boolean matches = matcher.call(myAccount);
+Boolean matches = isHighValueTech.call(myAccount);
 ```

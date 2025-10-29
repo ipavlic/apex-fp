@@ -16,16 +16,16 @@ public MatchRecordFields(SObject prototype)
 **Example**
 ```apex
 // Create matcher from prototype
-MatchRecordFields matcher = new MatchRecordFields(new Account{
+MatchRecordFields isTechAcme = new MatchRecordFields(new Account{
     Name = 'Acme Corp',
     Industry = 'Technology'
 });
 
 // Or use via Fn.Match
-MatchRecordFields matcher2 = Fn.Match.recordFields(new Account{Status__c = 'Active'});
+MatchRecordFields isActive = Fn.Match.recordFields(new Account{Status__c = 'Active'});
 
 // Test records
-matcher.call(new Account{Name = 'Acme Corp', Industry = 'Technology'}); // true
-matcher.call(new Account{Name = 'Acme Corp', Industry = 'Technology', AnnualRevenue = 1000000}); // true (extra fields ignored)
-matcher.call(new Account{Name = 'Other Corp', Industry = 'Technology'}); // false
+isTechAcme.call(new Account{Name = 'Acme Corp', Industry = 'Technology'}); // true
+isTechAcme.call(new Account{Name = 'Acme Corp', Industry = 'Technology', AnnualRevenue = 1000000}); // true (extra fields ignored)
+isTechAcme.call(new Account{Name = 'Other Corp', Industry = 'Technology'}); // false
 ```

@@ -17,15 +17,15 @@ ModifySObject setField(Schema.SObjectField field, Object value)
 **Example**
 ```apex
 // Using field token
-ModifySObject modifier = Fn.Modify
+ModifySObject markAsHot = Fn.Modify
     .setField(Account.Status__c, 'Active')
     .setField(Account.Rating, 'Hot');
 
 // Using string field name
-ModifySObject modifier2 = Fn.Modify.setField('Industry', 'Technology');
+ModifySObject setIndustry = Fn.Modify.setField('Industry', 'Technology');
 
 // Apply to collection
-accounts.forEach(modifier);
+accounts.forEach(markAsHot);
 ```
 
 ## setFields
@@ -45,9 +45,9 @@ Map<Schema.SObjectField, Object> updates = new Map<Schema.SObjectField, Object>{
     Account.Status__c => 'Active',
     Account.Rating => 'Hot'
 };
-ModifySObject modifier = Fn.Modify.setFields(updates);
+ModifySObject activateAccounts = Fn.Modify.setFields(updates);
 
 // Using prototype SObject
 Account prototype = new Account(Status__c = 'Active', Rating = 'Hot');
-ModifySObject modifier2 = Fn.Modify.setFields(prototype);
+ModifySObject applyTemplate = Fn.Modify.setFields(prototype);
 ```
