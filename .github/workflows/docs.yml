@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'docs/**'
-      - '.github/workflows/website.yml'
+      - '.github/workflows/docs.yml'
   pull_request:
     branches:
       - main
