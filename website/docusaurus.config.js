@@ -14,8 +14,12 @@ const config = {
   url: 'https://www.apexfp.org',
   baseUrl: '/',
   onBrokenLinks: 'throw',
-  onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
+  markdown: {
+    hooks: {
+      onBrokenMarkdownLinks: 'warn',
+    },
+  },
   organizationName: 'apex-fp', // Usually your GitHub org/user name.
   projectName: 'apex-fp', // Usually your repo name.
   
