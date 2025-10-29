@@ -1,6 +1,6 @@
 # MatchFields
 
-`MatchFields` implements [`SObjectPredicate`](SObjectPredicate) and returns `true` if a record satisfies all field matching conditions currently defined. `MatchFields` is constructed from an [`IncompleteMatchFields`](IncompleteMatchFields) with a fluent interface.
+`MatchFields` implements [`SObjectPredicate`](SObjectPredicate) and returns `true` if a record satisfies all field matching conditions currently defined. `MatchFields` is constructed from an [`IncompleteFieldsMatch`](IncompleteFieldsMatch) with a fluent interface.
 
 Additional conditions can be defined with `also`, or its alias `field`, to create complex matching functions.
 

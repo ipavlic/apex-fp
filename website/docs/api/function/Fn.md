@@ -4,7 +4,7 @@
 
 ## AssignTo
 
-Returns a new [`AssignToSObject`](AssignToSObject) function.
+Returns a new `AssignToSObject` function.
 
 ## MapTo
 
@@ -18,7 +18,7 @@ Returns a `Match` factory for building matching predicates.
 
 **Signature**
 
-Builds a [`RecordFieldMatch`](RecordFieldsMatch), a record matching predicate. The predicate returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality.
+Builds a [`RecordFieldMatch`](MatchRecordFields), a record matching predicate. The predicate returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality.
 
 ```
 RecordFieldsMatch recordFields(SObject prototype)
@@ -33,7 +33,7 @@ isMatch.call(new Account{Name = 'Bar'}); // false
 
 ### field
 
-Starts the construction of a field criteria matching function by defining a field. The field can be defined as an `Schema.SObjectField` or given as a `String` relation. Returns an [`IncompleteFieldsMatch`](IncompleteFieldsMatch) which can be completed into a [`FieldsMatch`](FieldsMatch) by invoking methods on it.
+Starts the construction of a field criteria matching function by defining a field. The field can be defined as an `Schema.SObjectField` or given as a `String` relation. Returns an [`IncompleteFieldsMatch`](IncompleteFieldsMatch) which can be completed into a [`MatchFields`](MatchFields) by invoking methods on it.
 
 **Signature**
 
