@@ -16,19 +16,3 @@ if (Fn.NotNull.call(myAccount)) {
     // Process account
 }
 ```
-
-## call()
-
-Returns `true` if the provided SObject is not null.
-
-**Signature**
-```apex
-Boolean call(SObject record)
-```
-
-**Example**
-```apex
-SObject acc = new Account(Name = 'Test');
-Fn.NotNull.call(acc); // true
-Fn.NotNull.call(null); // false
-```

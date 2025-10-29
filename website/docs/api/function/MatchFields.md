@@ -25,21 +25,7 @@ MatchFields matcher = Fn.Match.field(Account.Name).equals('Acme')
 
 // Use in filtering
 SObjectCollection filtered = accounts.filter(matcher);
-```
 
-## call()
-
-Evaluates all field conditions against the provided record. Returns `true` only if all conditions are satisfied.
-
-**Signature**
-```apex
-Boolean call(SObject record)
-```
-
-**Example**
-```apex
-MatchFields highValueTech = Fn.Match.field(Account.Industry).equals('Technology')
-    .also(Account.AnnualRevenue).greaterThan(1000000);
-
-Boolean matches = highValueTech.call(myAccount);
+// Use with call() from SObjectPredicate interface
+Boolean matches = matcher.call(myAccount);
 ```

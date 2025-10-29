@@ -1,22 +1,31 @@
 # MatchRecordFields
 
-Implements [`SObjectPredicate`](SObjectPredicate).
+`MatchRecordFields` implements [`SObjectPredicate`](SObjectPredicate) and returns `true` when a record matches all populated fields on a prototype SObject.
 
-## MatchRecordFields
+Fields that are not populated on the `prototype` are not checked for equality, allowing partial matching.
+
+## Constructor
 
 Constructs a `MatchRecordFields` for a given `prototype`.
 
 **Signature**
+```apex
+public MatchRecordFields(SObject prototype)
 ```
-public MatchRecordFields(sObject prototype)
-```
 
-## call
+**Example**
+```apex
+// Create matcher from prototype
+MatchRecordFields matcher = new MatchRecordFields(new Account{
+    Name = 'Acme Corp',
+    Industry = 'Technology'
+});
 
-Returns `true` when applied to a record which matches all fields defined on the `prototype` record. Fields that are not defined on the `prototype` are not checked for equality.
+// Or use via Fn.Match
+MatchRecordFields matcher2 = Fn.Match.recordFields(new Account{Status__c = 'Active'});
 
-**Signature**
-
-```
-Boolean call(SObject record)
+// Test records
+matcher.call(new Account{Name = 'Acme Corp', Industry = 'Technology'}); // true
+matcher.call(new Account{Name = 'Acme Corp', Industry = 'Technology', AnnualRevenue = 1000000}); // true (extra fields ignored)
+matcher.call(new Account{Name = 'Other Corp', Industry = 'Technology'}); // false
 ```
