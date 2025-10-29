@@ -1,0 +1,9 @@
+{
+  "compilerOptions": {
+    "instantiate": {
+      "classes": {
+        "Optional": ["Double", "Decimal", "SObject"]
+      }
+    }
+  }
+}
